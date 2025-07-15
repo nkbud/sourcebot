@@ -161,6 +161,28 @@ The Sourcebot MCP server gives your LLM agents the ability to fetch code context
 
 For a more detailed guide, checkout [the docs](https://docs.sourcebot.dev/docs/features/mcp-server).
 
+## Docker
+
+Docker images are automatically published to GitHub Container Registry (ghcr.io) on every annotated tag release.
+
+To run the MCP server using Docker:
+
+```bash
+# Pull the latest version
+docker pull ghcr.io/nkbud/sourcebot/mcp:latest
+
+# Or pull a specific version
+docker pull ghcr.io/nkbud/sourcebot/mcp:v1.0.3
+
+# Run the container
+docker run -it --rm \
+  -e SOURCEBOT_API_KEY=your_api_key \
+  -e SOURCEBOT_BASE_URL=https://your-sourcebot-instance.com \
+  ghcr.io/nkbud/sourcebot/mcp:latest
+```
+
+The Docker image is automatically built from the latest annotated tag and includes all necessary dependencies.
+
 
 ## Available Tools
 
