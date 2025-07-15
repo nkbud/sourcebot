@@ -1,0 +1,66 @@
+name: Build and Publish MCP Docker Image
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # Only trigger on annotated version tags like v1.0.0
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}/mcp
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history to check tag ancestry
+
+      - name: Verify tag is annotated and from main
+        run: |
+          # Check if tag is annotated
+          if ! git cat-file -t ${{ github.ref_name }} | grep -q tag; then
+            echo "Error: ${{ github.ref_name }} is not an annotated tag"
+            exit 1
+          fi
+          
+          # Check if tag points to a commit that's on main branch
+          if ! git branch -r --contains ${{ github.sha }} | grep -q origin/main; then
+            echo "Error: Tag ${{ github.ref_name }} is not based on main branch"
+            exit 1
+          fi
+          
+          echo "✅ Tag ${{ github.ref_name }} is annotated and based on main branch"
+
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=tag
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./packages/mcp
+          file: ./packages/mcp/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
