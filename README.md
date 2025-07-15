@@ -88,12 +88,12 @@ docker run \
   -v $(pwd):/data \
   -e CONFIG_PATH=/data/config.json \
   --name sourcebot \
-  ghcr.io/sourcebot-dev/sourcebot:latest
+  ghcr.io/nkbud/sourcebot:latest
 ```
 <details>
 <summary>What does this command do?</summary>
 
-- Pull and run the Sourcebot docker image from [ghcr.io/sourcebot-dev/sourcebot:latest](https://github.com/sourcebot-dev/sourcebot/pkgs/container/sourcebot).
+- Pull and run the Sourcebot docker image from [ghcr.io/nkbud/sourcebot:latest](https://github.com/nkbud/sourcebot/pkgs/container/sourcebot).
 - Mount the current directory (`-v $(pwd):/data`) to allow Sourcebot to persist the `.sourcebot` cache.
 - Clones sourcebot at `HEAD` into `.sourcebot/github/sourcebot-dev/sourcebot`.
 - Indexes sourcebot into a .zoekt index file in `.sourcebot/index/`.
