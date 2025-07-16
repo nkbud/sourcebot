@@ -13,7 +13,7 @@ import { SourcebotLogo } from "@/app/components/sourcebotLogo";
 import { TrialNavIndicator } from "./trialNavIndicator";
 import { IS_BILLING_ENABLED } from "@/lib/billing";
 import { env } from "@/env.mjs";
-import { getSubscriptionInfo } from "@/lib/billing";
+import { getSubscriptionInfo } from "@/lib/billingServerUtils";
 import { auth } from "@/auth";
 import WhatsNewIndicator from "./whatsNewIndicator";
 

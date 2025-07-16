@@ -1,22 +1,15 @@
 "use client"
 
-// Removed - Enterprise analytics components no longer available
-// import { AnalyticsContent } from "@/ee/features/analytics/analyticsContent";
-// import { AnalyticsEntitlementMessage } from "@/ee/features/analytics/analyticsEntitlementMessage";
-import { useHasEntitlement } from "@/features/entitlements/useHasEntitlement";
-
 export default function AnalyticsPage() {
-  return <AnalyticsPageContent />;
-}
-
-function AnalyticsPageContent() {
-  const hasAnalyticsEntitlement = useHasEntitlement("analytics");
-
-  // Analytics feature removed - always show disabled message
   return (
-    <div className="text-center text-muted-foreground p-8">
-      <h2 className="text-xl font-semibold mb-2">Analytics Not Available</h2>
-      <p>Analytics features have been removed from this version.</p>
+    <div className="space-y-6">
+      <div>
+        <h3 className="text-lg font-medium">Analytics</h3>
+        <p className="text-sm text-muted-foreground">Analytics feature not available</p>
+      </div>
+      <div className="text-center p-8">
+        <p className="text-muted-foreground">Analytics feature has been removed.</p>
+      </div>
     </div>
   );
 } 

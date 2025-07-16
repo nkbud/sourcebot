@@ -12,7 +12,7 @@ import { SyntaxReferenceGuide } from "./components/syntaxReferenceGuide";
 import { SyntaxGuideProvider } from "./components/syntaxGuideProvider";
 import { IS_BILLING_ENABLED } from "@/lib/billing";
 import { notFound, redirect } from "next/navigation";
-import { getSubscriptionInfo } from "@/lib/billing";
+import { getSubscriptionInfo } from "@/lib/billingServerUtils";
 import { PendingApprovalCard } from "./components/pendingApproval";
 import { hasEntitlement } from "@sourcebot/shared";
 import { getPublicAccessStatus } from "@/lib/publicAccess";

@@ -5,8 +5,6 @@ import { notFound, redirect } from "next/navigation";
 import { ConnectCodeHost } from "./components/connectCodeHost";
 import { InviteTeam } from "./components/inviteTeam";
 import { CompleteOnboarding } from "./components/completeOnboarding";
-// Removed - Enterprise billing component no longer available
-// import { Checkout } from "@/ee/features/billing/components/checkout";
 import { LogoutEscapeHatch } from "@/app/components/logoutEscapeHatch";
 import { IS_BILLING_ENABLED } from "@/lib/billing";
 import { env } from "@/env.mjs";
@@ -75,14 +73,7 @@ export default async function Onboard({ params, searchParams }: OnboardProps) {
                     />
                 </>
             )}
-            {step === OnboardingSteps.Checkout && IS_BILLING_ENABLED && (
-                <>
-                    {/* Checkout component removed - billing disabled */}
-                    <div className="text-center text-muted-foreground">
-                        <p>Billing features are not available.</p>
-                    </div>
-                </>
-            )}
+            {/* Checkout step removed with billing feature */}
             {step === OnboardingSteps.Complete && (
                 <CompleteOnboarding />
             )}
