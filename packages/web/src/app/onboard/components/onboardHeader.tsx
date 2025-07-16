@@ -1,6 +1,6 @@
 import { SourcebotLogo } from "@/app/components/sourcebotLogo"
 import { OnboardingSteps } from "@/lib/constants";
-import { IS_BILLING_ENABLED } from "@/ee/features/billing/stripe";
+import { IS_BILLING_ENABLED } from "@/lib/billing";
 
 interface OnboardHeaderProps {
     title: string

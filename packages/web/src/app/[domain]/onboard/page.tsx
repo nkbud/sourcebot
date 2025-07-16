@@ -5,9 +5,9 @@ import { notFound, redirect } from "next/navigation";
 import { ConnectCodeHost } from "./components/connectCodeHost";
 import { InviteTeam } from "./components/inviteTeam";
 import { CompleteOnboarding } from "./components/completeOnboarding";
-import { Checkout } from "@/ee/features/billing/components/checkout";
+// Checkout component removed with billing feature
 import { LogoutEscapeHatch } from "@/app/components/logoutEscapeHatch";
-import { IS_BILLING_ENABLED } from "@/ee/features/billing/stripe";
+import { IS_BILLING_ENABLED } from "@/lib/billing";
 import { env } from "@/env.mjs";
 
 interface OnboardProps {
@@ -74,11 +74,7 @@ export default async function Onboard({ params, searchParams }: OnboardProps) {
                     />
                 </>
             )}
-            {step === OnboardingSteps.Checkout && (
-                <>
-                    <Checkout />
-                </>
-            )}
+            {/* Checkout step removed with billing feature */}
             {step === OnboardingSteps.Complete && (
                 <CompleteOnboarding />
             )}
