@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from "@/components/ui/button";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+import { useCaptureEvent } from "@/hooks/useCaptureEvent";
 import { useRouter } from "next/navigation";
 import { useDomain } from "@/hooks/useDomain";
 

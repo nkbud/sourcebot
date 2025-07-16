@@ -13,7 +13,7 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+import { useCaptureEvent } from "@/hooks/useCaptureEvent";
 import { useDomain } from "@/hooks/useDomain";
 import { cn, CodeHostType, isDefined, isServiceError, unwrapServiceError } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
@@ -138,8 +138,6 @@ export const SecretCombobox = ({
                         size="sm"
                         onClick={() => {
                             setIsCreateSecretDialogOpen(true);
-                                type: codeHostType,
-                            });
                         }}
                         className={cn(
                             "w-full justify-start gap-1.5 p-2",

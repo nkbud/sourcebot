@@ -1,6 +1,6 @@
 'use client';
 
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+import { useCaptureEvent } from "@/hooks/useCaptureEvent";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { DisplayConnectionError } from "./connectionError"
 import { NotFoundWarning } from "./notFoundWarning"
@@ -11,7 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 import { flagConnectionForSync, getConnectionInfo } from "@/actions";
 import { isServiceError, unwrapServiceError } from "@/lib/utils";
 import { env } from "@/env.mjs";
-import { ConnectionSyncStatus } from "@sourcebot/db";
+import { ConnectionSyncStatus } from "@/lib/db-stubs";
 import { FiLoader } from "react-icons/fi";
 import { CircleCheckIcon, AlertTriangle, CircleXIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";

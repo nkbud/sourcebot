@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+import { useCaptureEvent } from "@/hooks/useCaptureEvent";
 import { useDomain } from "@/hooks/useDomain";
 import { CodeHostType, isServiceError } from "@/lib/utils";
 import githubPatCreation from "@/public/github_pat_creation.png";
@@ -40,9 +40,7 @@ export const ImportSecretDialog = ({ open, onOpenChange, onSecretCreated, codeHo
         key: z.string().min(1).refine(async (key) => {
             const doesSecretExist = await checkIfSecretExists(key, domain);
             if(!isServiceError(doesSecretExist)) {
-                    type: codeHostType,
-                    error: "A secret with this key already exists.",
-                });
+                return false; // Secret already exists
             }
             return isServiceError(doesSecretExist) || !doesSecretExist;
         }, "A secret with this key already exists."),
@@ -63,9 +61,6 @@ export const ImportSecretDialog = ({ open, onOpenChange, onSecretCreated, codeHo
         if (isServiceError(response)) {
             toast({
                 description: `❌ Failed to create secret. Reason: ${response.message}`
-            });
-                type: codeHostType,
-                error: response.message,
             });
         } else {
             toast({

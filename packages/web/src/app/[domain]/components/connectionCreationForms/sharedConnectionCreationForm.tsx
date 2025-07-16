@@ -21,7 +21,7 @@ import { InfoIcon, Loader2 } from "lucide-react";
 import { ReactCodeMirrorRef } from "@uiw/react-codemirror";
 import { SecretCombobox } from "./secretCombobox";
 import strings from "@/lib/strings";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+import { useCaptureEvent } from "@/hooks/useCaptureEvent";
 
 interface SharedConnectionCreationFormProps<T> {
     type: CodeHostType;
@@ -81,14 +81,9 @@ export default function SharedConnectionCreationForm<T>({
             toast({
                 description: `❌ Failed to create connection. Reason: ${response.message}`
             });
-                type: type,
-                error: response.message,
-            });
         } else {
             toast({
                 description: `✅ Connection created successfully.`
-            });
-                type: type,
             });
             onCreated?.(response.id);
         }

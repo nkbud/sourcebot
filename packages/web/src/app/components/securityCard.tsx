@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { Shield, Lock, CheckCircle, ExternalLink, Mail } from "lucide-react"
-import useCaptureEvent from "@/hooks/useCaptureEvent"
+import { useCaptureEvent } from "@/hooks/useCaptureEvent"
 import { SOURCEBOT_SUPPORT_EMAIL } from "@/lib/constants"
 
 export default function SecurityCard() {

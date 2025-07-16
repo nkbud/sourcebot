@@ -9,7 +9,6 @@
         "postinstall": "yarn build"
     },
     "dependencies": {
-        "@sourcebot/crypto": "workspace:*",
         "@sourcebot/db": "workspace:*",
         "@sourcebot/logger": "workspace:*",
         "@sourcebot/schemas": "workspace:*",

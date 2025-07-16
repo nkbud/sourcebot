@@ -2,7 +2,7 @@
 
 import { getRepos } from "@/actions";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+import { useCaptureEvent } from "@/hooks/useCaptureEvent";
 import { useDomain } from "@/hooks/useDomain";
 import { env } from "@/env.mjs";
 import { unwrapServiceError } from "@/lib/utils";
@@ -31,6 +31,7 @@ export const ProgressNavIndicator = () => {
             href={`/${domain}/connections`}
         >
             <HoverCard openDelay={50}>
+                <HoverCardTrigger asChild>
                     <div className="flex items-center gap-2 px-3 py-1.5 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded-full text-green-700 dark:text-green-400 text-xs font-medium hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors cursor-pointer">
                         <Loader2Icon className="h-4 w-4 animate-spin" />
                         <span>{inProgressRepos.length}</span>

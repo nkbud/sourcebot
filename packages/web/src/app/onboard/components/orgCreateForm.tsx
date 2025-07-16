@@ -13,7 +13,7 @@ import { Loader2 } from "lucide-react"
 import { useToast } from "@/components/hooks/use-toast"
 import { useRouter } from "next/navigation";
 import { Card } from "@/components/ui/card"
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+import { useCaptureEvent } from "@/hooks/useCaptureEvent";
 import { orgNameSchema, orgDomainSchema } from "@/lib/schemas"
 
 interface OrgCreateFormProps {

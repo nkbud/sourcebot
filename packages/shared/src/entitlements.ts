@@ -1,7 +1,7 @@
 import { base64Decode } from "./utils.js";
 import { z } from "zod";
 import { createLogger } from "@sourcebot/logger";
-import { verifySignature } from "@sourcebot/crypto";
+import { verifySignature } from "./crypto-stubs.js";
 import { env } from "./env.js";
 import { SOURCEBOT_SUPPORT_EMAIL, SOURCEBOT_UNLIMITED_SEATS } from "./constants.js";
 

@@ -5,7 +5,7 @@ import EmailProvider from "next-auth/providers/nodemailer";
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { prisma } from "@/prisma";
 import { env } from "@/env.mjs";
-import { User } from '@sourcebot/db';
+import { User } from '@/lib/db-stubs';
 import 'next-auth/jwt';
 import type { Provider } from "next-auth/providers";
 import { verifyCredentialsRequestSchema } from './lib/schemas';

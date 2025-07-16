@@ -3,7 +3,7 @@
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { AlertTriangle } from "lucide-react";
 import { NotFoundData } from "@/lib/syncStatusMetadataSchema";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+import { useCaptureEvent } from "@/hooks/useCaptureEvent";
 
 
 interface ConnectionListItemWarningIndicatorProps {

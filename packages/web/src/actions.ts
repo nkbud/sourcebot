@@ -6,8 +6,8 @@ import { notAuthenticated, notFound, secretAlreadyExists, ServiceError, ServiceE
 import { CodeHostType, isServiceError } from "@/lib/utils";
 import { prisma } from "@/prisma";
 import { render } from "@react-email/components";
-import { decrypt, encrypt, generateApiKey, hashSecret, getTokenFromConfig } from "@sourcebot/crypto";
-import { ConnectionSyncStatus, OrgRole, Prisma, RepoIndexingStatus, StripeSubscriptionStatus, Org, ApiKey } from "@sourcebot/db";
+import { decrypt, encrypt, generateApiKey, hashSecret, getTokenFromConfig } from "@sourcebot/shared";
+import { ConnectionSyncStatus, OrgRole, Prisma, RepoIndexingStatus, StripeSubscriptionStatus, Org, ApiKey } from "@/lib/db-stubs";
 import { ConnectionConfig } from "@sourcebot/schemas/v3/connection.type";
 import { gerritSchema } from "@sourcebot/schemas/v3/gerrit.schema";
 import { giteaSchema } from "@sourcebot/schemas/v3/gitea.schema";

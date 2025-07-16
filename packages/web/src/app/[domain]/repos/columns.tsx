@@ -7,7 +7,7 @@ import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn, getRepoImageSrc } from "@/lib/utils"
-import { RepoIndexingStatus } from "@sourcebot/db";
+import { RepoIndexingStatus } from "@/lib/db-stubs";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { AddRepoButton } from "./addRepoButton"
 

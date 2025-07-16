@@ -4544,7 +4544,6 @@ __metadata:
     "@coderabbitai/bitbucket": "npm:^1.1.3"
     "@gitbeaker/rest": "npm:^40.5.1"
     "@octokit/rest": "npm:^21.0.2"
-    "@sourcebot/crypto": "workspace:*"
     "@sourcebot/db": "workspace:*"
     "@sourcebot/error": "workspace:*"
     "@sourcebot/logger": "workspace:*"
@@ -4592,19 +4591,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sourcebot/crypto@workspace:*, @sourcebot/crypto@workspace:packages/crypto":
-  version: 0.0.0-use.local
-  resolution: "@sourcebot/crypto@workspace:packages/crypto"
-  dependencies:
-    "@sourcebot/db": "npm:*"
-    "@sourcebot/schemas": "npm:*"
-    "@types/node": "npm:^22.7.5"
-    dotenv: "npm:^16.4.5"
-    typescript: "npm:^5.7.3"
-  languageName: unknown
-  linkType: soft
-
-"@sourcebot/db@npm:*, @sourcebot/db@workspace:*, @sourcebot/db@workspace:packages/db":
+"@sourcebot/db@workspace:*, @sourcebot/db@workspace:packages/db":
   version: 0.0.0-use.local
   resolution: "@sourcebot/db@workspace:packages/db"
   dependencies:
@@ -4662,7 +4649,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@sourcebot/schemas@npm:*, @sourcebot/schemas@workspace:*, @sourcebot/schemas@workspace:packages/schemas":
+"@sourcebot/schemas@workspace:*, @sourcebot/schemas@workspace:packages/schemas":
   version: 0.0.0-use.local
   resolution: "@sourcebot/schemas@workspace:packages/schemas"
   dependencies:
@@ -4679,7 +4666,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@sourcebot/shared@workspace:packages/shared"
   dependencies:
-    "@sourcebot/crypto": "workspace:*"
     "@sourcebot/db": "workspace:*"
     "@sourcebot/logger": "workspace:*"
     "@sourcebot/schemas": "workspace:*"
@@ -4758,7 +4744,6 @@ __metadata:
     "@replit/codemirror-vim": "npm:^6.2.1"
     "@shopify/lang-jsonc": "npm:^1.0.0"
     "@sourcebot/codemirror-lang-tcl": "npm:^1.0.12"
-    "@sourcebot/crypto": "workspace:*"
     "@sourcebot/db": "workspace:*"
     "@sourcebot/error": "workspace:*"
     "@sourcebot/logger": "workspace:*"

@@ -2,7 +2,7 @@ import { Logger } from "winston";
 import { AppContext } from "./types.js";
 import path from 'path';
 import { PrismaClient, Repo } from "@sourcebot/db";
-import { getTokenFromConfig as getTokenFromConfigBase } from "@sourcebot/crypto";
+import { getTokenFromConfig as getTokenFromConfigBase } from "@sourcebot/shared";
 import { BackendException, BackendError } from "@sourcebot/error";
 
 export const measure = async <T>(cb: () => Promise<T>) => {

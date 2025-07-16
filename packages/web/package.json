@@ -71,7 +71,6 @@
     "@replit/codemirror-vim": "^6.2.1",
     "@shopify/lang-jsonc": "^1.0.0",
     "@sourcebot/codemirror-lang-tcl": "^1.0.12",
-    "@sourcebot/crypto": "workspace:*",
     "@sourcebot/db": "workspace:*",
     "@sourcebot/error": "workspace:*",
     "@sourcebot/logger": "workspace:*",

@@ -9,7 +9,7 @@ import { Copy, Check, AlertTriangle, Loader2, Plus } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDomain } from "@/hooks/useDomain";
 import { useToast } from "@/components/hooks/use-toast";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+import { useCaptureEvent } from "@/hooks/useCaptureEvent";
 import { DataTable } from "@/components/ui/data-table";
 import { columns, ApiKeyColumnInfo } from "./columns";
 import { Skeleton } from "@/components/ui/skeleton";

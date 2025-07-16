@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import { TriangleAlert } from "lucide-react";
 import { useCallback, useEffect } from "react";
 import { dismissMobileUnsupportedSplashScreen } from "@/actions";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+import { useCaptureEvent } from "@/hooks/useCaptureEvent";
 
 export const MobileUnsupportedSplashScreen = () => {
     const captureEvent = useCaptureEvent();

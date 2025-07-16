@@ -6,7 +6,7 @@ import { BlocksIcon, LockIcon } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { useMemo } from "react"
-import { OrgRole } from "@sourcebot/db"
+import { OrgRole } from "@/lib/db-stubs"
 
 interface NewConnectionCardProps {
     className?: string

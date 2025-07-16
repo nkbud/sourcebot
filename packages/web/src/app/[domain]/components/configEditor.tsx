@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Schema } from "ajv";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+import { useCaptureEvent } from "@/hooks/useCaptureEvent";
 import { CodeHostType } from "@/lib/utils";
 import { useCodeMirrorTheme } from "@/hooks/useCodeMirrorTheme";
 
@@ -107,7 +107,7 @@ export const isConfigValidJson = (config: string) => {
 
 const DEFAULT_ACTIONS_VISIBLE = 4;
 
-const ConfigEditor = <T,>(props: ConfigEditorProps<T>, forwardedRef: Ref<ReactCodeMirrorRef>) => {
+function ConfigEditor<T>(props: ConfigEditorProps<T>, forwardedRef: Ref<ReactCodeMirrorRef>) {
     const { value, type, onChange, actions, schema } = props;
     const captureEvent = useCaptureEvent();
     const editorRef = useRef<ReactCodeMirrorRef>(null);
@@ -276,7 +276,7 @@ const ConfigEditor = <T,>(props: ConfigEditorProps<T>, forwardedRef: Ref<ReactCo
             />
         </div>
     )
-};
+}
 
 // @see: https://stackoverflow.com/a/78692562
 export default forwardRef(ConfigEditor) as <T>(

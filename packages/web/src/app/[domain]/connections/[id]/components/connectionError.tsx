@@ -1,7 +1,7 @@
 "use client"
 
 import { BackendError } from "@sourcebot/error";
-import { Prisma } from "@sourcebot/db";
+import { Prisma } from "@/lib/db-stubs";
 
 export function DisplayConnectionError({ syncStatusMetadata, onSecretsClick }: { syncStatusMetadata: Prisma.JsonValue, onSecretsClick: () => void }) {
   const errorCode = syncStatusMetadata && typeof syncStatusMetadata === 'object' && 'error' in syncStatusMetadata

@@ -5,7 +5,7 @@ import Link from "next/link"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Database, Search } from "lucide-react"
-import useCaptureEvent from "@/hooks/useCaptureEvent"
+import { useCaptureEvent } from "@/hooks/useCaptureEvent"
 
 export default function RegistrationCard() {
   const [isHovered, setIsHovered] = useState(false)

@@ -5,10 +5,10 @@ import { HoverCard, HoverCardTrigger, HoverCardContent } from "@/components/ui/h
 import { CircleXIcon } from "lucide-react";
 import { useDomain } from "@/hooks/useDomain";
 import { unwrapServiceError } from "@/lib/utils";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+import { useCaptureEvent } from "@/hooks/useCaptureEvent";
 import { env } from "@/env.mjs";
 import { useQuery } from "@tanstack/react-query";
-import { ConnectionSyncStatus, RepoIndexingStatus } from "@sourcebot/db";
+import { ConnectionSyncStatus, RepoIndexingStatus } from "@/lib/db-stubs";
 import { getConnections } from "@/actions";
 import { getRepos } from "@/actions";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -41,6 +41,8 @@ export const ErrorNavIndicator = () => {
 
     return (
         <HoverCard openDelay={50}>
+            <HoverCardTrigger asChild>
+                <Link href={`/${domain}/connections`}>
                     <div className="flex items-center gap-2 px-3 py-1.5 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 rounded-full text-red-700 dark:text-red-400 text-xs font-medium hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors cursor-pointer">
                         <CircleXIcon className="h-4 w-4" />
                         {repos.length + connections.length > 0 && (

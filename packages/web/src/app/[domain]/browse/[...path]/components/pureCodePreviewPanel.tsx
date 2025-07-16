@@ -16,7 +16,7 @@ import { EditorContextMenu } from "../../../components/editorContextMenu";
 import { BrowseHighlightRange, HIGHLIGHT_RANGE_QUERY_PARAM, useBrowseNavigation } from "../../hooks/useBrowseNavigation";
 import { useBrowseState } from "../../hooks/useBrowseState";
 import { rangeHighlightingExtension } from "./rangeHighlightingExtension";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+import { useCaptureEvent } from "@/hooks/useCaptureEvent";
 import { createAuditAction } from "@/lib/audit";
 import { useDomain } from "@/hooks/useDomain";
 

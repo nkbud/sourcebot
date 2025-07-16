@@ -19,7 +19,7 @@ import { isServiceError } from "@/lib/utils";
 import { useToast } from "@/components/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { useDomain } from "@/hooks/useDomain";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+import { useCaptureEvent } from "@/hooks/useCaptureEvent";
 
 interface DeleteConnectionSettingProps {
     connectionId: number;

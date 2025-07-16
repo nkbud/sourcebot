@@ -2,7 +2,7 @@
 
 import { sew, withAuth, withOrgMembership } from '@/actions';
 import { env } from '@/env.mjs';
-import { OrgRole, Repo } from '@sourcebot/db';
+import { OrgRole, Repo } from '@/lib/db-stubs';
 import { prisma } from '@/prisma';
 import { notFound, unexpectedError } from '@/lib/serviceError';
 import { simpleGit } from 'simple-git';

@@ -6,7 +6,7 @@ import { AlertTriangleIcon } from "lucide-react";
 import { useDomain } from "@/hooks/useDomain";
 import { getConnections } from "@/actions";
 import { unwrapServiceError } from "@/lib/utils";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+import { useCaptureEvent } from "@/hooks/useCaptureEvent";
 import { env } from "@/env.mjs";
 import { useQuery } from "@tanstack/react-query";
 import { ConnectionSyncStatus } from "@prisma/client";

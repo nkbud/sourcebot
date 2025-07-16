@@ -16,7 +16,7 @@ import { useDomain } from "@/hooks/useDomain";
 import { isServiceError } from "@/lib/utils";
 import { useToast } from "@/components/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+import { useCaptureEvent } from "@/hooks/useCaptureEvent";
 export const inviteMemberFormSchema = z.object({
     emails: z.array(z.object({
         email: z.string().email()

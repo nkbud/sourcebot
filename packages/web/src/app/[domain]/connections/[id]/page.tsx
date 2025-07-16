@@ -20,7 +20,7 @@ import { Overview } from "./components/overview"
 import { getOrgMembership } from "@/actions"
 import { isServiceError } from "@/lib/utils"
 import { notFound } from "next/navigation"
-import { OrgRole } from "@sourcebot/db"
+import { OrgRole } from "@/lib/db-stubs"
 import { CodeHostType } from "@/lib/utils"
 import { env } from "@/env.mjs"
 
