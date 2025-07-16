@@ -233,9 +233,8 @@ export const search = async ({ query, matches, contextLines, whole }: SearchRequ
 
                     // This should never happen... but if it does, we skip the file.
                     if (!repo) {
-                        Sentry.captureMessage(
-                            `Repository not found for identifier: ${identifier}; skipping file "${file.FileName}"`,
-                            'warning'
+                        console.warn(
+                            `Repository not found for identifier: ${identifier}; skipping file "${file.FileName}"`
                         );
                         return undefined;
                     }

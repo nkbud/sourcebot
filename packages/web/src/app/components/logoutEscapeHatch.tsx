@@ -15,8 +15,6 @@ export const LogoutEscapeHatch = ({
                     "use server";
                     await signOut({
                         redirectTo: "/login",
-                    }).then(() => {
-                        posthog.reset();
                     });
                 }}
             >
