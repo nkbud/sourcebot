@@ -69,6 +69,8 @@ export const LoginForm = ({ callbackUrl, error, providers, context }: LoginFormP
                 return "wa_login_with_keycloak" as const;
             case "microsoft-entra-id":
                 return "wa_login_with_microsoft_entra_id" as const;
+            case "dex":
+                return "wa_login_with_dex" as const;
             default:
                 return "wa_login_with_github" as const; // fallback
         }

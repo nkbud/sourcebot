@@ -1,0 +1,21 @@
+{
+    "$schema": "../schemas/v3/index.json",
+    "_comment": "Example configuration with Dex OAuth2 authentication",
+    "connections": {
+        "example-github": {
+            "type": "github",
+            "repos": [
+                "sourcebot-dev/sourcebot"
+            ]
+        },
+        "example-private-repo": {
+            "type": "github",
+            "token": {
+                "env": "GITHUB_PRIVATE_TOKEN"
+            },
+            "repos": [
+                "your-org/private-repo"
+            ]
+        }
+    }
+}

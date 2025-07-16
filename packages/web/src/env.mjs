@@ -25,6 +25,11 @@ export const env = createEnv({
         AUTH_CREDENTIALS_LOGIN_ENABLED: booleanSchema.default('true'),
         AUTH_EMAIL_CODE_LOGIN_ENABLED: booleanSchema.default('false'),
 
+        // Dex OAuth2 Support
+        AUTH_DEX_ISSUER_URL: z.string().optional(),
+        AUTH_DEX_CLIENT_ID: z.string().optional(),
+        AUTH_DEX_CLIENT_SECRET: z.string().optional(),
+
         // Enterprise Auth
         AUTH_EE_ENABLE_JIT_PROVISIONING: booleanSchema.default('false'),
 
