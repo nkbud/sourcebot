@@ -3,7 +3,7 @@
 import { getDisplayTime, getRepoImageSrc } from "@/lib/utils";
 import Image from "next/image";
 import { StatusIcon } from "../../components/statusIcon";
-import { RepoIndexingStatus } from "@sourcebot/db";
+import { RepoIndexingStatus } from "@/lib/db-stubs";
 import { useMemo } from "react";
 import { RetryRepoIndexButton } from "./repoRetryIndexButton";
 

@@ -13,7 +13,7 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+import { useCaptureEvent } from "@/hooks/useCaptureEvent";
 import { useDomain } from "@/hooks/useDomain";
 import { cn, CodeHostType, isDefined, isServiceError, unwrapServiceError } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";

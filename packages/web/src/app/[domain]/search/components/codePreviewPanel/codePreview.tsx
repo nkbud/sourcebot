@@ -24,7 +24,7 @@ import { SymbolDefinition } from "@/lib/codeNav";
 import { createAuditAction } from "@/lib/audit";
 import { useDomain } from "@/hooks/useDomain";
 
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+import { useCaptureEvent } from "@/hooks/useCaptureEvent";
 
 export interface CodePreviewFile {
     content: string;

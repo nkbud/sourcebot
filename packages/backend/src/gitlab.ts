@@ -5,7 +5,6 @@ import { GitlabConnectionConfig } from "@sourcebot/schemas/v3/gitlab.type"
 import { getTokenFromConfig, measure, fetchWithRetry } from "./utils.js";
 import { PrismaClient } from "@sourcebot/db";
 import { processPromiseResults, throwIfAnyFailed } from "./connectionUtils.js";
-import * as Sentry from "@sentry/node";
 import { env } from "./env.js";
 
 const logger = createLogger('gitlab');
@@ -55,7 +54,6 @@ export const getGitLabReposFromConfig = async (config: GitlabConnectionConfig, o
                 logger.debug(`Found ${_projects.length} projects in ${durationMs}ms.`);
                 allRepos = allRepos.concat(_projects);
             } catch (e) {
-                Sentry.captureException(e);
                 logger.error(`Failed to fetch all projects visible in ${config.url}.`, e);
                 throw e;
             }
@@ -81,7 +79,6 @@ export const getGitLabReposFromConfig = async (config: GitlabConnectionConfig, o
                     data
                 };
             } catch (e: any) {
-                Sentry.captureException(e);
                 logger.error(`Failed to fetch projects for group ${group}.`, e);
 
                 const status = e?.cause?.response?.status;
@@ -118,7 +115,6 @@ export const getGitLabReposFromConfig = async (config: GitlabConnectionConfig, o
                     data
                 };
             } catch (e: any) {
-                Sentry.captureException(e);
                 logger.error(`Failed to fetch projects for user ${user}.`, e);
 
                 const status = e?.cause?.response?.status;
@@ -153,7 +149,6 @@ export const getGitLabReposFromConfig = async (config: GitlabConnectionConfig, o
                     data: [data]
                 };
             } catch (e: any) {
-                Sentry.captureException(e);
                 logger.error(`Failed to fetch project ${project}.`, e);
 
                 const status = e?.cause?.response?.status;

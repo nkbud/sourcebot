@@ -1,5 +1,5 @@
 import { checkIfOrgDomainExists } from "@/actions";
-import { RepoIndexingStatus } from "@sourcebot/db";
+import { RepoIndexingStatus } from "@/lib/db-stubs";
 import { z } from "zod";
 import { isServiceError } from "./utils";
 

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useDomain } from "@/hooks/useDomain";
 import { isServiceError } from "@/lib/utils";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+import { useCaptureEvent } from "@/hooks/useCaptureEvent";
 import { ServiceError } from "@/lib/serviceError";
 
 interface Props {

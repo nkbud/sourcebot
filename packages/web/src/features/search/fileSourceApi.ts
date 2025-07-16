@@ -6,7 +6,7 @@ import { FileSourceRequest, FileSourceResponse } from "./types";
 import { isServiceError } from "../../lib/utils";
 import { search } from "./searchApi";
 import { sew, withAuth, withOrgMembership } from "@/actions";
-import { OrgRole } from "@sourcebot/db";
+import { OrgRole } from "@/lib/db-stubs";
 // @todo (bkellam) : We should really be using `git show <hash>:<path>` to fetch file contents here.
 // This will allow us to support permalinks to files at a specific revision that may not be indexed
 // by zoekt.

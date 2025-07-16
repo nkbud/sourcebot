@@ -9,7 +9,7 @@ import { z } from "zod";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+import { useCaptureEvent } from "@/hooks/useCaptureEvent";
 import { useRouter } from "next/navigation";
 
 const magicLinkSchema = z.object({

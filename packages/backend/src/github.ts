@@ -6,7 +6,6 @@ import micromatch from "micromatch";
 import { PrismaClient } from "@sourcebot/db";
 import { BackendException, BackendError } from "@sourcebot/error";
 import { processPromiseResults, throwIfAnyFailed } from "./connectionUtils.js";
-import * as Sentry from "@sentry/node";
 import { env } from "./env.js";
 
 const logger = createLogger('github');
@@ -62,7 +61,6 @@ export const getGitHubReposFromConfig = async (config: GithubConnectionConfig, o
         try {
             await octokit.rest.users.getAuthenticated();
         } catch (error) {
-            Sentry.captureException(error);
 
             if (isHttpError(error, 401)) {
                 const e = new BackendException(BackendError.CONNECTION_SYNC_INVALID_TOKEN, {
@@ -70,14 +68,12 @@ export const getGitHubReposFromConfig = async (config: GithubConnectionConfig, o
                         secretKey: config.token.secret,
                     } : {}),
                 });
-                Sentry.captureException(e);
                 throw e;
             }
 
             const e = new BackendException(BackendError.CONNECTION_SYNC_SYSTEM_ERROR, {
                 message: `Failed to authenticate with GitHub`,
             });
-            Sentry.captureException(e);
             throw e;
         }
     }
@@ -256,7 +252,6 @@ const getReposOwnedByUsers = async (users: string[], isAuthenticated: boolean, o
                 data
             };
         } catch (error) {
-            Sentry.captureException(error);
             logger.error(`Failed to fetch repositories for user ${user}.`, error);
 
             if (isHttpError(error, 404)) {
@@ -302,7 +297,6 @@ const getReposForOrgs = async (orgs: string[], octokit: Octokit, signal: AbortSi
                 data
             };
         } catch (error) {
-            Sentry.captureException(error);
             logger.error(`Failed to fetch repositories for org ${org}.`, error);
 
             if (isHttpError(error, 404)) {
@@ -350,7 +344,6 @@ const getRepos = async (repoList: string[], octokit: Octokit, signal: AbortSigna
             };
 
         } catch (error) {
-            Sentry.captureException(error);
             logger.error(`Failed to fetch repository ${repo}.`, error);
 
             if (isHttpError(error, 404)) {

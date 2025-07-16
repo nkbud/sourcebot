@@ -6,7 +6,7 @@ import { unwrapServiceError } from "@/lib/utils";
 import { getRepos } from "@/actions";
 import { useQuery } from "@tanstack/react-query";
 import { useDomain } from "@/hooks/useDomain";
-import { RepoIndexingStatus } from "@sourcebot/db";
+import { RepoIndexingStatus } from "@/lib/db-stubs";
 import { useMemo } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { env } from "@/env.mjs";

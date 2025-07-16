@@ -15,7 +15,7 @@ import { transferOwnership, removeMemberFromOrg, leaveOrg } from "@/actions";
 import { isServiceError } from "@/lib/utils";
 import { useToast } from "@/components/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+import { useCaptureEvent } from "@/hooks/useCaptureEvent";
 
 type Member = {
     id: string

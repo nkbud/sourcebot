@@ -2,7 +2,7 @@
 
 import { getRepos } from "@/actions";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+import { useCaptureEvent } from "@/hooks/useCaptureEvent";
 import { useDomain } from "@/hooks/useDomain";
 import { env } from "@/env.mjs";
 import { unwrapServiceError } from "@/lib/utils";

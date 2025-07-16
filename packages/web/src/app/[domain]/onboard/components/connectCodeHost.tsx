@@ -16,7 +16,7 @@ import { useCallback } from "react";
 import { OnboardingSteps } from "@/lib/constants";
 import { BackButton } from "./onboardBackButton";
 import { CodeHostIconButton } from "../../components/codeHostIconButton";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+import { useCaptureEvent } from "@/hooks/useCaptureEvent";
 import SecurityCard from "@/app/components/securityCard";
 
 interface ConnectCodeHostProps {

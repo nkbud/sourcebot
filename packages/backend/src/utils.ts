@@ -2,9 +2,8 @@ import { Logger } from "winston";
 import { AppContext } from "./types.js";
 import path from 'path';
 import { PrismaClient, Repo } from "@sourcebot/db";
-import { getTokenFromConfig as getTokenFromConfigBase } from "@sourcebot/crypto";
+import { getTokenFromConfig as getTokenFromConfigBase } from "@sourcebot/shared";
 import { BackendException, BackendError } from "@sourcebot/error";
-import * as Sentry from "@sentry/node";
 
 export const measure = async <T>(cb: () => Promise<T>) => {
     const start = Date.now();
@@ -28,7 +27,6 @@ export const getTokenFromConfig = async (token: any, orgId: number, db: PrismaCl
             const e = new BackendException(BackendError.CONNECTION_SYNC_SECRET_DNE, {
                 message: error.message,
             });
-            Sentry.captureException(e);
             logger?.error(error.message);
             throw e;
         }
@@ -101,7 +99,6 @@ export const fetchWithRetry = async <T>(
         try {
             return await fetchFn();
         } catch (e: any) {
-            Sentry.captureException(e);
 
             attempts++;
             if ((e.status === 403 || e.status === 429 || e.status === 443) && attempts < maxAttempts) {

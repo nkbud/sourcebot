@@ -5,7 +5,7 @@ import { ReloadIcon } from "@radix-ui/react-icons"
 import { toast } from "@/components/hooks/use-toast";
 import { flagReposForIndex } from "@/actions";
 import { isServiceError } from "@/lib/utils";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+import { useCaptureEvent } from "@/hooks/useCaptureEvent";
 
 interface RetryRepoIndexButtonProps {
     repoId: number;

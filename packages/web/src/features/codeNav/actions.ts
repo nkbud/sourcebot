@@ -7,7 +7,7 @@ import { isServiceError } from "@/lib/utils";
 import { FindRelatedSymbolsResponse } from "./types";
 import { ServiceError } from "@/lib/serviceError";
 import { SearchResponse } from "../search/types";
-import { OrgRole } from "@sourcebot/db";
+import { OrgRole } from "@/lib/db-stubs";
 
 // The maximum number of matches to return from the search API.
 const MAX_REFERENCE_COUNT = 1000;

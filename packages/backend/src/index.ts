@@ -1,6 +1,3 @@
-import "./instrument.js";
-
-import * as Sentry from "@sentry/node";
 import { existsSync } from 'fs';
 import { mkdir } from 'fs/promises';
 import path from 'path';
@@ -65,7 +62,6 @@ main(prisma, context)
     })
     .catch(async (e) => {
         logger.error(e);
-        Sentry.captureException(e);
 
         await prisma.$disconnect();
         process.exit(1);

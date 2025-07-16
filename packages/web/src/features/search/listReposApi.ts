@@ -1,4 +1,4 @@
-import { OrgRole } from "@sourcebot/db";
+import { OrgRole } from "@/lib/db-stubs";
 import { invalidZoektResponse, ServiceError } from "../../lib/serviceError";
 import { ListRepositoriesResponse } from "./types";
 import { zoektFetch } from "./zoektClient";

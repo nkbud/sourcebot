@@ -5,10 +5,10 @@ import { HoverCard, HoverCardTrigger, HoverCardContent } from "@/components/ui/h
 import { CircleXIcon } from "lucide-react";
 import { useDomain } from "@/hooks/useDomain";
 import { unwrapServiceError } from "@/lib/utils";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+import { useCaptureEvent } from "@/hooks/useCaptureEvent";
 import { env } from "@/env.mjs";
 import { useQuery } from "@tanstack/react-query";
-import { ConnectionSyncStatus, RepoIndexingStatus } from "@sourcebot/db";
+import { ConnectionSyncStatus, RepoIndexingStatus } from "@/lib/db-stubs";
 import { getConnections } from "@/actions";
 import { getRepos } from "@/actions";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";

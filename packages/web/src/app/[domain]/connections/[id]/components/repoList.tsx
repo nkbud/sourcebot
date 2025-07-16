@@ -6,7 +6,7 @@ import { flagReposForIndex, getConnectionInfo, getRepos } from "@/actions";
 import { RepoListItem } from "./repoListItem";
 import { isServiceError, unwrapServiceError } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ConnectionSyncStatus, RepoIndexingStatus } from "@sourcebot/db";
+import { ConnectionSyncStatus, RepoIndexingStatus } from "@/lib/db-stubs";
 import { Search, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useCallback, useMemo, useState } from "react";
@@ -15,7 +15,7 @@ import { env } from "@/env.mjs";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { MultiSelect } from "@/components/ui/multi-select";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+import { useCaptureEvent } from "@/hooks/useCaptureEvent";
 import { useToast } from "@/components/hooks/use-toast";
 
 interface RepoListProps {

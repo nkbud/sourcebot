@@ -2,7 +2,7 @@
 
 import { useToast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+import { useCaptureEvent } from "@/hooks/useCaptureEvent";
 import { createPathWithQueryParams } from "@/lib/utils";
 import { autoPlacement, computePosition, offset, shift, VirtualElement } from "@floating-ui/react";
 import { Link2Icon } from "@radix-ui/react-icons";

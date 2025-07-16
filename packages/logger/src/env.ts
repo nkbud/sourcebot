@@ -19,8 +19,6 @@ export const env = createEnv({
         SOURCEBOT_LOG_LEVEL: z.enum(["info", "debug", "warn", "error"]).default("info"),
         SOURCEBOT_STRUCTURED_LOGGING_ENABLED: booleanSchema.default("false"),
         SOURCEBOT_STRUCTURED_LOGGING_FILE: z.string().optional(),
-        LOGTAIL_TOKEN: z.string().optional(),
-        LOGTAIL_HOST: z.string().url().optional(),
     },
     runtimeEnv: process.env,
     emptyStringAsUndefined: true,

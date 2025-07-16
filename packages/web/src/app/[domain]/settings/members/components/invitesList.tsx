@@ -1,6 +1,6 @@
 'use client';
 
-import { OrgRole } from "@sourcebot/db";
+import { OrgRole } from "@/lib/db-stubs";
 import { useToast } from "@/components/hooks/use-toast";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
@@ -15,7 +15,7 @@ import { useCallback, useMemo, useState } from "react";
 import { cancelInvite } from "@/actions";
 import { useRouter } from "next/navigation";
 import { useDomain } from "@/hooks/useDomain";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+import { useCaptureEvent } from "@/hooks/useCaptureEvent";
 interface Invite {
     id: string;
     email: string;

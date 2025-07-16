@@ -16,7 +16,7 @@ import { useDomain } from "@/hooks/useDomain";
 import { useToast } from "@/components/hooks/use-toast";
 import { OnboardingSteps } from "@/lib/constants";
 import { useRouter } from "next/navigation";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+import { useCaptureEvent } from "@/hooks/useCaptureEvent";
 interface InviteTeamProps {
     nextStep: OnboardingSteps;
 }

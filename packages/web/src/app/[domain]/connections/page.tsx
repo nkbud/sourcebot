@@ -4,7 +4,7 @@ import { NewConnectionCard } from "./components/newConnectionCard";
 import { getConnections, getOrgMembership } from "@/actions";
 import { isServiceError } from "@/lib/utils";
 import { notFound, ServiceErrorException } from "@/lib/serviceError";
-import { OrgRole } from "@sourcebot/db";
+import { OrgRole } from "@/lib/db-stubs";
 import { env } from "@/env.mjs";
 
 export default async function ConnectionsPage({ params: { domain } }: { params: { domain: string } }) {

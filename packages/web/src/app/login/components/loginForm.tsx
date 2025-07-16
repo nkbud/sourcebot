@@ -9,7 +9,7 @@ import { MagicLinkForm } from "./magicLinkForm";
 import { CredentialsForm } from "./credentialsForm";
 import { SourcebotLogo } from "@/app/components/sourcebotLogo";
 import { TextSeparator } from "@/app/components/textSeparator";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+import { useCaptureEvent } from "@/hooks/useCaptureEvent";
 import DemoCard from "@/app/[domain]/onboard/components/demoCard";
 import Link from "next/link";
 import { env } from "@/env.mjs";
