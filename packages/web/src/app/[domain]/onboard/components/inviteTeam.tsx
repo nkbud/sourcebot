@@ -49,6 +49,7 @@ export const InviteTeam = ({ nextStep }: InviteTeamProps) => {
             toast({
                 description: `❌ Failed to invite members. Reason: ${response.message}`
             });
+            captureEvent('wa_onboard_invite_team_invite_fail', {
                 error: response.errorCode,
                 num_emails: data.emails.length,
             });
@@ -56,6 +57,7 @@ export const InviteTeam = ({ nextStep }: InviteTeamProps) => {
             toast({
                 description: `✅ Successfully invited ${data.emails.length} members`
             });
+            captureEvent('wa_onboard_invite_team_invite_success', {
                 num_emails: data.emails.length,
             });
             onComplete();
@@ -63,6 +65,7 @@ export const InviteTeam = ({ nextStep }: InviteTeamProps) => {
     }, [domain, toast, onComplete, captureEvent]);
 
     const onSkip = useCallback(() => {
+        captureEvent('wa_onboard_invite_team_skip', {
             num_emails: form.getValues().emails.length,
         });
         onComplete();

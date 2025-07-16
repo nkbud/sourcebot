@@ -35,6 +35,7 @@ export const Overview = ({ connectionId }: OverviewProps) => {
     });
 
     const handleSecretsNavigation = useCallback(() => {
+        captureEvent('wa_connection_secrets_navigation_pressed', {});
         router.push(`/${domain}/secrets`);
     }, [captureEvent, domain, router]);
 
@@ -44,12 +45,14 @@ export const Overview = ({ connectionId }: OverviewProps) => {
             toast({
                 description: `❌ Failed to flag connection for sync.`,
             });
+            captureEvent('wa_connection_retry_sync_fail', {
                 error: result.errorCode,
             });
         } else {
             toast({
                 description: "✅ Connection flagged for sync.",
             });
+            captureEvent('wa_connection_retry_sync_success', {});
             refetch();
         }
     }, [connectionId, domain, captureEvent, refetch]);
@@ -96,6 +99,7 @@ export const Overview = ({ connectionId }: OverviewProps) => {
                     <div className="flex items-center gap-2 mt-2">
                         {connection.syncStatus === "FAILED" ? (
                             <HoverCard openDelay={50}>
+                                <HoverCardTrigger onMouseEnter={() => captureEvent('wa_connection_failed_status_hover', {})}>
                                     <SyncStatusBadge status={connection.syncStatus} />
                                 </HoverCardTrigger>
                                 <HoverCardContent className="w-80">

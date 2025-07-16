@@ -107,7 +107,7 @@ export const isConfigValidJson = (config: string) => {
 
 const DEFAULT_ACTIONS_VISIBLE = 4;
 
-function ConfigEditor<T>(props: ConfigEditorProps<T>, forwardedRef: Ref<ReactCodeMirrorRef>) {
+const ConfigEditor = <T,>(props: ConfigEditorProps<T>, forwardedRef: Ref<ReactCodeMirrorRef>) => {
     const { value, type, onChange, actions, schema } = props;
     const captureEvent = useCaptureEvent();
     const editorRef = useRef<ReactCodeMirrorRef>(null);
@@ -188,6 +188,7 @@ function ConfigEditor<T>(props: ConfigEditorProps<T>, forwardedRef: Ref<ReactCod
                                             disabled={!isConfigValidJson(value)}
                                             onClick={(e) => {
                                                 e.preventDefault();
+                                                captureEvent('wa_config_editor_quick_action_pressed', {
                                                     name,
                                                     type,
                                                 });
@@ -276,7 +277,7 @@ function ConfigEditor<T>(props: ConfigEditorProps<T>, forwardedRef: Ref<ReactCod
             />
         </div>
     )
-}
+};
 
 // @see: https://stackoverflow.com/a/78692562
 export default forwardRef(ConfigEditor) as <T>(

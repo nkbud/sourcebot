@@ -59,12 +59,14 @@ export const InvitesList = ({ invites, currentUserRole }: InviteListProps) => {
                     toast({
                         description: `❌ Failed to cancel invite. Reason: ${response.message}`
                     })
+                    captureEvent('wa_invites_list_cancel_invite_fail', {
                         error: response.errorCode,
                     })
                 } else {
                     toast({
                         description: `✅ Invite cancelled successfully.`
                     })
+                    captureEvent('wa_invites_list_cancel_invite_success', {})
                     router.refresh();
                 }
             });
@@ -127,11 +129,13 @@ export const InvitesList = ({ invites, currentUserRole }: InviteListProps) => {
                                                     toast({
                                                         description: `✅ Copied invite link for ${invite.email} to clipboard`
                                                     })
+                                                    captureEvent('wa_invites_list_copy_invite_link_success', {})
                                                 })
                                                 .catch(() => {
                                                     toast({
                                                         description: "❌ Failed to copy invite link"
                                                     })
+                                                    captureEvent('wa_invites_list_copy_invite_link_fail', {})
                                                 })
                                         }}
                                     >
@@ -153,11 +157,13 @@ export const InvitesList = ({ invites, currentUserRole }: InviteListProps) => {
                                                             toast({
                                                                 description: `✅ Email copied to clipboard.`
                                                             })
+                                                            captureEvent('wa_invites_list_copy_email_success', {})
                                                         })
                                                         .catch(() => {
                                                             toast({
                                                                 description: `❌ Failed to copy email.`
                                                             })
+                                                            captureEvent('wa_invites_list_copy_email_fail', {})
                                                         })
                                                 }}
                                             >

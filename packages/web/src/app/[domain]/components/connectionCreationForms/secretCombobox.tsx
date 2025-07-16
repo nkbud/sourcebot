@@ -138,6 +138,9 @@ export const SecretCombobox = ({
                         size="sm"
                         onClick={() => {
                             setIsCreateSecretDialogOpen(true);
+                            captureEvent('wa_secret_combobox_import_secret_pressed', {
+                                type: codeHostType,
+                            });
                         }}
                         className={cn(
                             "w-full justify-start gap-1.5 p-2",

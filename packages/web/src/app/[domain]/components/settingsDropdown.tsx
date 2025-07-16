@@ -97,6 +97,7 @@ export const SettingsDropdown = ({
                             onClick={() => {
                                 signOut({
                                     redirectTo: "/login",
+                                }).then(() => {
                                 })
                             }}
                         >

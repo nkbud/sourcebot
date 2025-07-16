@@ -29,6 +29,7 @@ export const CredentialsForm = ({ callbackUrl }: CredentialsFormProps) => {
 
     const onSubmit = (values: z.infer<typeof verifyCredentialsRequestSchema>) => {
         setIsLoading(true);
+        captureEvent("wa_login_with_credentials", {});
         signIn("credentials", {
             email: values.email,
             password: values.password,

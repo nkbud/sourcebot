@@ -116,6 +116,7 @@ const CodeHostSelection = ({ onSelect }: CodeHostSelectionProps) => {
                 logo={getCodeHostIcon("github")!}
                 onClick={() => {
                     onSelect("github");
+                    captureEvent("wa_onboard_github_selected", {});
                 }}
             />
             <CodeHostIconButton
@@ -123,6 +124,7 @@ const CodeHostSelection = ({ onSelect }: CodeHostSelectionProps) => {
                 logo={getCodeHostIcon("gitlab")!}
                 onClick={() => {
                     onSelect("gitlab");
+                    captureEvent("wa_onboard_gitlab_selected", {});
                 }}
             />
             <CodeHostIconButton
@@ -130,6 +132,7 @@ const CodeHostSelection = ({ onSelect }: CodeHostSelectionProps) => {
                 logo={getCodeHostIcon("bitbucket-cloud")!}
                 onClick={() => {
                     onSelect("bitbucket-cloud");
+                    captureEvent("wa_onboard_bitbucket_cloud_selected", {});
                 }}
             />
             <CodeHostIconButton
@@ -137,6 +140,7 @@ const CodeHostSelection = ({ onSelect }: CodeHostSelectionProps) => {
                 logo={getCodeHostIcon("bitbucket-server")!}
                 onClick={() => {
                     onSelect("bitbucket-server");
+                    captureEvent("wa_onboard_bitbucket_server_selected", {});
                 }}
             />
             <CodeHostIconButton
@@ -144,6 +148,7 @@ const CodeHostSelection = ({ onSelect }: CodeHostSelectionProps) => {
                 logo={getCodeHostIcon("gitea")!}
                 onClick={() => {
                     onSelect("gitea");
+                    captureEvent("wa_onboard_gitea_selected", {});
                 }}
             />
             <CodeHostIconButton
@@ -151,6 +156,7 @@ const CodeHostSelection = ({ onSelect }: CodeHostSelectionProps) => {
                 logo={getCodeHostIcon("gerrit")!}
                 onClick={() => {
                     onSelect("gerrit");
+                    captureEvent("wa_onboard_gerrit_selected", {});
                 }}
             />
         </div>

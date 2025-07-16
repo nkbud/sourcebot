@@ -126,7 +126,7 @@ export const orgHasAvailability = async (domain: string): Promise<boolean> => {
     }
     const members = await prisma.userToOrg.findMany({
         where: {
-            orgId: org.id,
+            orgId: org.id.toString(),
             role: {
                 not: OrgRole.GUEST,
             },
@@ -158,7 +158,7 @@ export const withOrgMembership = async <T>(userId: string, domain: string, fn: (
         where: {
             orgId_userId: {
                 userId,
-                orgId: org.id,
+                orgId: org.id.toString(),
             }
         },
     });
@@ -173,8 +173,12 @@ export const withOrgMembership = async <T>(userId: string, domain: string, fn: (
                 return 0;
             case OrgRole.MEMBER:
                 return 1;
-            case OrgRole.OWNER:
+            case OrgRole.ADMIN:
                 return 2;
+            case OrgRole.OWNER:
+                return 3;
+            default:
+                return 0;
         }
     }
 
@@ -292,7 +296,7 @@ export const completeOnboarding = async (domain: string): Promise<{ success: boo
 
                 // Else, validate that the org has an active subscription.
             } else {
-                const subscriptionOrError = await getSubscriptionForOrg(org.id, prisma);
+                const subscriptionOrError = await getSubscriptionForOrg(org.id.toString(), prisma);
                 if (isServiceError(subscriptionOrError)) {
                     return subscriptionOrError;
                 }
@@ -318,7 +322,7 @@ export const getSecrets = (domain: string): Promise<{ createdAt: Date; key: stri
         withOrgMembership(userId, domain, async ({ org }) => {
             const secrets = await prisma.secret.findMany({
                 where: {
-                    orgId: org.id,
+                    orgId: org.id.toString(),
                 },
                 select: {
                     key: true,
@@ -326,7 +330,7 @@ export const getSecrets = (domain: string): Promise<{ createdAt: Date; key: stri
                 }
             });
 
-            return secrets.map((secret) => ({
+            return secrets.map((secret: { key: string; createdAt: Date }) => ({
                 key: secret.key,
                 createdAt: secret.createdAt,
             }));
@@ -339,7 +343,7 @@ export const createSecret = async (key: string, value: string, domain: string): 
             const existingSecret = await prisma.secret.findUnique({
                 where: {
                     orgId_key: {
-                        orgId: org.id,
+                        orgId: org.id.toString(),
                         key,
                     }
                 }
@@ -351,7 +355,7 @@ export const createSecret = async (key: string, value: string, domain: string): 
 
             await prisma.secret.create({
                 data: {
-                    orgId: org.id,
+                    orgId: org.id.toString(),
                     key,
                     encryptedValue: encrypted.encryptedData,
                     iv: encrypted.iv,
@@ -370,7 +374,7 @@ export const checkIfSecretExists = async (key: string, domain: string): Promise<
             const secret = await prisma.secret.findUnique({
                 where: {
                     orgId_key: {
-                        orgId: org.id,
+                        orgId: org.id.toString(),
                         key,
                     }
                 }
@@ -385,7 +389,7 @@ export const deleteSecret = async (key: string, domain: string): Promise<{ succe
             await prisma.secret.delete({
                 where: {
                     orgId_key: {
-                        orgId: org.id,
+                        orgId: org.id.toString(),
                         key,
                     }
                 }
@@ -470,7 +474,7 @@ export const createApiKey = async (name: string, domain: string): Promise<{ key:
                         id: org.id.toString(),
                         type: "org"
                     },
-                    orgId: org.id,
+                    orgId: org.id.toString(),
                     metadata: {
                         message: `API key ${name} already exists`,
                         api_key: name
@@ -488,7 +492,7 @@ export const createApiKey = async (name: string, domain: string): Promise<{ key:
                 data: {
                     name,
                     hash,
-                    orgId: org.id,
+                    orgId: org.id.toString(),
                     createdById: userId,
                 }
             });
@@ -503,7 +507,7 @@ export const createApiKey = async (name: string, domain: string): Promise<{ key:
                     id: apiKey.hash,
                     type: "api_key"
                 },
-                orgId: org.id
+                orgId: org.id.toString()
             });
 
             return {
@@ -532,7 +536,7 @@ export const deleteApiKey = async (name: string, domain: string): Promise<{ succ
                         id: domain,
                         type: "org"
                     },
-                    orgId: org.id,
+                    orgId: org.id.toString(),
                     metadata: {
                         message: `API key ${name} not found for user ${userId}`,
                         api_key: name
@@ -561,7 +565,7 @@ export const deleteApiKey = async (name: string, domain: string): Promise<{ succ
                     id: apiKey.hash,
                     type: "api_key"
                 },
-                orgId: org.id,
+                orgId: org.id.toString(),
                 metadata: {
                     api_key: name
                 }
@@ -577,7 +581,7 @@ export const getUserApiKeys = async (domain: string): Promise<{ name: string; cr
         withOrgMembership(userId, domain, async ({ org }) => {
             const apiKeys = await prisma.apiKey.findMany({
                 where: {
-                    orgId: org.id,
+                    orgId: org.id.toString(),
                     createdById: userId,
                 },
                 orderBy: {
@@ -585,7 +589,7 @@ export const getUserApiKeys = async (domain: string): Promise<{ name: string; cr
                 }
             });
 
-            return apiKeys.map((apiKey) => ({
+            return apiKeys.map((apiKey: { name: string; createdAt: Date; lastUsedAt?: Date }) => ({
                 name: apiKey.name,
                 createdAt: apiKey.createdAt,
                 lastUsedAt: apiKey.lastUsedAt,
@@ -597,7 +601,7 @@ export const getConnections = async (domain: string, filter: { status?: Connecti
         withOrgMembership(userId, domain, async ({ org }) => {
             const connections = await prisma.connection.findMany({
                 where: {
-                    orgId: org.id,
+                    orgId: org.id.toString(),
                     ...(filter.status ? {
                         syncStatus: { in: filter.status }
                     } : {}),
@@ -634,7 +638,7 @@ export const getConnectionInfo = async (connectionId: number, domain: string) =>
             const connection = await prisma.connection.findUnique({
                 where: {
                     id: connectionId,
-                    orgId: org.id,
+                    orgId: org.id.toString(),
                 },
                 include: {
                     repos: true,
@@ -662,7 +666,7 @@ export const getRepos = async (domain: string, filter: { status?: RepoIndexingSt
         withOrgMembership(userId, domain, async ({ org }) => {
             const repos = await prisma.repo.findMany({
                 where: {
-                    orgId: org.id,
+                    orgId: org.id.toString(),
                     ...(filter.status ? {
                         repoIndexingStatus: { in: filter.status }
                     } : {}),
@@ -742,7 +746,7 @@ export const getRepoInfoByName = async (repoName: string, domain: string) => sew
             const repo = await prisma.repo.findFirst({
                 where: {
                     name: repoName,
-                    orgId: org.id,
+                    orgId: org.id.toString(),
                 },
             });
 
@@ -782,7 +786,7 @@ export const createConnection = async (name: string, type: CodeHostType, connect
             const existingConnectionWithName = await prisma.connection.findUnique({
                 where: {
                     name_orgId: {
-                        orgId: org.id,
+                        orgId: org.id.toString(),
                         name,
                     }
                 }
@@ -798,7 +802,7 @@ export const createConnection = async (name: string, type: CodeHostType, connect
 
             const connection = await prisma.connection.create({
                 data: {
-                    orgId: org.id,
+                    orgId: org.id.toString(),
                     name,
                     config: parsedConfig as unknown as Prisma.InputJsonValue,
                     connectionType: type,
@@ -822,7 +826,7 @@ export const updateConnectionDisplayName = async (connectionId: number, name: st
             const existingConnectionWithName = await prisma.connection.findUnique({
                 where: {
                     name_orgId: {
-                        orgId: org.id,
+                        orgId: org.id.toString(),
                         name,
                     }
                 }
@@ -839,7 +843,7 @@ export const updateConnectionDisplayName = async (connectionId: number, name: st
             await prisma.connection.update({
                 where: {
                     id: connectionId,
-                    orgId: org.id,
+                    orgId: org.id.toString(),
                 },
                 data: {
                     name,
@@ -878,7 +882,7 @@ export const updateConnectionConfigAndScheduleSync = async (connectionId: number
             await prisma.connection.update({
                 where: {
                     id: connectionId,
-                    orgId: org.id,
+                    orgId: org.id.toString(),
                 },
                 data: {
                     config: parsedConfig as unknown as Prisma.InputJsonValue,
@@ -921,7 +925,7 @@ export const flagReposForIndex = async (repoIds: number[], domain: string) => se
             await prisma.repo.updateMany({
                 where: {
                     id: { in: repoIds },
-                    orgId: org.id,
+                    orgId: org.id.toString(),
                 },
                 data: {
                     repoIndexingStatus: RepoIndexingStatus.NEW,
@@ -945,7 +949,7 @@ export const deleteConnection = async (connectionId: number, domain: string): Pr
             await prisma.connection.delete({
                 where: {
                     id: connectionId,
-                    orgId: org.id,
+                    orgId: org.id.toString(),
                 }
             });
 
@@ -976,7 +980,7 @@ export const createInvites = async (emails: string[], domain: string): Promise<{
                         id: org.id.toString(),
                         type: "org"
                     },
-                    orgId: org.id,
+                    orgId: org.id.toString(),
                     metadata: {
                         message: error,
                         emails: emails.join(", ")
@@ -1000,7 +1004,7 @@ export const createInvites = async (emails: string[], domain: string): Promise<{
                         id: org.id.toString(),
                         type: "org"
                     },
-                    orgId: org.id,
+                    orgId: org.id.toString(),
                     metadata: {
                         message: "Organization has reached maximum number of seats",
                         emails: emails.join(", ")
@@ -1019,7 +1023,7 @@ export const createInvites = async (emails: string[], domain: string): Promise<{
                     recipientEmail: {
                         in: emails
                     },
-                    orgId: org.id,
+                    orgId: org.id.toString(),
                 }
             });
 
@@ -1040,7 +1044,7 @@ export const createInvites = async (emails: string[], domain: string): Promise<{
                             in: emails,
                         }
                     },
-                    orgId: org.id,
+                    orgId: org.id.toString(),
                 },
             });
 
@@ -1057,7 +1061,7 @@ export const createInvites = async (emails: string[], domain: string): Promise<{
                 data: emails.map((email) => ({
                     recipientEmail: email,
                     hostUserId: userId,
-                    orgId: org.id,
+                    orgId: org.id.toString(),
                 })),
                 skipDuplicates: true,
             });
@@ -1070,7 +1074,7 @@ export const createInvites = async (emails: string[], domain: string): Promise<{
                         where: {
                             recipientEmail_orgId: {
                                 recipientEmail: email,
-                                orgId: org.id,
+                                orgId: org.id.toString(),
                             },
                         },
                         include: {
@@ -1130,7 +1134,7 @@ export const createInvites = async (emails: string[], domain: string): Promise<{
                     id: org.id.toString(),
                     type: "org"
                 },
-                orgId: org.id,
+                orgId: org.id.toString(),
                 metadata: {
                     emails: emails.join(", ")
                 }
@@ -1147,7 +1151,7 @@ export const cancelInvite = async (inviteId: string, domain: string): Promise<{ 
             const invite = await prisma.invite.findUnique({
                 where: {
                     id: inviteId,
-                    orgId: org.id,
+                    orgId: org.id.toString(),
                 },
             });
 
@@ -1400,7 +1404,7 @@ export const transferOwnership = async (newOwnerId: string, domain: string): Pro
                         id: org.id.toString(),
                         type: "org"
                     },
-                    orgId: org.id,
+                    orgId: org.id.toString(),
                     metadata: {
                         message: error
                     }
@@ -1419,7 +1423,7 @@ export const transferOwnership = async (newOwnerId: string, domain: string): Pro
                 where: {
                     orgId_userId: {
                         userId: newOwnerId,
-                        orgId: org.id,
+                        orgId: org.id.toString(),
                     },
                 },
             });
@@ -1438,7 +1442,7 @@ export const transferOwnership = async (newOwnerId: string, domain: string): Pro
                     where: {
                         orgId_userId: {
                             userId: newOwnerId,
-                            orgId: org.id,
+                            orgId: org.id.toString(),
                         },
                     },
                     data: {
@@ -1449,7 +1453,7 @@ export const transferOwnership = async (newOwnerId: string, domain: string): Pro
                     where: {
                         orgId_userId: {
                             userId: currentUserId,
-                            orgId: org.id,
+                            orgId: org.id.toString(),
                         },
                     },
                     data: {
@@ -1468,7 +1472,7 @@ export const transferOwnership = async (newOwnerId: string, domain: string): Pro
                     id: org.id.toString(),
                     type: "org"
                 },
-                orgId: org.id,
+                orgId: org.id.toString(),
                 metadata: {
                     message: `Ownership transferred from ${currentUserId} to ${newOwnerId}`
                 }
@@ -1497,7 +1501,7 @@ export const removeMemberFromOrg = async (memberId: string, domain: string): Pro
             const targetMember = await prisma.userToOrg.findUnique({
                 where: {
                     orgId_userId: {
-                        orgId: org.id,
+                        orgId: org.id.toString(),
                         userId: memberId,
                     }
                 }
@@ -1511,7 +1515,7 @@ export const removeMemberFromOrg = async (memberId: string, domain: string): Pro
                 await tx.userToOrg.delete({
                     where: {
                         orgId_userId: {
-                            orgId: org.id,
+                            orgId: org.id.toString(),
                             userId: memberId,
                         }
                     }
@@ -1559,7 +1563,7 @@ export const leaveOrg = async (domain: string): Promise<{ success: boolean } | S
                 await tx.userToOrg.delete({
                     where: {
                         orgId_userId: {
-                            orgId: org.id,
+                            orgId: org.id.toString(),
                             userId: userId,
                         }
                     }
@@ -1586,7 +1590,7 @@ export const getOrgMembership = async (domain: string) => sew(() =>
             const membership = await prisma.userToOrg.findUnique({
                 where: {
                     orgId_userId: {
-                        orgId: org.id,
+                        orgId: org.id.toString(),
                         userId: userId,
                     }
                 }
@@ -1605,7 +1609,7 @@ export const getOrgMembers = async (domain: string) => sew(() =>
         withOrgMembership(userId, domain, async ({ org }) => {
             const members = await prisma.userToOrg.findMany({
                 where: {
-                    orgId: org.id,
+                    orgId: org.id.toString(),
                     role: {
                         not: OrgRole.GUEST,
                     }
@@ -1631,7 +1635,7 @@ export const getOrgInvites = async (domain: string) => sew(() =>
         withOrgMembership(userId, domain, async ({ org }) => {
             const invites = await prisma.invite.findMany({
                 where: {
-                    orgId: org.id,
+                    orgId: org.id.toString(),
                 },
             });
 
@@ -1648,7 +1652,7 @@ export const getOrgAccountRequests = async (domain: string) => sew(() =>
         withOrgMembership(userId, domain, async ({ org }) => {
             const requests = await prisma.accountRequest.findMany({
                 where: {
-                    orgId: org.id,
+                    orgId: org.id.toString(),
                 },
                 include: {
                     requestedBy: true,
@@ -1697,7 +1701,7 @@ export const createAccountRequest = async (userId: string, domain: string) => se
         where: {
             requestedById_orgId: {
                 requestedById: userId,
-                orgId: org.id,
+                orgId: org.id.toString(),
             },
         },
     });
@@ -1714,7 +1718,7 @@ export const createAccountRequest = async (userId: string, domain: string) => se
         await prisma.accountRequest.create({
             data: {
                 requestedById: userId,
-                orgId: org.id,
+                orgId: org.id.toString(),
             },
         });
 
@@ -1727,7 +1731,7 @@ export const createAccountRequest = async (userId: string, domain: string) => se
                 where: {
                     orgs: {
                         some: {
-                            orgId: org.id,
+                            orgId: org.id.toString(),
                             role: "OWNER",
                         },
                     },
@@ -1788,7 +1792,7 @@ export const approveAccountRequest = async (requestId: string, domain: string) =
                         id: requestId,
                         type: "account_join_request"
                     },
-                    orgId: org.id,
+                    orgId: org.id.toString(),
                     metadata: {
                         message: error,
                     }
@@ -1832,7 +1836,7 @@ export const approveAccountRequest = async (requestId: string, domain: string) =
                 await tx.userToOrg.create({
                     data: {
                         userId: request.requestedById,
-                        orgId: org.id,
+                        orgId: org.id.toString(),
                         role: "MEMBER",
                     },
                 });
@@ -1846,7 +1850,7 @@ export const approveAccountRequest = async (requestId: string, domain: string) =
                 const invites = await tx.invite.findMany({
                     where: {
                         recipientEmail: request.requestedBy.email!,
-                        orgId: org.id,
+                        orgId: org.id.toString(),
                     },
                 })
 
@@ -1903,7 +1907,7 @@ export const approveAccountRequest = async (requestId: string, domain: string) =
                     id: userId,
                     type: "user"
                 },
-                orgId: org.id,
+                orgId: org.id.toString(),
                 target: {
                     id: requestId,
                     type: "account_join_request"
@@ -1940,7 +1944,7 @@ export const rejectAccountRequest = async (requestId: string, domain: string) =>
                     id: userId,
                     type: "user"
                 },
-                orgId: org.id,
+                orgId: org.id.toString(),
                 target: {
                     id: requestId,
                     type: "account_join_request"
@@ -1963,7 +1967,7 @@ export const getSearchContexts = async (domain: string) => sew(() =>
         withOrgMembership(userId, domain, async ({ org }) => {
             const searchContexts = await prisma.searchContext.findMany({
                 where: {
-                    orgId: org.id,
+                    orgId: org.id.toString(),
                 },
             });
 
@@ -1980,7 +1984,7 @@ export const getRepoImage = async (repoId: number, domain: string): Promise<Arra
             const repo = await prisma.repo.findUnique({
                 where: {
                     id: repoId,
-                    orgId: org.id,
+                    orgId: org.id.toString(),
                 },
                 include: {
                     connections: {

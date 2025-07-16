@@ -1,11 +1,12 @@
 // Stub types for @sourcebot/db to allow building without Prisma
 
-export type PrismaClient = any;
+export type PrismaClient = any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 export enum OrgRole {
   OWNER = 'OWNER',
   ADMIN = 'ADMIN',
-  MEMBER = 'MEMBER'
+  MEMBER = 'MEMBER',
+  GUEST = 'GUEST'
 }
 
 export enum RepoIndexingStatus {
@@ -31,7 +32,7 @@ export enum StripeSubscriptionStatus {
   UNPAID = 'UNPAID'
 }
 
-export type Prisma = any;
+export type Prisma = any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 export type Org = {
   id: number;
@@ -45,6 +46,9 @@ export type ApiKey = {
   id: string;
   name: string;
   orgId: number;
+  createdById: string;
+  hash: string;
+  lastUsedAt?: Date;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -63,6 +67,16 @@ export type User = {
   email: string;
   name?: string;
   image?: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type Secret = {
+  id: string;
+  key: string;
+  orgId: number;
+  iv: string;
+  encryptedValue: string;
   createdAt: Date;
   updatedAt: Date;
 };

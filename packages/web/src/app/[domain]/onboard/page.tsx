@@ -5,6 +5,7 @@ import { notFound, redirect } from "next/navigation";
 import { ConnectCodeHost } from "./components/connectCodeHost";
 import { InviteTeam } from "./components/inviteTeam";
 import { CompleteOnboarding } from "./components/completeOnboarding";
+// Checkout component removed with billing feature
 import { LogoutEscapeHatch } from "@/app/components/logoutEscapeHatch";
 import { IS_BILLING_ENABLED } from "@/lib/billing";
 import { env } from "@/env.mjs";

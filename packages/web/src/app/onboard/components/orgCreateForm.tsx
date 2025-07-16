@@ -46,11 +46,13 @@ export function OrgCreateForm({ rootDomain }: OrgCreateFormProps) {
             toast({
                 description: `❌ Failed to create organization. Reason: ${response.message}`
             })
+            captureEvent('wa_onboard_org_create_fail', {
                 error: response.errorCode,
             })
             setIsLoading(false);
         } else {
             router.push(`/${data.domain}/onboard`);
+            captureEvent('wa_onboard_org_create_success', {});
             // @note: we don't want to set isLoading to false here since we want to show the loading
             // spinner until the page is redirected.
         }

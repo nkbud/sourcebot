@@ -49,12 +49,14 @@ export function ChangeOrgDomainCard({ orgDomain, currentUserRole, rootDomain }: 
             toast({
                 description: `❌ Failed to update organization url. Reason: ${result.message}`,
             })
+            captureEvent('wa_org_domain_updated_fail', {
                 error: result.errorCode,
             });
         } else {
             toast({
                 description: "✅ Organization url updated successfully",
             });
+            captureEvent('wa_org_domain_updated_success', {});
             router.replace(`/${data.domain}/settings`);
         }
     }, [domain, router, toast, captureEvent]);

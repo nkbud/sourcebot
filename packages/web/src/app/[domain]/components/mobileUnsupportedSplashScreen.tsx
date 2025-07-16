@@ -11,10 +11,12 @@ export const MobileUnsupportedSplashScreen = () => {
     const captureEvent = useCaptureEvent();
 
     useEffect(() => {
+        captureEvent('wa_mobile_unsupported_splash_screen_displayed', {});
     }, [captureEvent]);
 
     const onDismissed = useCallback(() => {
         dismissMobileUnsupportedSplashScreen();
+        captureEvent('wa_mobile_unsupported_splash_screen_dismissed', {});
     }, [captureEvent]);
 
     return (

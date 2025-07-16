@@ -29,9 +29,10 @@ export const ProgressNavIndicator = () => {
     return (
         <Link
             href={`/${domain}/connections`}
+            onClick={() => captureEvent('wa_progress_nav_pressed', {})}
         >
             <HoverCard openDelay={50}>
-                <HoverCardTrigger asChild>
+                <HoverCardTrigger asChild onMouseEnter={() => captureEvent('wa_progress_nav_hover', {})}>
                     <div className="flex items-center gap-2 px-3 py-1.5 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded-full text-green-700 dark:text-green-400 text-xs font-medium hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors cursor-pointer">
                         <Loader2Icon className="h-4 w-4 animate-spin" />
                         <span>{inProgressRepos.length}</span>
@@ -52,6 +53,7 @@ export const ProgressNavIndicator = () => {
                                 .filter(item => item.linkedConnections.length > 0) // edge case: don't show repos that are orphaned and awaiting gc.
                                 .map(item => (
                                     // Link to the first connection for the repo
+                                    <Link key={item.repoId} href={`/${domain}/connections/${item.linkedConnections[0].id}`} onClick={() => captureEvent('wa_progress_nav_job_pressed', {})}>
                                         <div className="flex items-center gap-2 px-3 py-2 bg-green-50 dark:bg-green-900/20 
                                                     rounded-md text-sm text-green-700 dark:text-green-300 
                                                     border border-green-200/50 dark:border-green-800/50

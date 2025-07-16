@@ -75,6 +75,7 @@ export default function SecurityCard() {
                     href="https://sourcebot.dev/security"
                     target="_blank"
                     className="inline-flex items-center justify-center px-5 py-2.5 rounded-md bg-backgroundSecondary border border-[#1E2A3A] text-foreground hover:bg-backgroundSecondary/80 transition-colors"
+                    onClick={() => captureEvent('wa_security_page_click', {})}
                 >
                     <Lock className="h-4 w-4 mr-2" />
                     <span>Learn about our security measures</span>

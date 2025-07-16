@@ -8,14 +8,14 @@ export const decrypt = (iv: string, encryptedValue: string): string => {
   return '';
 };
 
-export const encrypt = (value: string): { iv: string; encryptedValue: string } => {
+export const encrypt = (value: string): { iv: string; encryptedData: string } => {
   logger.warn('encrypt function called but crypto package removed - returning mock values');
-  return { iv: '', encryptedValue: '' };
+  return { iv: '', encryptedData: '' };
 };
 
-export const generateApiKey = (): string => {
+export const generateApiKey = (): { key: string; hash: string } => {
   logger.warn('generateApiKey function called but crypto package removed - returning mock key');
-  return 'mock-api-key';
+  return { key: 'mock-api-key', hash: 'mock-hash' };
 };
 
 export const hashSecret = (secret: string): string => {

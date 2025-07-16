@@ -26,6 +26,7 @@ export const ConnectionListItemManageButton = ({
             disabled={disabled}
             onClick={() => {
                 if (!disabled) {
+                    captureEvent('wa_connection_list_item_manage_pressed', {})
                     router.push(`/${domain}/connections/${id}`)
                 }
             }}

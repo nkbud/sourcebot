@@ -35,12 +35,12 @@ export default function RootLayout({
                             enableSystem
                             disableTransitionOnChange
                         >
-                            <QueryClientProvider>
-                                <TooltipProvider>
-                                    {children}
-                                </TooltipProvider>
-                            </QueryClientProvider>
-                        </ThemeProvider>
+                                <QueryClientProvider>
+                                    <TooltipProvider>
+                                        {children}
+                                    </TooltipProvider>
+                                </QueryClientProvider>
+                            </ThemeProvider>
                     </PlanProvider>
                 </SessionProvider>
             </body>

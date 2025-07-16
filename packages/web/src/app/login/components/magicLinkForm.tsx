@@ -34,6 +34,7 @@ export const MagicLinkForm = ({ callbackUrl }: MagicLinkFormProps) => {
 
     const onSignIn = async (values: z.infer<typeof magicLinkSchema>) => {
         setIsLoading(true);
+        captureEvent("wa_login_with_magic_link", {});
 
         signIn("nodemailer", { email: values.email, redirect: false, redirectTo: callbackUrl ?? "/" })
             .then(() => {

@@ -107,6 +107,7 @@ const SearchPageInternal = () => {
 
         const fileLanguages = searchResponse.files?.map(file => file.language) || [];
 
+        captureEvent("search_finished", {
             durationMs: searchResponse.durationMs,
             fileCount: searchResponse.zoektStats.fileCount,
             matchCount: searchResponse.zoektStats.matchCount,

@@ -29,8 +29,10 @@ export const ConnectionListItemWarningIndicator = ({
                 <AlertTriangle 
                     className="h-5 w-5 text-yellow-700 dark:text-yellow-400 cursor-help hover:text-yellow-600 dark:hover:text-yellow-300 transition-colors" 
                     onClick={() => {
+                        captureEvent('wa_connection_list_item_warning_pressed', {})
                         window.location.href = `connections/${connectionId}`
                     }}
+                    onMouseEnter={() => captureEvent('wa_connection_list_item_warning_hover', {})}
                 />
             </HoverCardTrigger>
             <HoverCardContent className="w-80 border border-yellow-200 dark:border-yellow-800 rounded-lg">

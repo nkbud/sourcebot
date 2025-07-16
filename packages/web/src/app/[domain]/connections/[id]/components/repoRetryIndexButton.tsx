@@ -26,12 +26,14 @@ export const RetryRepoIndexButton = ({ repoId, domain }: RetryRepoIndexButtonPro
                     toast({
                         description: `❌ Failed to flag repository for indexing.`,
                     });
+                    captureEvent('wa_repo_retry_index_fail', {
                         error: result.errorCode,
                     });
                 } else {
                     toast({
                         description: "✅ Repository flagged for indexing.",
                     });
+                    captureEvent('wa_repo_retry_index_success', {});
                 }
             }}
         >

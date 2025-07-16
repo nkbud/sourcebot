@@ -47,12 +47,14 @@ export function ChangeOrgNameCard({ orgName, currentUserRole }: ChangeOrgNameCar
             toast({
                 description: `❌ Failed to update organization name. Reason: ${result.message}`,
             })
+            captureEvent('wa_org_name_updated_fail', {
                 error: result.errorCode,
             });
         } else {
             toast({
                 description: "✅ Organization name updated successfully",
             });
+            captureEvent('wa_org_name_updated_success', {});
             router.refresh();
         }
     }, [domain, router, toast, captureEvent]);

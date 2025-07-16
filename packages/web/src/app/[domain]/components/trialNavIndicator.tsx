@@ -18,6 +18,7 @@ export const TrialNavIndicator = ({ subscription }: Props) => {
     const captureEvent = useCaptureEvent();
 
     if (isServiceError(subscription)) {
+        captureEvent('wa_trial_nav_subscription_fetch_fail', {
             error: subscription.errorCode,
         });
         return null;
@@ -28,6 +29,7 @@ export const TrialNavIndicator = ({ subscription }: Props) => {
     }
 
     return (
+        <Link href={`/${domain}/upgrade`} onClick={() => captureEvent('wa_trial_nav_pressed', {})}>
             <div className="flex items-center gap-2 px-3 py-1.5 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-full text-blue-700 dark:text-blue-400 text-xs font-medium hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors cursor-pointer">
                 <span className="inline-block w-2 h-2 bg-blue-400 dark:bg-blue-500 rounded-full"></span>
                 <span>
