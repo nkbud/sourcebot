@@ -5,7 +5,7 @@ import { SINGLE_TENANT_ORG_ID, SINGLE_TENANT_ORG_DOMAIN, SOURCEBOT_GUEST_USER_ID
 import { watch } from 'fs';
 import { ConnectionConfig } from '@sourcebot/schemas/v3/connection.type';
 import { hasEntitlement, loadConfig, isRemotePath, syncSearchContexts } from '@sourcebot/shared';
-import { createGuestUser, setPublicAccessStatus } from '@/ee/features/publicAccess/publicAccess';
+import { createGuestUser, setPublicAccessStatus } from '@/lib/publicAccess';
 import { isServiceError } from './lib/utils';
 import { ServiceErrorException } from './lib/serviceError';
 import { SOURCEBOT_SUPPORT_EMAIL } from "@/lib/constants";

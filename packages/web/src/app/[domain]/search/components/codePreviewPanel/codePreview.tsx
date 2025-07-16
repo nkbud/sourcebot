@@ -17,11 +17,11 @@ import CodeMirror, { ReactCodeMirrorRef, SelectionRange } from '@uiw/react-codem
 import { ArrowDown, ArrowUp } from "lucide-react";
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from "react";
 import { useBrowseNavigation } from "@/app/[domain]/browse/hooks/useBrowseNavigation";
-import { SymbolHoverPopup } from "@/ee/features/codeNav/components/symbolHoverPopup";
-import { symbolHoverTargetsExtension } from "@/ee/features/codeNav/components/symbolHoverPopup/symbolHoverTargetsExtension";
+import { SymbolHoverPopup } from "@/lib/codeNav";
+import { symbolHoverTargetsExtension } from "@/lib/codeNav";
 import { useHasEntitlement } from "@/features/entitlements/useHasEntitlement";
-import { SymbolDefinition } from "@/ee/features/codeNav/components/symbolHoverPopup/useHoveredOverSymbolInfo";
-import { createAuditAction } from "@/ee/features/audit/actions";
+import { SymbolDefinition } from "@/lib/codeNav";
+import { createAuditAction } from "@/lib/audit";
 import { useDomain } from "@/hooks/useDomain";
 
 import useCaptureEvent from "@/hooks/useCaptureEvent";

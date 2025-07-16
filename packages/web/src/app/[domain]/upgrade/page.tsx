@@ -1,16 +1,17 @@
 import { SourcebotLogo } from "@/app/components/sourcebotLogo";
 import { Footer } from "@/app/components/footer";
 import { OrgSelector } from "../components/orgSelector";
-import { EnterpriseUpgradeCard } from "@/ee/features/billing/components/enterpriseUpgradeCard";
-import { TeamUpgradeCard } from "@/ee/features/billing/components/teamUpgradeCard";
+// Removed - Enterprise billing components no longer available
+// import { EnterpriseUpgradeCard } from "@/ee/features/billing/components/enterpriseUpgradeCard";
+// import { TeamUpgradeCard } from "@/ee/features/billing/components/teamUpgradeCard";
 import { redirect } from "next/navigation";
 import { isServiceError } from "@/lib/utils";
 import Link from "next/link";
 import { ArrowLeftIcon } from "@radix-ui/react-icons";
 import { LogoutEscapeHatch } from "@/app/components/logoutEscapeHatch";
 import { env } from "@/env.mjs";
-import { IS_BILLING_ENABLED } from "@/ee/features/billing/stripe";
-import { getSubscriptionInfo } from "@/ee/features/billing/actions";
+import { IS_BILLING_ENABLED } from "@/lib/billing";
+import { getSubscriptionInfo } from "@/lib/billingServerUtils";
 
 export default async function Upgrade({ params: { domain } }: { params: { domain: string } }) {
     if (!IS_BILLING_ENABLED) {
@@ -64,10 +65,10 @@ export default async function Upgrade({ params: { domain } }: { params: { domain
             )}
 
             <div className="grid gap-8 md:grid-cols-2 max-w-4xl mt-12">
-                <TeamUpgradeCard
-                    buttonText={isTrialing ? "Upgrade Membership" : "Renew Membership"}
-                />
-                <EnterpriseUpgradeCard />
+                {/* Billing components removed - feature disabled */}
+                <div className="text-center text-muted-foreground">
+                    <p>Billing features are not available.</p>
+                </div>
             </div>
 
             <Footer />

@@ -1,9 +1,10 @@
 import { getCurrentUserRole } from "@/actions"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { getSubscriptionBillingEmail, getSubscriptionInfo } from "@/ee/features/billing/actions"
-import { ChangeBillingEmailCard } from "@/ee/features/billing/components/changeBillingEmailCard"
-import { ManageSubscriptionButton } from "@/ee/features/billing/components/manageSubscriptionButton"
-import { IS_BILLING_ENABLED } from "@/ee/features/billing/stripe"
+import { getSubscriptionBillingEmail, getSubscriptionInfo } from "@/lib/billingServerUtils"
+// Removed - Enterprise billing components no longer available
+// import { ChangeBillingEmailCard } from "@/ee/features/billing/components/changeBillingEmailCard"
+// import { ManageSubscriptionButton } from "@/ee/features/billing/components/manageSubscriptionButton"
+import { IS_BILLING_ENABLED } from "@/lib/billing"
 import { ServiceErrorException } from "@/lib/serviceError"
 import { isServiceError } from "@/lib/utils"
 import { CalendarIcon, DollarSign, Users } from "lucide-react"
@@ -55,8 +56,13 @@ export default async function BillingPage({
                 <p className="text-sm text-muted-foreground">Manage your subscription and billing information</p>
             </div>
             <div className="grid gap-6">
-                {/* Billing Email Card */}
-                <ChangeBillingEmailCard billingEmail={billingEmail} currentUserRole={currentUserRole} />
+                {/* Billing components removed - feature disabled */}
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Billing Email</CardTitle>
+                        <CardDescription>Billing features are not available</CardDescription>
+                    </CardHeader>
+                </Card>
                 <Card>
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2">
@@ -98,7 +104,10 @@ export default async function BillingPage({
                         </div>
                     </CardContent>
                     <CardFooter className="flex flex-col space-y-2 w-full">
-                        <ManageSubscriptionButton currentUserRole={currentUserRole} />
+                        {/* Manage subscription button removed - billing disabled */}
+                        <div className="text-sm text-muted-foreground">
+                            Subscription management is not available
+                        </div>
                     </CardFooter>
                 </Card>
 

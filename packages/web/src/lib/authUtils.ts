@@ -7,9 +7,9 @@ import { hasEntitlement } from "@sourcebot/shared";
 import { isServiceError } from "@/lib/utils";
 import { ServiceErrorException } from "@/lib/serviceError";
 import { createAccountRequest } from "@/actions";
-import { handleJITProvisioning } from "@/ee/features/sso/sso";
+import { handleJITProvisioning } from "@/lib/sso";
 import { createLogger } from "@sourcebot/logger";
-import { getAuditService } from "@/ee/features/audit/factory";
+import { getAuditService } from "@/lib/audit";
 
 const logger = createLogger('web-auth-utils');
 const auditService = getAuditService();

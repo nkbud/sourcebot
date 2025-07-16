@@ -16,5 +16,5 @@ export {
 } from "./utils.js";
 export {
     syncSearchContexts,
-} from "./ee/syncSearchContexts.js";
+} from "./syncSearchContexts.js";
 export * from "./constants.js";

@@ -22,20 +22,20 @@ import { cookies, headers } from "next/headers";
 import { createTransport } from "nodemailer";
 import { auth } from "./auth";
 import { getConnection } from "./data/connection";
-import { IS_BILLING_ENABLED } from "./ee/features/billing/stripe";
+import { IS_BILLING_ENABLED } from "@/lib/billing";
 import InviteUserEmail from "./emails/inviteUserEmail";
 import { MOBILE_UNSUPPORTED_SPLASH_SCREEN_DISMISSED_COOKIE_NAME, SINGLE_TENANT_ORG_DOMAIN, SOURCEBOT_GUEST_USER_ID, SOURCEBOT_SUPPORT_EMAIL } from "./lib/constants";
 import { orgDomainSchema, orgNameSchema, repositoryQuerySchema } from "./lib/schemas";
 import { TenancyMode, ApiKeyPayload } from "./lib/types";
-import { decrementOrgSeatCount, getSubscriptionForOrg, incrementOrgSeatCount } from "./ee/features/billing/serverUtils";
+import { decrementOrgSeatCount, getSubscriptionForOrg, incrementOrgSeatCount } from "@/lib/billingServerUtils";
 import { bitbucketSchema } from "@sourcebot/schemas/v3/bitbucket.schema";
 import { genericGitHostSchema } from "@sourcebot/schemas/v3/genericGitHost.schema";
 import { getPlan, getSeats, hasEntitlement, SOURCEBOT_UNLIMITED_SEATS } from "@sourcebot/shared";
-import { getPublicAccessStatus } from "./ee/features/publicAccess/publicAccess";
+import { getPublicAccessStatus } from "@/lib/publicAccess";
 import JoinRequestSubmittedEmail from "./emails/joinRequestSubmittedEmail";
 import JoinRequestApprovedEmail from "./emails/joinRequestApprovedEmail";
 import { createLogger } from "@sourcebot/logger";
-import { getAuditService } from "@/ee/features/audit/factory";
+import { getAuditService } from "@/lib/audit";
 
 const ajv = new Ajv({
     validateFormats: false,
