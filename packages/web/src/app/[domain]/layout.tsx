@@ -10,12 +10,12 @@ import { MobileUnsupportedSplashScreen } from "./components/mobileUnsupportedSpl
 import { MOBILE_UNSUPPORTED_SPLASH_SCREEN_DISMISSED_COOKIE_NAME } from "@/lib/constants";
 import { SyntaxReferenceGuide } from "./components/syntaxReferenceGuide";
 import { SyntaxGuideProvider } from "./components/syntaxGuideProvider";
-import { IS_BILLING_ENABLED } from "@/ee/features/billing/stripe";
+import { IS_BILLING_ENABLED } from "@/lib/billing";
 import { notFound, redirect } from "next/navigation";
-import { getSubscriptionInfo } from "@/ee/features/billing/actions";
+import { getSubscriptionInfo } from "@/lib/billingServerUtils";
 import { PendingApprovalCard } from "./components/pendingApproval";
 import { hasEntitlement } from "@sourcebot/shared";
-import { getPublicAccessStatus } from "@/ee/features/publicAccess/publicAccess";
+import { getPublicAccessStatus } from "@/lib/publicAccess";
 import { env } from "@/env.mjs";
 import { GcpIapAuth } from "./components/gcpIapAuth";
 
