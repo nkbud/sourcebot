@@ -81,7 +81,6 @@ export default function SharedConnectionCreationForm<T>({
             toast({
                 description: `❌ Failed to create connection. Reason: ${response.message}`
             });
-            captureEvent('wa_create_connection_fail', {
                 type: type,
                 error: response.message,
             });
@@ -89,7 +88,6 @@ export default function SharedConnectionCreationForm<T>({
             toast({
                 description: `✅ Connection created successfully.`
             });
-            captureEvent('wa_create_connection_success', {
                 type: type,
             });
             onCreated?.(response.id);

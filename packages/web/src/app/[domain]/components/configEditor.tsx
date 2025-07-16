@@ -188,7 +188,6 @@ const ConfigEditor = <T,>(props: ConfigEditorProps<T>, forwardedRef: Ref<ReactCo
                                             disabled={!isConfigValidJson(value)}
                                             onClick={(e) => {
                                                 e.preventDefault();
-                                                captureEvent('wa_config_editor_quick_action_pressed', {
                                                     name,
                                                     type,
                                                 });

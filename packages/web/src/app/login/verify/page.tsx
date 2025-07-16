@@ -32,7 +32,6 @@ function VerifyPageContent() {
     }, [value, email, router])
 
     if (!email) {
-        captureEvent("wa_login_verify_page_no_email", {})
         return <VerificationFailed />
     }
 

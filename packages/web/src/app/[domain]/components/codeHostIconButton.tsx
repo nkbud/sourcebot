@@ -22,7 +22,6 @@ export const CodeHostIconButton = ({
             className="flex flex-col items-center justify-center p-4 w-36 h-36 cursor-pointer gap-2"
             variant="outline"
             onClick={() => {
-                captureEvent('wa_connect_code_host_button_pressed', {
                     name,
                 })
                 onClick();

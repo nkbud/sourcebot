@@ -6,9 +6,9 @@ import { createLogger } from "@sourcebot/logger";
 import { Redis } from 'ioredis';
 import { RepoData, compileGithubConfig, compileGitlabConfig, compileGiteaConfig, compileGerritConfig, compileBitbucketConfig, compileGenericGitHostConfig } from "./repoCompileUtils.js";
 import { BackendError, BackendException } from "@sourcebot/error";
-import { captureEvent } from "./posthog.js";
+
 import { env } from "./env.js";
-import * as Sentry from "@sentry/node";
+
 import { loadConfig, syncSearchContexts } from "@sourcebot/shared";
 
 interface IConnectionManager {
@@ -127,7 +127,6 @@ export class ConnectionManager implements IConnectionManager {
             const e = new BackendException(BackendError.CONNECTION_SYNC_CONNECTION_NOT_FOUND, {
                 message: `Connection ${job.data.connectionId} not found`,
             });
-            Sentry.captureException(e);
             throw e;
         }
 
@@ -184,7 +183,6 @@ export class ConnectionManager implements IConnectionManager {
             })();
         } catch (err) {
             this.logger.error(`Failed to compile repo data for connection ${job.data.connectionId} (${connectionName}): ${err}`);
-            Sentry.captureException(err);
 
             if (err instanceof BackendException) {
                 throw err;
@@ -305,34 +303,15 @@ export class ConnectionManager implements IConnectionManager {
                 });
             } catch (err) {
                 this.logger.error(`Failed to sync search contexts for connection ${connectionId}: ${err}`);
-                Sentry.captureException(err);
             }
         }
-
-
-        captureEvent('backend_connection_sync_job_completed', {
-            connectionId: connectionId,
-            repoCount: result.repoCount,
-        });
     }
 
     private async onSyncJobFailed(job: Job<JobPayload> | undefined, err: unknown) {
         this.logger.info(`Connection sync job for connection ${job?.data.connectionName} (id: ${job?.data.connectionId}, jobId: ${job?.id}) failed with error: ${err}`);
-        Sentry.captureException(err, {
-            tags: {
-                connectionid: job?.data.connectionId,
-                jobId: job?.id,
-                queue: QUEUE_NAME,
-            }
-        });
 
         if (job) {
             const { connectionId } = job.data;
-
-            captureEvent('backend_connection_sync_job_failed', {
-                connectionId: connectionId,
-                error: err instanceof BackendException ? err.code : 'UNKNOWN',
-            });
 
             // We may have pushed some metadata during the execution of the job, so we make sure to not overwrite the metadata here
             let syncStatusMetadata: Record<string, unknown> = (await this.db.connection.findUnique({

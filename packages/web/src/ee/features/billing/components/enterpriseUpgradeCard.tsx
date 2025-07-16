@@ -10,7 +10,6 @@ export const EnterpriseUpgradeCard = () => {
     const captureEvent = useCaptureEvent();
 
     const onClick = () => {
-        captureEvent('wa_enterprise_upgrade_card_pressed', {});
     }
 
     return (

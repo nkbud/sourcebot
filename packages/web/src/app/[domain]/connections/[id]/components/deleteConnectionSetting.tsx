@@ -46,14 +46,12 @@ export const DeleteConnectionSetting = ({
                     toast({
                         description: `❌ Failed to delete connection. Reason: ${response.message}`
                     });
-                    captureEvent('wa_connection_delete_fail', {
                         error: response.errorCode,
                     });
                 } else {
                     toast({
                         description: `✅ Connection deleted successfully.`
                     });
-                    captureEvent('wa_connection_delete_success', {});
                     router.replace(`/${domain}/connections`);
                     router.refresh();
                 }

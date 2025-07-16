@@ -101,12 +101,10 @@ export const RepoList = ({ connectionId }: RepoListProps) => {
         flagReposForIndex(failedRepos.map((repo) => repo.repoId), domain)
             .then((response) => {
                 if (isServiceError(response)) {
-                    captureEvent('wa_connection_retry_all_failed_repos_fail', {});
                     toast({
                         description: `❌ Failed to flag repositories for indexing. Reason: ${response.message}`,
                     });
                 } else {
-                    captureEvent('wa_connection_retry_all_failed_repos_success', {});
                     toast({
                         description: `✅ ${failedRepos.length} repositories flagged for indexing.`,
                     });

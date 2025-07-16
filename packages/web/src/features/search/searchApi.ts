@@ -8,7 +8,6 @@ import { StatusCodes } from "http-status-codes";
 import { zoektSearchResponseSchema } from "./zoektSchema";
 import { SearchRequest, SearchResponse, SourceRange } from "./types";
 import { OrgRole, Repo } from "@sourcebot/db";
-import * as Sentry from "@sentry/nextjs";
 import { sew, withAuth, withOrgMembership } from "@/actions";
 import { base64Decode } from "@sourcebot/shared";
 

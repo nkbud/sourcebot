@@ -1,6 +1,4 @@
 import winston, { format } from 'winston';
-import { Logtail } from '@logtail/node';
-import { LogtailTransport } from '@logtail/winston';
 import { MESSAGE } from 'triple-beam';
 import { env } from './env.js';
 
@@ -70,13 +68,6 @@ const createLogger = (label: string) => {
                         json()
                     ),
                 }),
-            ] : []),
-            ...(env.LOGTAIL_TOKEN && env.LOGTAIL_HOST ? [
-                new LogtailTransport(
-                    new Logtail(env.LOGTAIL_TOKEN, {
-                        endpoint: env.LOGTAIL_HOST,
-                    })
-                )
             ] : []),
         ]
     });

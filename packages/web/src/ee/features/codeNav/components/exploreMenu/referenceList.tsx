@@ -111,7 +111,6 @@ export const ReferenceList = ({
                                             range={match.range}
                                             language={file.language}
                                             onClick={() => {
-                                                captureEvent('wa_explore_menu_reference_clicked', {});
                                                 navigateToPath({
                                                     repoName: file.repository,
                                                     revisionName,

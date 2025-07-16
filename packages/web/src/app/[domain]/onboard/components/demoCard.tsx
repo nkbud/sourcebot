@@ -25,7 +25,6 @@ export default function DemoCard() {
                 href="https://demo.sourcebot.dev" 
                 target="_blank" 
                 className="flex items-center gap-1.5"
-                onClick={() => captureEvent('wa_demo_card_click', {})}
               >
                 Try demo
                 <ExternalLink className="h-3.5 w-3.5" />

@@ -116,7 +116,6 @@ export const EditorContextMenu = ({
             description: "✅ Copied link to selection",
         });
 
-        captureEvent('wa_share_link_created', {});
 
         // Reset the selection
         view.dispatch(

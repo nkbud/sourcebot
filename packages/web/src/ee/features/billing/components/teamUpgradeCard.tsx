@@ -22,7 +22,6 @@ export const TeamUpgradeCard = ({ buttonText }: TeamUpgradeCardProps) => {
     const captureEvent = useCaptureEvent();
 
     const onClick = useCallback(() => {
-        captureEvent('wa_team_upgrade_card_pressed', {});
         setIsLoading(true);
         createStripeCheckoutSession(domain)
             .then((response) => {
@@ -31,12 +30,10 @@ export const TeamUpgradeCard = ({ buttonText }: TeamUpgradeCardProps) => {
                         description: `❌ Stripe checkout failed with error: ${response.message}`,
                         variant: "destructive",
                     });
-                    captureEvent('wa_team_upgrade_checkout_fail', {
                         error: response.errorCode,
                     });
                 } else {
                     router.push(response.url);
-                    captureEvent('wa_team_upgrade_checkout_success', {});
                 }
             })
             .finally(() => {

@@ -28,7 +28,6 @@ export const NotFoundWarning = ({ syncStatus, syncStatusMetadata, onSecretsClick
     if (notFound.users.length === 0 && notFound.orgs.length === 0 && notFound.repos.length === 0) {
         return null;
     } else {
-        captureEvent('wa_connection_not_found_warning_displayed', {});
     }
 
     return (

@@ -9,8 +9,6 @@
     "postinstall": "yarn build"
   },
   "dependencies": {
-    "@logtail/node": "^0.5.2",
-    "@logtail/winston": "^0.5.2",
     "@t3-oss/env-core": "^0.12.0",
     "dotenv": "^16.4.5",
     "triple-beam": "^1.4.1",

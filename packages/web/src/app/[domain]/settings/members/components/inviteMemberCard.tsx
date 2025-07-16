@@ -61,7 +61,6 @@ export const InviteMemberCard = ({ currentUserRole, isBillingEnabled, seatsAvail
                     toast({
                         description: `❌ Failed to invite members. Reason: ${res.message}`
                     });
-                    captureEvent('wa_invite_member_card_invite_fail', {
                         error: res.errorCode,
                         num_emails: data.emails.length,
                     });
@@ -72,7 +71,6 @@ export const InviteMemberCard = ({ currentUserRole, isBillingEnabled, seatsAvail
                     toast({
                         description: `✅ Successfully invited ${data.emails.length} members`
                     });
-                    captureEvent('wa_invite_member_card_invite_success', {
                         num_emails: data.emails.length,
                     });
                 }
@@ -181,7 +179,6 @@ export const InviteMemberCard = ({ currentUserRole, isBillingEnabled, seatsAvail
                         </div>
                     </div>
                     <AlertDialogFooter>
-                        <AlertDialogCancel onClick={() => captureEvent('wa_invite_member_card_invite_cancel', {
                             num_emails: form.getValues().emails.length,
                         })}>Cancel</AlertDialogCancel>
                         <AlertDialogAction

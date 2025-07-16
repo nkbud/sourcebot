@@ -1,6 +1,5 @@
 import { LogOutIcon } from "lucide-react";
 import { signOut } from "@/auth";
-import posthog from "posthog-js";
 
 interface LogoutEscapeHatchProps {
     className?: string;

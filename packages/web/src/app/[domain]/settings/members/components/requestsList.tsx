@@ -62,14 +62,12 @@ export const RequestsList = ({ requests, currentUserRole }: RequestsListProps) =
                     toast({
                         description: `❌ Failed to approve request. Reason: ${response.message}`
                     })
-                    captureEvent('wa_requests_list_approve_request_fail', {
                         error: response.errorCode,
                     })
                 } else {
                     toast({
                         description: `✅ Request approved successfully.`
                     })
-                    captureEvent('wa_requests_list_approve_request_success', {})
                     router.refresh();
                 }
             });
@@ -82,14 +80,12 @@ export const RequestsList = ({ requests, currentUserRole }: RequestsListProps) =
                     toast({
                         description: `❌ Failed to reject request.`
                     })
-                    captureEvent('wa_requests_list_reject_request_fail', {
                         error: response.errorCode,
                     })
                 } else {
                     toast({
                         description: `✅ Request rejected successfully.`
                     })
-                    captureEvent('wa_requests_list_reject_request_success', {})
                     router.refresh();
                 }
             });

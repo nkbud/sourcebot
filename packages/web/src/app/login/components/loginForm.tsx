@@ -107,7 +107,6 @@ export const LoginForm = ({ callbackUrl, error, providers, context }: LoginFormP
                                             name={providerInfo.displayName}
                                             logo={providerInfo.icon}
                                             onClick={() => {
-                                                captureEvent(getLoginEventName(provider.id), {});
                                                 onSignInWithOauth(provider.id);
                                             }}
                                         />

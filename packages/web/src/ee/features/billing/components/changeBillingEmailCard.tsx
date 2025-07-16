@@ -48,13 +48,11 @@ export function ChangeBillingEmailCard({ currentUserRole, billingEmail }: Change
             toast({
                 description: "✅ Billing email updated successfully!",
             })
-            captureEvent('wa_billing_email_updated_success', {})
             router.refresh()
         } else {
             toast({
                 description: "❌ Failed to update billing email. Please try again.",
             })
-            captureEvent('wa_billing_email_updated_fail', {
                 error: result.message,
             })
         }

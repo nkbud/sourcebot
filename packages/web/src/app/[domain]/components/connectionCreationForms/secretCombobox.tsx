@@ -138,7 +138,6 @@ export const SecretCombobox = ({
                         size="sm"
                         onClick={() => {
                             setIsCreateSecretDialogOpen(true);
-                            captureEvent('wa_secret_combobox_import_secret_pressed', {
                                 type: codeHostType,
                             });
                         }}

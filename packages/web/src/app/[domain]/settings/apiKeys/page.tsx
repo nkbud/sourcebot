@@ -79,14 +79,12 @@ export default function ApiKeysPage() {
                     description: `Failed to create API key: ${result.message}`,
                     variant: "destructive",
                 });
-                captureEvent('wa_api_key_creation_fail', {});
 
                 return;
             }
             
             setNewlyCreatedKey(result.key);
             await loadApiKeys();
-            captureEvent('wa_api_key_created', {});
         } catch (error) {
             console.error(error);
             toast({
@@ -94,7 +92,6 @@ export default function ApiKeysPage() {
                 description: `Failed to create API key: ${error}`,
                 variant: "destructive",
             });
-            captureEvent('wa_api_key_creation_fail', {});
         } finally {
             setIsCreatingKey(false);
         }

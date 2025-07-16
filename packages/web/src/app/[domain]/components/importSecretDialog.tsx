@@ -40,7 +40,6 @@ export const ImportSecretDialog = ({ open, onOpenChange, onSecretCreated, codeHo
         key: z.string().min(1).refine(async (key) => {
             const doesSecretExist = await checkIfSecretExists(key, domain);
             if(!isServiceError(doesSecretExist)) {
-                captureEvent('wa_secret_combobox_import_secret_fail', {
                     type: codeHostType,
                     error: "A secret with this key already exists.",
                 });
@@ -65,7 +64,6 @@ export const ImportSecretDialog = ({ open, onOpenChange, onSecretCreated, codeHo
             toast({
                 description: `❌ Failed to create secret. Reason: ${response.message}`
             });
-            captureEvent('wa_secret_combobox_import_secret_fail', {
                 type: codeHostType,
                 error: response.message,
             });
@@ -73,7 +71,6 @@ export const ImportSecretDialog = ({ open, onOpenChange, onSecretCreated, codeHo
             toast({
                 description: `✅ Secret created successfully!`
             });
-            captureEvent('wa_secret_combobox_import_secret_success', {
                 type: codeHostType,
             });
             form.reset();

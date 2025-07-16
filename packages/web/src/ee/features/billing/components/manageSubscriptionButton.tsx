@@ -20,12 +20,10 @@ export function ManageSubscriptionButton({ currentUserRole }: { currentUserRole:
         setIsLoading(true)
         const session = await getCustomerPortalSessionLink(domain);
         if (isServiceError(session)) {
-            captureEvent('wa_manage_subscription_button_create_portal_session_fail', {
                 error: session.errorCode,
             });
             setIsLoading(false);
         } else {
-            captureEvent('wa_manage_subscription_button_create_portal_session_success', {})
             router.push(session)
             // @note: we don't want to set isLoading to false here since we want to show the loading
             // spinner until the page is redirected.

@@ -23,10 +23,8 @@ export const ConnectionListItemErrorIndicator = ({
                 <CircleX 
                     className="h-5 w-5 text-red-700 dark:text-red-400 cursor-help hover:text-red-600 dark:hover:text-red-300 transition-colors" 
                     onClick={() => {
-                        captureEvent('wa_connection_list_item_error_pressed', {})
                         window.location.href = `connections/${connectionId}`
                     }}
-                    onMouseEnter={() => captureEvent('wa_connection_list_item_error_hover', {})}
                 />
             </HoverCardTrigger>
             <HoverCardContent className="w-80 border border-red-200 dark:border-red-800 rounded-lg">

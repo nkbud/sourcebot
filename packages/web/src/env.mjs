@@ -68,13 +68,9 @@ export const env = createEnv({
         STRIPE_WEBHOOK_SECRET: z.string().optional(),
         STRIPE_ENABLE_TEST_CLOCKS: booleanSchema.default('false'),
 
-        LOGTAIL_TOKEN: z.string().optional(),
-        LOGTAIL_HOST: z.string().url().optional(),
-
         // Misc
         CONFIG_MAX_REPOS_NO_TOKEN: numberSchema.default(Number.MAX_SAFE_INTEGER),
         NODE_ENV: z.enum(["development", "test", "production"]),
-        SOURCEBOT_TELEMETRY_DISABLED: booleanSchema.default('false'),
         DATABASE_URL: z.string().url(),
 
         SOURCEBOT_TENANCY_MODE: tenancyModeSchema.default("single"),
@@ -102,9 +98,6 @@ export const env = createEnv({
     //   the `experimental__runtimeEnv` block below.
     // - Update the Dockerfile to pass these variables as build-args.
     client: {
-        // PostHog
-        NEXT_PUBLIC_POSTHOG_PAPIK: z.string().optional(),
-
         // Misc
         NEXT_PUBLIC_SOURCEBOT_VERSION: z.string().default('unknown'),
         NEXT_PUBLIC_POLLING_INTERVAL_MS: numberSchema.default(5000),
@@ -113,7 +106,6 @@ export const env = createEnv({
     },
     // For Next.js >= 13.4.4, you only need to destructure client variables:
     experimental__runtimeEnv: {
-        NEXT_PUBLIC_POSTHOG_PAPIK: process.env.NEXT_PUBLIC_POSTHOG_PAPIK,
         NEXT_PUBLIC_SOURCEBOT_VERSION: process.env.NEXT_PUBLIC_SOURCEBOT_VERSION,
         NEXT_PUBLIC_POLLING_INTERVAL_MS: process.env.NEXT_PUBLIC_POLLING_INTERVAL_MS,
         NEXT_PUBLIC_SOURCEBOT_CLOUD_ENVIRONMENT: process.env.NEXT_PUBLIC_SOURCEBOT_CLOUD_ENVIRONMENT,

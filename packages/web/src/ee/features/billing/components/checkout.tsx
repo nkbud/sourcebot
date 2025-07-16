@@ -29,7 +29,6 @@ export const Checkout = () => {
                 description: `⚠️ Stripe checkout failed with error: ${errorMessage}`,
                 variant: "destructive",
             });
-            captureEvent('wa_onboard_checkout_fail', {
                 error: errorMessage,
             });
         }
@@ -44,11 +43,9 @@ export const Checkout = () => {
                         description: `❌ Stripe checkout failed with error: ${response.message}`,
                         variant: "destructive",
                     })
-                    captureEvent('wa_onboard_checkout_fail', {
                         error: response.errorCode,
                     });
                 } else {
-                    captureEvent('wa_onboard_checkout_success', {});
                     router.push(`/${domain}/onboard?step=${OnboardingSteps.Complete}`);
                 }
             })
