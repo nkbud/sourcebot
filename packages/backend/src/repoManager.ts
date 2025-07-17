@@ -359,6 +359,7 @@ export class RepoManager implements IRepoManager {
 
     private async onIndexJobFailed(job: Job<RepoIndexingPayload> | undefined, err: unknown) {
         logger.info(`Repo index job for repo ${job?.data.repo.displayName} (id: ${job?.data.repo.id}, jobId: ${job?.id}) failed with error: ${err}`);
+        logger.error('Repo index job failed', {
             tags: {
                 repoId: job?.data.repo.id,
                 jobId: job?.id,
@@ -507,6 +508,7 @@ export class RepoManager implements IRepoManager {
 
     private async onGarbageCollectionJobFailed(job: Job<RepoGarbageCollectionPayload> | undefined, err: unknown) {
         logger.info(`Garbage collection job failed (id: ${job?.id ?? 'unknown'}) with error: ${err}`);
+        logger.error('Garbage collection job failed', {
             tags: {
                 repoId: job?.data.repo.id,
                 jobId: job?.id,
