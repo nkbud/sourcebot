@@ -18,6 +18,7 @@ import { hasEntitlement } from '@sourcebot/shared';
 import { onCreateUser } from '@/lib/authUtils';
 import { getAuditService } from '@/lib/audit';
 import { SINGLE_TENANT_ORG_ID } from './lib/constants';
+import { OAuth2Config } from "next-auth/providers";
 
 const auditService = getAuditService();
 
@@ -37,11 +38,60 @@ declare module 'next-auth/jwt' {
     }
 }
 
+/**
+ * Create a Dex OAuth2 provider for authentication.
+ * 
+ * Dex is an OpenID Connect (OIDC) identity service that uses pluggable connectors
+ * to authenticate users through other identity providers.
+ * 
+ * @see https://dexidp.io/docs/guides/using-dex/
+ */
+export const createDexProvider = (): OAuth2Config<any> | null => {
+    const issuerUrl = env.AUTH_DEX_ISSUER_URL;
+    const clientId = env.AUTH_DEX_CLIENT_ID;
+    const clientSecret = env.AUTH_DEX_CLIENT_SECRET;
+
+    if (!issuerUrl || !clientId || !clientSecret) {
+        return null;
+    }
+
+    return {
+        id: "dex",
+        name: "Dex",
+        type: "oauth",
+        authorization: {
+            url: `${issuerUrl}/auth`,
+            params: {
+                scope: "openid email profile",
+                response_type: "code",
+            },
+        },
+        token: `${issuerUrl}/token`,
+        userinfo: `${issuerUrl}/userinfo`,
+        clientId,
+        clientSecret,
+        profile(profile) {
+            return {
+                id: profile.sub,
+                name: profile.name,
+                email: profile.email,
+                image: profile.picture || null,
+            };
+        },
+    };
+};
+
 export const getProviders = () => {
     const providers: Provider[] = [];
 
     if (hasEntitlement("sso")) {
         providers.push(...getSSOProviders());
+    }
+
+    // Add Dex provider if configured
+    const dexProvider = createDexProvider();
+    if (dexProvider) {
+        providers.push(dexProvider);
     }
 
     if (env.SMTP_CONNECTION_URL && env.EMAIL_FROM_ADDRESS && env.AUTH_EMAIL_CODE_LOGIN_ENABLED === 'true') {

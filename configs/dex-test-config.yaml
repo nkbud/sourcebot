@@ -1,0 +1,58 @@
+issuer: http://localhost:5556
+
+storage:
+  type: memory
+
+web:
+  http: 0.0.0.0:5556
+
+staticClients:
+- id: sourcebot-test
+  redirectURIs:
+  - 'http://localhost:3000/api/auth/callback/dex'
+  name: 'Sourcebot Test'
+  secret: 'test-secret-key-1234567890'
+
+connectors:
+- type: mockCallback
+  id: mock
+  name: Mock
+  config:
+    username: testuser
+    userID: test-user-123
+    groups:
+    - users
+    - admins
+
+# Test connector that allows password authentication
+- type: ldap
+  name: MockLDAP
+  id: mockldap
+  config:
+    host: localhost:389
+    insecureNoSSL: true
+    insecureSkipVerify: true
+    bindDN: cn=admin,dc=example,dc=org
+    bindPW: admin
+    userSearch:
+      baseDN: ou=People,dc=example,dc=org
+      filter: "(objectClass=person)"
+      username: mail
+      idAttr: DN
+      emailAttr: mail
+      nameAttr: cn
+    groupSearch:
+      baseDN: ou=Groups,dc=example,dc=org
+      filter: "(objectClass=groupOfNames)"
+      userMatchers:
+      - userAttr: DN
+        groupAttr: member
+      nameAttr: cn
+
+# OAuth2 configuration
+oauth2:
+  skipApprovalScreen: true
+
+logger:
+  level: debug
+  format: text

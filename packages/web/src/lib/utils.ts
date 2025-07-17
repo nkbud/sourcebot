@@ -9,7 +9,7 @@ import gitLogo from "@/public/git.svg";
 import googleLogo from "@/public/google.svg";
 import oktaLogo from "@/public/okta.svg";
 import keycloakLogo from "@/public/keycloak.svg";
-import microsoftLogo from "@/public/microsoft_entra.svg";
+import dexLogo from "@/public/dex.svg";
 import { ServiceError } from "./serviceError";
 import { StatusCodes } from "http-status-codes";
 import { ErrorCode } from "./errorCodes";
@@ -55,6 +55,7 @@ export type AuthProviderType =
     "okta" |
     "keycloak" |
     "microsoft-entra-id" |
+    "dex" |
     "credentials" |
     "nodemailer";
 
@@ -121,6 +122,16 @@ export const getAuthProviderInfo = (providerId: string): AuthProviderInfo => {
                 displayName: "Microsoft Entra ID",
                 icon: {
                     src: microsoftLogo,
+                },
+            };
+        case "dex":
+            return {
+                id: "dex",
+                name: "Dex",
+                displayName: "Dex",
+                icon: {
+                    src: dexLogo,
+                    className: "dark:invert",
                 },
             };
         case "credentials":
