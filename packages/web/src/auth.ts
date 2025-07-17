@@ -46,7 +46,7 @@ declare module 'next-auth/jwt' {
  * 
  * @see https://dexidp.io/docs/guides/using-dex/
  */
-const createDexProvider = (): OAuth2Config<any> | null => {
+export const createDexProvider = (): OAuth2Config<any> | null => {
     const issuerUrl = env.AUTH_DEX_ISSUER_URL;
     const clientId = env.AUTH_DEX_CLIENT_ID;
     const clientSecret = env.AUTH_DEX_CLIENT_SECRET;

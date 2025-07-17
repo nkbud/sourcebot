@@ -1,0 +1,42 @@
+# Docker Compose configuration for testing Dex OAuth2 integration
+version: '3.8'
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: sourcebot-test-redis
+    ports:
+      - "6380:6379"
+    volumes:
+      - test_redis_data:/data
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: sourcebot-test-postgres
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - test_postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  # Dex server for testing OAuth2 integration
+  dex:
+    image: dexidp/dex:v2.39.1
+    container_name: sourcebot-test-dex
+    ports:
+      - "5556:5556"
+    volumes:
+      - ./configs/dex-test-config.yaml:/etc/dex/config.yaml:ro
+    command: ["dex", "serve", "/etc/dex/config.yaml"]
+    restart: unless-stopped
+    depends_on:
+      - postgres
+
+volumes:
+  test_redis_data:
+  test_postgres_data:
