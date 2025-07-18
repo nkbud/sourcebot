@@ -5,7 +5,7 @@ import { NavigationMenu } from "../components/navigationMenu"
 import { Header } from "./components/header";
 import { IS_BILLING_ENABLED } from "@/lib/billing";
 import { redirect } from "next/navigation";
-import { auth } from "@/auth";
+import { auth } from "@/lib/auth-new";
 import { isServiceError } from "@/lib/utils";
 import { getMe, getOrgAccountRequests } from "@/actions";
 import { ServiceErrorException } from "@/lib/serviceError";

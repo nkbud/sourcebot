@@ -29,11 +29,10 @@ import { useMemo } from "react"
 import { KeymapType } from "@/lib/types"
 import { cn } from "@/lib/utils"
 import { useKeymapType } from "@/hooks/useKeymapType"
-import { useSession } from "next-auth/react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { signOut } from "next-auth/react"
 import { env } from "@/env.mjs";
 import { useDomain } from "@/hooks/useDomain";
+import { useOAuth2ProxyAuth } from "@/hooks/useOAuth2ProxyAuth";
 
 interface SettingsDropdownProps {
     menuButtonClassName?: string;
@@ -45,7 +44,7 @@ export const SettingsDropdown = ({
 
     const { theme: _theme, setTheme } = useTheme();
     const [keymapType, setKeymapType] = useKeymapType();
-    const { data: session, update } = useSession();
+    const { user } = useOAuth2ProxyAuth();
     const domain = useDomain();
 
     const theme = useMemo(() => {
@@ -65,41 +64,31 @@ export const SettingsDropdown = ({
         }
     }, [theme]);
 
+    const handleSignOut = () => {
+        // OAuth2 Proxy handles sign out - redirect to clear session
+        window.location.href = "/oauth2/sign_out?rd=" + encodeURIComponent("/login");
+    };
+
     return (
-        // Was hitting a bug with invite code login where the first time the user signs in, the settingsDropdown doesn't have a valid session. To fix this
-        // we can simply update the session everytime the settingsDropdown is opened. This isn't a super frequent operation and updating the session is low cost,
-        // so this is a simple solution to the problem.
-        <DropdownMenu onOpenChange={(isOpen) => {
-            if (isOpen) {
-                update();
-            }
-        }}>
+        <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="icon" className={cn(menuButtonClassName)}>
                     <Settings className="h-4 w-4" />
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-64">
-                {session?.user ? (
+                {user ? (
                     <DropdownMenuGroup>
                         <div className="flex flex-row items-center gap-1 p-2">
                             <Avatar>
-                                <AvatarImage
-                                    src={session.user.image ?? ""}
-                                />
                                 <AvatarFallback>
-                                    {session.user.name && session.user.name.length > 0 ? session.user.name[0] : 'U'}
+                                    {user.name && user.name.length > 0 ? user.name[0] : 'U'}
                                 </AvatarFallback>
                             </Avatar>
-                            <p className="text-sm font-medium text-ellipsis">{session.user.email ?? "User"}</p>
+                            <p className="text-sm font-medium text-ellipsis">{user.email ?? "User"}</p>
                         </div>
                         <DropdownMenuItem
-                            onClick={() => {
-                                signOut({
-                                    redirectTo: "/login",
-                                }).then(() => {
-                                })
-                            }}
+                            onClick={handleSignOut}
                         >
                             <LogOut className="mr-2 h-4 w-4" />
                             <span>Log out</span>
@@ -156,7 +145,7 @@ export const SettingsDropdown = ({
                             </DropdownMenuSubContent>
                         </DropdownMenuPortal>
                     </DropdownMenuSub>
-                    {session?.user && (
+                    {user && (
                         <DropdownMenuItem asChild>
                             <a href={`/${domain}/settings`}>
                                 <Settings className="h-4 w-4 mr-2" />

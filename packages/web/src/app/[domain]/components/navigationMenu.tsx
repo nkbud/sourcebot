@@ -14,7 +14,7 @@ import { TrialNavIndicator } from "./trialNavIndicator";
 import { IS_BILLING_ENABLED } from "@/lib/billing";
 import { env } from "@/env.mjs";
 import { getSubscriptionInfo } from "@/lib/billingServerUtils";
-import { auth } from "@/auth";
+import { auth } from "@/lib/auth-new";
 import WhatsNewIndicator from "./whatsNewIndicator";
 
 const SOURCEBOT_DISCORD_URL = "https://discord.gg/6Fhp27x7Pb";

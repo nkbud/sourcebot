@@ -1,5 +1,5 @@
 import { LogOutIcon } from "lucide-react";
-import { signOut } from "@/auth";
+import { redirect } from "next/navigation";
 
 interface LogoutEscapeHatchProps {
     className?: string;
@@ -13,10 +13,8 @@ export const LogoutEscapeHatch = ({
             <form
                 action={async () => {
                     "use server";
-                    await signOut({
-                        redirectTo: "/login",
-                    }).then(() => {
-                    });
+                    // OAuth2 Proxy handles logout - redirect to OAuth2 Proxy sign out endpoint
+                    redirect("/oauth2/sign_out?rd=" + encodeURIComponent("/login"));
                 }}
             >
                 <button

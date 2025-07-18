@@ -1,5 +1,5 @@
 import { notFound, redirect } from 'next/navigation';
-import { auth } from "@/auth";
+import { auth } from "@/lib/auth-new";
 import { getInviteInfo } from "@/actions";
 import { isServiceError } from "@/lib/utils";
 import { AcceptInviteCard } from './components/acceptInviteCard';

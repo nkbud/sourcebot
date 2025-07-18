@@ -1,7 +1,7 @@
 import { SourcebotLogo } from "@/app/components/sourcebotLogo";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import placeholderAvatar from "@/public/placeholder_avatar.png";
-import { auth } from "@/auth";
+import { auth } from "@/lib/auth-new";
 import { Card } from "@/components/ui/card";
 
 

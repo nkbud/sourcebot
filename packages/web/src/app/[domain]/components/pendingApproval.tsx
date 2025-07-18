@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { HelpCircle } from "lucide-react"
 import { LogoutEscapeHatch } from "@/app/components/logoutEscapeHatch"
 import { SourcebotLogo } from "@/app/components/sourcebotLogo"
-import { auth } from "@/auth"
+import { auth } from "@/lib/auth-new"
 import { ResubmitAccountRequestButton } from "./resubmitAccountRequestButton"
 
 interface PendingApprovalCardProps {

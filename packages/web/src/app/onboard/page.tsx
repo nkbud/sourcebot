@@ -1,5 +1,5 @@
 import { OrgCreateForm } from "./components/orgCreateForm";
-import { auth } from "@/auth";
+import { auth } from "@/lib/auth-new";
 import { redirect } from "next/navigation";
 import { OnboardHeader } from "./components/onboardHeader";
 import { OnboardingSteps } from "@/lib/constants";

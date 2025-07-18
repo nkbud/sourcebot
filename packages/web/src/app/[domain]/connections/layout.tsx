@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+import { auth } from "@/lib/auth-new";
 import { NavigationMenu } from "../components/navigationMenu";
 import { redirect } from "next/navigation";
 

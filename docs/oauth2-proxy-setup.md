@@ -1,14 +1,13 @@
-# OAuth2 Proxy with Okta SSO Integration
-
-This document describes the migration from NextAuth.js to OAuth2 Proxy with Okta SSO for centralized authentication.
+# OAuth2 Proxy with Okta SSO Migration
 
 ## Overview
 
-The new authentication architecture replaces the previous NextAuth.js implementation with:
+This migration replaces the existing NextAuth.js authentication system with OAuth2 Proxy and Okta SSO. The new system provides:
 
-- **OAuth2 Proxy**: Standalone proxy service that handles authentication
-- **Okta SSO**: Identity provider for centralized authentication
-- **Header-based Authentication**: Application trusts user information from proxy headers
+- **Centralized Authentication**: All authentication handled by OAuth2 Proxy
+- **Simplified Application**: No session management in the application
+- **Better Security**: Headers validated to prevent spoofing
+- **Single Sign-On**: Seamless integration with Okta
 
 ## Architecture
 
@@ -18,171 +17,96 @@ User → OAuth2 Proxy → Sourcebot App
           Okta SSO
 ```
 
-### Flow
+## Changes Made
 
-1. User accesses the application
-2. OAuth2 Proxy intercepts unauthenticated requests
-3. OAuth2 Proxy redirects to Okta for authentication
-4. After successful authentication, OAuth2 Proxy forwards requests with user headers
-5. Sourcebot application trusts and uses the header information
+### 1. Authentication Infrastructure
+- **Added**: OAuth2 Proxy header-based authentication (`lib/oauth2-proxy-auth.ts`)
+- **Added**: New authentication utilities (`lib/auth-new.ts`)
+- **Added**: User management with JIT provisioning (`lib/oauth2-proxy-user-management.ts`)
+- **Added**: Client-side authentication hook (`hooks/useOAuth2ProxyAuth.ts`)
 
-## Configuration
+### 2. Legacy Code Removed
+- **Removed**: Login forms and UI components
+- **Removed**: Signup page
+- **Removed**: Email verification components
+- **Removed**: NextAuth.js API routes
+- **Removed**: SessionProvider from root layout
+- **Deprecated**: `auth.ts` (marked for removal)
 
-### OAuth2 Proxy Setup
+### 3. Updated Components
+- **Updated**: Settings dropdown to use OAuth2 Proxy authentication
+- **Updated**: Logout escape hatch to use OAuth2 Proxy sign-out
+- **Updated**: All server actions to use new authentication
+- **Updated**: Middleware to handle OAuth2 Proxy headers
+- **Updated**: All pages to use new authentication system
 
-1. **Create Okta Application**:
-   - Application Type: Web Application
-   - Grant Types: Authorization Code
-   - Redirect URIs: `http://your-domain:4180/oauth2/callback`
-   - Trusted Origins: `http://your-domain:4180`
+### 4. Configuration
+- **Added**: OAuth2 Proxy Docker Compose configuration
+- **Added**: Environment variables for OAuth2 Proxy
+- **Added**: Configuration templates and examples
+- **Updated**: Development environment configuration
 
-2. **Configure OAuth2 Proxy**:
-   ```bash
-   # Copy and configure environment file
-   cp .env.oauth2-proxy.template .env.oauth2-proxy
-   
-   # Edit .env.oauth2-proxy with your Okta settings:
-   # - OKTA_ISSUER_URL
-   # - OKTA_CLIENT_ID
-   # - OKTA_CLIENT_SECRET
-   # - OAUTH2_PROXY_COOKIE_SECRET
-   # - ALLOWED_EMAIL_DOMAINS
-   # - ALLOWED_GROUPS
-   ```
+## Migration Steps
 
-3. **Start with Docker Compose**:
-   ```bash
-   docker-compose -f docker-compose.oauth2-proxy.yml --env-file .env.oauth2-proxy up -d
-   ```
+1. **Deploy OAuth2 Proxy**: Use the provided Docker Compose configuration
+2. **Configure Okta**: Set up Okta application with appropriate settings
+3. **Update Environment**: Configure OAuth2 Proxy environment variables
+4. **Test Authentication**: Verify the authentication flow works
+5. **Remove Legacy Code**: Clean up any remaining NextAuth.js references
 
-### Okta Configuration
+## New Authentication Flow
 
-1. **Create Groups** (optional):
-   - `sourcebot-users`: General application access
-   - `sourcebot-admins`: Administrative access
+1. User accesses application
+2. OAuth2 Proxy intercepts request
+3. If not authenticated, redirects to Okta
+4. After authentication, forwards request with headers:
+   - `X-Forwarded-User`: User ID
+   - `X-Forwarded-Email`: User email
+   - `X-Forwarded-Groups`: User groups (comma-separated)
+   - `X-Forwarded-Preferred-Username`: Display name
+5. Application validates headers and creates/updates user in database
+6. User is granted access based on group membership
 
-2. **Assign Users to Groups**:
-   - Add users to appropriate groups
-   - Configure group claims in Okta
+## Security Features
 
-3. **Application Settings**:
-   - Enable "Refresh Token" grant type
-   - Set appropriate token lifetimes
-   - Configure group claims if using group-based access control
+- **Header Validation**: Prevents header spoofing
+- **Group-based Access**: Control access via Okta groups
+- **JIT Provisioning**: Users created automatically on first login
+- **Session Management**: Handled entirely by OAuth2 Proxy
+- **No Application Sessions**: Reduced attack surface
 
-### Environment Variables
+## Configuration Files
 
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `OAUTH2_PROXY_ENABLED` | Enable OAuth2 Proxy integration | `true` |
-| `OAUTH2_PROXY_VALIDATE_HEADERS` | Validate incoming headers | `true` |
-| `OAUTH2_PROXY_REQUIRED_GROUPS` | Required groups for access | `sourcebot-users` |
-| `OKTA_ISSUER_URL` | Okta issuer URL | `https://your-org.okta.com/oauth2/default` |
-| `OKTA_CLIENT_ID` | Okta application client ID | `your-client-id` |
-| `OKTA_CLIENT_SECRET` | Okta application client secret | `your-client-secret` |
-| `OAUTH2_PROXY_COOKIE_SECRET` | Cookie encryption secret | Generated 32-byte secret |
-| `ALLOWED_EMAIL_DOMAINS` | Allowed email domains | `company.com` |
-| `ALLOWED_GROUPS` | Allowed Okta groups | `sourcebot-users,admins` |
-
-## Headers
-
-OAuth2 Proxy sets the following headers that the application uses:
-
-| Header | Description | Example |
-|--------|-------------|---------|
-| `X-Forwarded-User` | User identifier | `user123` |
-| `X-Forwarded-Email` | User email address | `user@company.com` |
-| `X-Forwarded-Groups` | Comma-separated groups | `sourcebot-users,admins` |
-| `X-Forwarded-Preferred-Username` | Display name | `John Doe` |
-
-## Security Considerations
-
-1. **Header Validation**: Application validates headers to prevent spoofing
-2. **TLS Enforcement**: All communication should use HTTPS in production
-3. **Group-based Access**: Configure appropriate group restrictions
-4. **Token Refresh**: OAuth2 Proxy handles token refresh automatically
-5. **Session Management**: Sessions are managed by OAuth2 Proxy, not the application
-
-## Migration Notes
-
-### Removed Components
-
-The following NextAuth.js components have been removed:
-- Login forms and UI
-- Provider configurations (DEX, credentials, magic link)
-- Session management
-- JWT handling
-- User registration flows
-
-### Legacy Compatibility
-
-For a transition period, legacy authentication environment variables are still accepted but deprecated:
-- `AUTH_SECRET` → No longer used
-- `AUTH_CREDENTIALS_LOGIN_ENABLED` → Set to `false`
-- `AUTH_DEX_*` → No longer used
-
-### Database Changes
-
-Users are now created via Just-In-Time (JIT) provisioning:
-- Users are created automatically on first login
-- User information is sourced from Okta
-- In single-tenant mode, users are automatically added to the organization
-
-## Troubleshooting
-
-### User Not Found
-
-If users can't access the application:
-1. Check OAuth2 Proxy logs for authentication errors
-2. Verify Okta group memberships
-3. Ensure `ALLOWED_GROUPS` is configured correctly
-4. Check database for user creation
-
-### Header Validation Issues
-
-If header validation fails:
-1. Ensure OAuth2 Proxy is properly configured
-2. Check `OAUTH2_PROXY_VALIDATE_HEADERS` setting
-3. Verify OAuth2 Proxy is setting required headers
-4. Check network configuration for header stripping
-
-### Authentication Loops
-
-If users get stuck in authentication loops:
-1. Clear browser cookies
-2. Check OAuth2 Proxy cookie settings
-3. Verify Okta redirect URIs
-4. Check for cookie domain mismatches
-
-## Production Deployment
-
-For production deployment:
-
-1. **Use HTTPS**: Configure TLS certificates
-2. **Secure Cookies**: Set `OAUTH2_PROXY_COOKIE_SECURE=true`
-3. **Proper Domains**: Configure correct cookie domains
-4. **Rate Limiting**: Implement rate limiting on OAuth2 Proxy
-5. **Monitoring**: Set up logging and monitoring
-6. **High Availability**: Deploy OAuth2 Proxy in HA mode
+- `docker-compose.oauth2-proxy.yml`: OAuth2 Proxy deployment
+- `.env.oauth2-proxy.template`: Environment variable template
+- `docs/oauth2-proxy-setup.md`: Detailed setup instructions
 
 ## Testing
 
-To test the OAuth2 Proxy integration:
+Use the provided Docker Compose configuration to test:
 
-1. **Start Services**:
-   ```bash
-   docker-compose -f docker-compose.oauth2-proxy.yml up -d
-   ```
+```bash
+# Copy and configure environment file
+cp .env.oauth2-proxy.template .env.oauth2-proxy
+# Edit .env.oauth2-proxy with your Okta settings
 
-2. **Access Application**:
-   - Navigate to `http://localhost:4180`
-   - Should redirect to Okta login
-   - After login, should access Sourcebot application
+# Start OAuth2 Proxy with Sourcebot
+docker-compose -f docker-compose.oauth2-proxy.yml --env-file .env.oauth2-proxy up -d
+```
 
-3. **Verify Headers**:
-   - Check browser developer tools for forwarded headers
-   - Verify user information is correctly displayed
+Navigate to `http://localhost:4180` to test the authentication flow.
 
-4. **Test Authorization**:
-   - Test with users in different groups
-   - Verify group-based access control works
+## Notes
+
+- This is a breaking change that requires OAuth2 Proxy to be deployed
+- All existing user sessions will be invalidated
+- Users will need to authenticate through Okta on their next visit
+- The application will not function without OAuth2 Proxy in front of it
+
+## Next Steps
+
+1. Deploy OAuth2 Proxy in production
+2. Configure Okta for production use
+3. Set up monitoring and logging
+4. Remove deprecated `auth.ts` file
+5. Update any remaining NextAuth.js references

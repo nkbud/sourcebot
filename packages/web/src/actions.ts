@@ -20,7 +20,7 @@ import Ajv from "ajv";
 import { StatusCodes } from "http-status-codes";
 import { cookies, headers } from "next/headers";
 import { createTransport } from "nodemailer";
-import { auth } from "./auth";
+import { auth } from "./lib/auth-new";
 import { getConnection } from "./data/connection";
 import { IS_BILLING_ENABLED } from "@/lib/billing";
 import InviteUserEmail from "./emails/inviteUserEmail";

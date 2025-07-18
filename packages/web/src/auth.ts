@@ -1,3 +1,6 @@
+// DEPRECATED: This file is deprecated and will be removed.
+// Use /lib/auth-new.ts for OAuth2 Proxy authentication instead.
+
 import 'next-auth/jwt';
 import NextAuth, { DefaultSession, User as AuthJsUser } from "next-auth"
 import Credentials from "next-auth/providers/credentials"
@@ -41,144 +44,19 @@ declare module 'next-auth/jwt' {
 /**
  * Create a Dex OAuth2 provider for authentication.
  * 
- * Dex is an OpenID Connect (OIDC) identity service that uses pluggable connectors
- * to authenticate users through other identity providers.
+ * DEPRECATED: Use OAuth2 Proxy with Okta SSO instead.
  * 
  * @see https://dexidp.io/docs/guides/using-dex/
  */
 export const createDexProvider = (): OAuth2Config<any> | null => {
-    const issuerUrl = env.AUTH_DEX_ISSUER_URL;
-    const clientId = env.AUTH_DEX_CLIENT_ID;
-    const clientSecret = env.AUTH_DEX_CLIENT_SECRET;
-
-    if (!issuerUrl || !clientId || !clientSecret) {
-        return null;
-    }
-
-    return {
-        id: "dex",
-        name: "Dex",
-        type: "oauth",
-        authorization: {
-            url: `${issuerUrl}/auth`,
-            params: {
-                scope: "openid email profile",
-                response_type: "code",
-            },
-        },
-        token: `${issuerUrl}/token`,
-        userinfo: `${issuerUrl}/userinfo`,
-        clientId,
-        clientSecret,
-        profile(profile) {
-            return {
-                id: profile.sub,
-                name: profile.name,
-                email: profile.email,
-                image: profile.picture || null,
-            };
-        },
-    };
+    // Legacy DEX support disabled - use OAuth2 Proxy instead
+    return null;
 };
 
 export const getProviders = () => {
     const providers: Provider[] = [];
 
-    if (hasEntitlement("sso")) {
-        providers.push(...getSSOProviders());
-    }
-
-    // Add Dex provider if configured
-    const dexProvider = createDexProvider();
-    if (dexProvider) {
-        providers.push(dexProvider);
-    }
-
-    if (env.SMTP_CONNECTION_URL && env.EMAIL_FROM_ADDRESS && env.AUTH_EMAIL_CODE_LOGIN_ENABLED === 'true') {
-        providers.push(EmailProvider({
-            server: env.SMTP_CONNECTION_URL,
-            from: env.EMAIL_FROM_ADDRESS,
-            maxAge: 60 * 10,
-            generateVerificationToken: async () => {
-                const token = String(Math.floor(100000 + Math.random() * 900000));
-                return token;
-            },
-            sendVerificationRequest: async ({ identifier, provider, token }) => {
-                const transport = createTransport(provider.server);
-                const html = await render(MagicLinkEmail({ token: token }));
-                const result = await transport.sendMail({
-                    to: identifier,
-                    from: provider.from,
-                    subject: 'Log in to Sourcebot',
-                    html,
-                    text: `Log in to Sourcebot using this code: ${token}`
-                });
-
-                const failed = result.rejected.concat(result.pending).filter(Boolean);
-                if (failed.length) {
-                    throw new Error(`Email(s) (${failed.join(", ")}) could not be sent`);
-                }
-            }
-        }));
-    }
-
-    if (env.AUTH_CREDENTIALS_LOGIN_ENABLED === 'true') {
-        providers.push(Credentials({
-            credentials: {
-                email: {},
-                password: {}
-            },
-            type: "credentials",
-            authorize: async (credentials) => {
-                const body = verifyCredentialsRequestSchema.safeParse(credentials);
-                if (!body.success) {
-                    return null;
-                }
-                const { email, password } = body.data;
-
-                const user = await prisma.user.findUnique({
-                    where: { email }
-                });
-
-                // The user doesn't exist, so create a new one.
-                if (!user) {
-                    const hashedPassword = bcrypt.hashSync(password, 10);
-                    const newUser = await prisma.user.create({
-                        data: {
-                            email,
-                            hashedPassword,
-                        }
-                    });
-
-                    const authJsUser: AuthJsUser = {
-                        id: newUser.id,
-                        email: newUser.email,
-                    }
-
-                    onCreateUser({ user: authJsUser });
-                    return authJsUser;
-
-                    // Otherwise, the user exists, so verify the password.
-                } else {
-                    if (!user.hashedPassword) {
-                        return null;
-                    }
-
-                    if (!bcrypt.compareSync(password, user.hashedPassword)) {
-                        return null;
-                    }
-
-                    return {
-                        id: user.id,
-                        email: user.email,
-                        name: user.name ?? undefined,
-                        image: user.image ?? undefined,
-                    };
-                }
-            }
-        }));
-    }
-
+    // All legacy providers are disabled - use OAuth2 Proxy instead
     return providers;
 }
 
