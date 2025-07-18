@@ -1,11 +1,11 @@
 # Sourcebot MCP - Fetch code context from GitHub, GitLab, Bitbucket, and more
 
-[![Sourcebot](https://img.shields.io/badge/Website-sourcebot.dev-blue)](https://sourcebot.dev)
-[![GitHub](https://img.shields.io/badge/GitHub-sourcebot--dev%2Fsourcebot-green?logo=github)](https://github.com/sourcebot-dev/sourcebot)
-[![Docs](https://img.shields.io/badge/Docs-docs.sourcebot.dev-yellow)](https://docs.sourcebot.dev/docs/features/mcp-server)
+[![Sourcebot](https://img.shields.io/badge/Website-your-sourcebot-instance.com-blue)](https://your-sourcebot-instance.com)
+[![GitHub](https://img.shields.io/badge/GitHub-sourcebot--dev%2Fsourcebot-green?logo=github)](https://github.com/your-sourcebot-org/sourcebot)
+[![Docs](https://img.shields.io/badge/Docs-docs.your-sourcebot-instance.com-yellow)](https://docs.your-sourcebot-instance.com
 [![npm](https://img.shields.io/npm/v/@sourcebot/mcp)](https://www.npmjs.com/package/@sourcebot/mcp)
 
-The Sourcebot MCP server gives your LLM agents the ability to fetch code context across thousands of repos hosted on [GitHub](https://docs.sourcebot.dev/docs/connections/github), [GitLab](https://docs.sourcebot.dev/docs/connections/gitlab), [BitBucket](https://docs.sourcebot.dev/docs/connections/bitbucket-cloud) and [more](#supported-code-hosts). Ask your LLM a question, and the Sourcebot MCP server will fetch relevant context from its index and inject it into your chat session. Some use cases this unlocks include:
+The Sourcebot MCP server gives your LLM agents the ability to fetch code context across thousands of repos hosted on [GitHub](https://docs.your-sourcebot-instance.com [GitLab](https://docs.your-sourcebot-instance.com [BitBucket](https://docs.your-sourcebot-instance.com and [more](#supported-code-hosts). Ask your LLM a question, and the Sourcebot MCP server will fetch relevant context from its index and inject it into your chat session. Some use cases this unlocks include:
 
 - Enriching responses to user requests:
     - _"What repositories are using internal library X?"_
@@ -26,9 +26,9 @@ The Sourcebot MCP server gives your LLM agents the ability to fetch code context
 
 1. Install Node.JS >= v18.0.0.
 
-2. (optional) Spin up a Sourcebot instance by following [this guide](https://docs.sourcebot.dev/self-hosting/overview). The host url of your instance (e.g., `http://localhost:3000`) is passed to the MCP server via the `SOURCEBOT_HOST` url. This allows you to control which repos Sourcebot MCP fetches context from (including private repos). 
+2. (optional) Spin up a Sourcebot instance by following [this guide](https://docs.your-sourcebot-instance.com The host url of your instance (e.g., `http://localhost:3000`) is passed to the MCP server via the `SOURCEBOT_HOST` url. This allows you to control which repos Sourcebot MCP fetches context from (including private repos). 
 
-    If a host is not provided, then the server will fallback to using the demo instance hosted at https://demo.sourcebot.dev. You can see the list of repositories indexed [here](https://demo.sourcebot.dev/~/repos). Add additional repositories by [opening a PR](https://github.com/sourcebot-dev/sourcebot/blob/main/demo-site-config.json).
+    If a host is not provided, then the server will fallback to using the demo instance hosted at https://demo.your-sourcebot-instance.com. You can see the list of repositories indexed [here](https://demo.your-sourcebot-instance.com Add additional repositories by [opening a PR](https://github.com/your-sourcebot-org/sourcebot/blob/main/demo-site-config.json).
 
 3. Install `@sourcebot/mcp` into your MCP client:
 
@@ -47,7 +47,7 @@ The Sourcebot MCP server gives your LLM agents the ability to fetch code context
             "sourcebot": {
                 "command": "npx",
                 "args": ["-y", "@sourcebot/mcp@latest" ],
-                // Optional - if not specified, https://demo.sourcebot.dev is used
+                // Optional - if not specified, https://demo.your-sourcebot-instance.com is used
                 "env": {
                     "SOURCEBOT_HOST": "http://localhost:3000"
                 }
@@ -72,7 +72,7 @@ The Sourcebot MCP server gives your LLM agents the ability to fetch code context
             "sourcebot": {
                 "command": "npx",
                 "args": ["-y", "@sourcebot/mcp@latest" ],
-                // Optional - if not specified, https://demo.sourcebot.dev is used
+                // Optional - if not specified, https://demo.your-sourcebot-instance.com is used
                 "env": {
                     "SOURCEBOT_HOST": "http://localhost:3000"
                 }
@@ -96,7 +96,7 @@ The Sourcebot MCP server gives your LLM agents the ability to fetch code context
                 "type": "stdio",
                 "command": "npx",
                 "args": ["-y", "@sourcebot/mcp@latest"],
-                // Optional - if not specified, https://demo.sourcebot.dev is used
+                // Optional - if not specified, https://demo.your-sourcebot-instance.com is used
                 "env": {
                     "SOURCEBOT_HOST": "http://localhost:3000"
                 }
@@ -116,7 +116,7 @@ The Sourcebot MCP server gives your LLM agents the ability to fetch code context
 
     ```sh
     # SOURCEBOT_HOST env var is optional - if not specified,
-    # https://demo.sourcebot.dev is used.
+    # https://demo.your-sourcebot-instance.com is used.
     claude mcp add sourcebot -e SOURCEBOT_HOST=http://localhost:3000 -- npx -y @sourcebot/mcp@latest
     ```
     </details>
@@ -134,7 +134,7 @@ The Sourcebot MCP server gives your LLM agents the ability to fetch code context
             "sourcebot": {
                 "command": "npx",
                 "args": ["-y", "@sourcebot/mcp@latest"],
-                // Optional - if not specified, https://demo.sourcebot.dev is used
+                // Optional - if not specified, https://demo.your-sourcebot-instance.com is used
                 "env": {
                     "SOURCEBOT_HOST": "http://localhost:3000"
                 }
@@ -145,10 +145,10 @@ The Sourcebot MCP server gives your LLM agents the ability to fetch code context
     </details>
     <br/>
 
-    Alternatively, you can install using via [Smithery](https://smithery.ai/server/@sourcebot-dev/sourcebot). For example:
+    Alternatively, you can install using via [Smithery](https://smithery.ai/server/@your-sourcebot-org/sourcebot). For example:
 
     ```bash
-    npx -y @smithery/cli install @sourcebot-dev/sourcebot --client claude
+    npx -y @smithery/cli install @your-sourcebot-org/sourcebot --client claude
     ```
 
 <br/>
@@ -157,7 +157,7 @@ The Sourcebot MCP server gives your LLM agents the ability to fetch code context
 
 <br/>
 
-For a more detailed guide, checkout [the docs](https://docs.sourcebot.dev/docs/features/mcp-server).
+For a more detailed guide, checkout [the docs](https://docs.your-sourcebot-instance.com
 
 
 ## Available Tools
@@ -200,25 +200,25 @@ Fetches the source code for a given file.
 
 ## Supported Code Hosts
 Sourcebot supports the following code hosts:
-- [GitHub](https://docs.sourcebot.dev/docs/connections/github)
-- [GitLab](https://docs.sourcebot.dev/docs/connections/gitlab)
-- [Bitbucket Cloud](https://docs.sourcebot.dev/docs/connections/bitbucket-cloud)
-- [Bitbucket Data Center](https://docs.sourcebot.dev/docs/connections/bitbucket-data-center)
-- [Gitea](https://docs.sourcebot.dev/docs/connections/gitea)
-- [Gerrit](https://docs.sourcebot.dev/docs/connections/gerrit)
+- [GitHub](https://docs.your-sourcebot-instance.com
+- [GitLab](https://docs.your-sourcebot-instance.com
+- [Bitbucket Cloud](https://docs.your-sourcebot-instance.com
+- [Bitbucket Data Center](https://docs.your-sourcebot-instance.com
+- [Gitea](https://docs.your-sourcebot-instance.com
+- [Gerrit](https://docs.your-sourcebot-instance.com
 
-| Don't see your code host? Open a [GitHub discussion](https://github.com/sourcebot-dev/sourcebot/discussions/categories/ideas).
+| Don't see your code host? Open a [GitHub discussion](https://github.com/your-sourcebot-org/sourcebot/discussions/categories/ideas).
 
 ## Future Work
 
 ### Semantic Search
 
-Currently, Sourcebot only supports regex-based code search (powered by [zoekt](https://github.com/sourcegraph/zoekt) under the hood). It is great for scenarios when the agent is searching for is something that is super precise and well-represented in the source code (e.g., a specific function name, a error string, etc.). It is not-so-great for _fuzzy_ searches where the objective is to find some loosely defined _category_ or _concept_ in the code (e.g., find code that verifies JWT tokens). The LLM can approximate this by crafting regex searches that attempt to capture a concept (e.g., it might try a query like `"jwt|token|(verify|validate).*(jwt|token)"`), but often yields sub-optimal search results that aren't related. Tools like Cursor solve this with [embedding models](https://docs.cursor.com/context/codebase-indexing) to capture the semantic meaning of code, allowing for LLMs to search using natural language. We would like to extend Sourcebot to support semantic search and expose this capability over MCP as a tool (e.g., `semantic_search_code` tool). [GitHub Discussion](https://github.com/sourcebot-dev/sourcebot/discussions/297)
+Currently, Sourcebot only supports regex-based code search (powered by [zoekt](https://github.com/sourcegraph/zoekt) under the hood). It is great for scenarios when the agent is searching for is something that is super precise and well-represented in the source code (e.g., a specific function name, a error string, etc.). It is not-so-great for _fuzzy_ searches where the objective is to find some loosely defined _category_ or _concept_ in the code (e.g., find code that verifies JWT tokens). The LLM can approximate this by crafting regex searches that attempt to capture a concept (e.g., it might try a query like `"jwt|token|(verify|validate).*(jwt|token)"`), but often yields sub-optimal search results that aren't related. Tools like Cursor solve this with [embedding models](https://docs.cursor.com/context/codebase-indexing) to capture the semantic meaning of code, allowing for LLMs to search using natural language. We would like to extend Sourcebot to support semantic search and expose this capability over MCP as a tool (e.g., `semantic_search_code` tool). [GitHub Discussion](https://github.com/your-sourcebot-org/sourcebot/discussions/297)
 
 ### Code Navigation
 
-Another idea is to allow LLMs to traverse abstract syntax trees (ASTs) of a codebase to enable reliable code navigation. This could be packaged as tools like `goto_definition`, `find_all_references`, etc., which could be useful for LLMs to get additional code context. [GitHub Discussion](https://github.com/sourcebot-dev/sourcebot/discussions/296)
+Another idea is to allow LLMs to traverse abstract syntax trees (ASTs) of a codebase to enable reliable code navigation. This could be packaged as tools like `goto_definition`, `find_all_references`, etc., which could be useful for LLMs to get additional code context. [GitHub Discussion](https://github.com/your-sourcebot-org/sourcebot/discussions/296)
 
 ### Got an idea?
 
-Open up a [GitHub discussion](https://github.com/sourcebot-dev/sourcebot/discussions/categories/feature-requests)!
+Open up a [GitHub discussion](https://github.com/your-sourcebot-org/sourcebot/discussions/categories/feature-requests)!

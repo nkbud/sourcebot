@@ -47,7 +47,7 @@ const entitlementsByPlan: Record<Plan, Entitlement[]> = {
     "cloud:team": ["billing", "multi-tenancy", "sso", "code-nav"],
     "self-hosted:enterprise": ["search-contexts", "sso", "code-nav", "audit", "analytics"],
     "self-hosted:enterprise-unlimited": ["search-contexts", "public-access", "sso", "code-nav", "audit", "analytics"],
-    // Special entitlement for https://demo.sourcebot.dev
+    // Special entitlement for https://demo.your-sourcebot-instance.com
     "cloud:demo": ["public-access", "code-nav", "search-contexts"],
 } as const;
 

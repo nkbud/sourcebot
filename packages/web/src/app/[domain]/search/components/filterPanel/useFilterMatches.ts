@@ -7,7 +7,6 @@ import { useGetSelectedFromQuery } from "./useGetSelectedFromQuery";
 export const LANGUAGES_QUERY_PARAM = "langs";
 export const REPOS_QUERY_PARAM = "repos";
 
-
 export const useFilteredMatches = (
     matches: SearchResultFile[],
     filterBy: 'repository' | 'language' | 'all' = 'all'

@@ -9,7 +9,7 @@ import { Copy, Check, AlertTriangle, Loader2, Plus } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDomain } from "@/hooks/useDomain";
 import { useToast } from "@/components/hooks/use-toast";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+
 import { DataTable } from "@/components/ui/data-table";
 import { columns, ApiKeyColumnInfo } from "./columns";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -17,8 +17,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 export default function ApiKeysPage() {
     const domain = useDomain();
     const { toast } = useToast();
-    const captureEvent = useCaptureEvent();
-    
+
     const [apiKeys, setApiKeys] = useState<{ name: string; createdAt: Date; lastUsedAt: Date | null }[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
@@ -79,14 +78,14 @@ export default function ApiKeysPage() {
                     description: `Failed to create API key: ${result.message}`,
                     variant: "destructive",
                 });
-                captureEvent('wa_api_key_creation_fail', {});
+                // Telemetry event removed
 
                 return;
             }
             
             setNewlyCreatedKey(result.key);
             await loadApiKeys();
-            captureEvent('wa_api_key_created', {});
+            // Telemetry event removed
         } catch (error) {
             console.error(error);
             toast({
@@ -94,7 +93,7 @@ export default function ApiKeysPage() {
                 description: `Failed to create API key: ${error}`,
                 variant: "destructive",
             });
-            captureEvent('wa_api_key_creation_fail', {});
+            // Telemetry event removed
         } finally {
             setIsCreatingKey(false);
         }

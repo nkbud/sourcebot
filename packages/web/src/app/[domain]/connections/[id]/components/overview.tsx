@@ -1,6 +1,5 @@
 'use client';
 
-import useCaptureEvent from "@/hooks/useCaptureEvent";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { DisplayConnectionError } from "./connectionError"
 import { NotFoundWarning } from "./notFoundWarning"
@@ -24,7 +23,7 @@ interface OverviewProps {
 }
 
 export const Overview = ({ connectionId }: OverviewProps) => {
-    const captureEvent = useCaptureEvent();
+    
     const domain = useDomain();
     const router = useRouter();
 
@@ -35,9 +34,9 @@ export const Overview = ({ connectionId }: OverviewProps) => {
     });
 
     const handleSecretsNavigation = useCallback(() => {
-        captureEvent('wa_connection_secrets_navigation_pressed', {});
+        // Telemetry event removed
         router.push(`/${domain}/secrets`);
-    }, [captureEvent, domain, router]);
+    }, [domain, router]);
 
     const onRetrySync = useCallback(async () => {
         const result = await flagConnectionForSync(connectionId, domain);
@@ -45,18 +44,15 @@ export const Overview = ({ connectionId }: OverviewProps) => {
             toast({
                 description: `❌ Failed to flag connection for sync.`,
             });
-            captureEvent('wa_connection_retry_sync_fail', {
-                error: result.errorCode,
-            });
+            // Telemetry event removed
         } else {
             toast({
                 description: "✅ Connection flagged for sync.",
             });
-            captureEvent('wa_connection_retry_sync_success', {});
+            // Telemetry event removed
             refetch();
         }
-    }, [connectionId, domain, captureEvent, refetch]);
-    
+    }, [connectionId, domain, refetch]);
 
     if (error) {
         return <div className="text-destructive">

@@ -1,6 +1,6 @@
 ## Build from source
 >[!NOTE]
-> Building from source is only required if you'd like to contribute. The recommended way to use Sourcebot is to use the [pre-built docker image](https://github.com/sourcebot-dev/sourcebot/pkgs/container/sourcebot).
+> Building from source is only required if you'd like to contribute. The recommended way to use Sourcebot is to use the [pre-built docker image](https://github.com/your-sourcebot-org/sourcebot/pkgs/container/sourcebot).
 
 1. Install <a href="https://go.dev/doc/install"><img src="https://go.dev/favicon.ico" width="16" height="16"> go</a>, <a href="https://docs.docker.com/get-started/get-docker/"><img src="https://www.docker.com/favicon.ico" width="16" height="16"> docker</a>, and <a href="https://nodejs.org/"><img src="https://nodejs.org/favicon.ico" width="16" height="16"> NodeJS</a>. Note that a NodeJS version of at least `21.1.0` is required.
 
@@ -20,7 +20,7 @@
 
 3. Clone the repository with submodules:
     ```sh
-    git clone --recurse-submodules https://github.com/sourcebot-dev/sourcebot.git
+    git clone --recurse-submodules https://github.com/your-sourcebot-org/sourcebot.git
     ```
 4. Run `make` to build zoekt and install dependencies:
     ```sh

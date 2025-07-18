@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Schema } from "ajv";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+
 import { CodeHostType } from "@/lib/utils";
 import { useCodeMirrorTheme } from "@/hooks/useCodeMirrorTheme";
 
@@ -109,7 +109,7 @@ const DEFAULT_ACTIONS_VISIBLE = 4;
 
 const ConfigEditor = <T,>(props: ConfigEditorProps<T>, forwardedRef: Ref<ReactCodeMirrorRef>) => {
     const { value, type, onChange, actions, schema } = props;
-    const captureEvent = useCaptureEvent();
+    
     const editorRef = useRef<ReactCodeMirrorRef>(null);
     const [isViewMoreActionsEnabled, setIsViewMoreActionsEnabled] = useState(false);
     const [height, setHeight] = useState(224);
@@ -188,10 +188,7 @@ const ConfigEditor = <T,>(props: ConfigEditorProps<T>, forwardedRef: Ref<ReactCo
                                             disabled={!isConfigValidJson(value)}
                                             onClick={(e) => {
                                                 e.preventDefault();
-                                                captureEvent('wa_config_editor_quick_action_pressed', {
-                                                    name,
-                                                    type,
-                                                });
+                                                // Telemetry event removed
                                                 if (editorRef.current?.view) {
                                                     onQuickAction(fn, value, editorRef.current.view, {
                                                         focusEditor: true,

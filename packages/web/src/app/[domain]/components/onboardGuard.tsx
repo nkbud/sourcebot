@@ -26,4 +26,3 @@ export const OnboardGuard = ({ children }: OnboardGuardProps) => {
     return content;
 }
 
-

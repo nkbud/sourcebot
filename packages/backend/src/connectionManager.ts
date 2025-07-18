@@ -6,10 +6,8 @@ import { createLogger } from "@sourcebot/logger";
 import { Redis } from 'ioredis';
 import { RepoData, compileGithubConfig, compileGitlabConfig, compileGiteaConfig, compileGerritConfig, compileBitbucketConfig, compileGenericGitHostConfig } from "./repoCompileUtils.js";
 import { BackendError, BackendException } from "@sourcebot/error";
-import { captureEvent } from "./posthog.js";
 import { env } from "./env.js";
-import * as Sentry from "@sentry/node";
-import { loadConfig, syncSearchContexts } from "@sourcebot/shared";
+import { loadConfig } from "@sourcebot/shared";
 
 interface IConnectionManager {
     scheduleConnectionSync: (connection: Connection) => Promise<void>;
@@ -127,7 +125,7 @@ export class ConnectionManager implements IConnectionManager {
             const e = new BackendException(BackendError.CONNECTION_SYNC_CONNECTION_NOT_FOUND, {
                 message: `Connection ${job.data.connectionId} not found`,
             });
-            Sentry.captureException(e);
+            // Sentry error reporting removed
             throw e;
         }
 
@@ -184,7 +182,7 @@ export class ConnectionManager implements IConnectionManager {
             })();
         } catch (err) {
             this.logger.error(`Failed to compile repo data for connection ${job.data.connectionId} (${connectionName}): ${err}`);
-            Sentry.captureException(err);
+            // Sentry error reporting removed
 
             if (err instanceof BackendException) {
                 throw err;
@@ -292,47 +290,23 @@ export class ConnectionManager implements IConnectionManager {
             }
         });
 
-        // After a connection has synced, we need to re-sync the org's search contexts as
-        // there may be new repos that match the search context's include/exclude patterns.
+        // Search contexts sync removed during EE cleanup
         if (env.CONFIG_PATH) {
-            try {
-                const config = await loadConfig(env.CONFIG_PATH);
-
-                await syncSearchContexts({
-                    db: this.db,
-                    orgId,
-                    contexts: config.contexts,
-                });
-            } catch (err) {
-                this.logger.error(`Failed to sync search contexts for connection ${connectionId}: ${err}`);
-                Sentry.captureException(err);
-            }
+            this.logger.info(`Search contexts sync skipped for connection ${connectionId} - feature removed during EE cleanup`);
         }
 
 
-        captureEvent('backend_connection_sync_job_completed', {
-            connectionId: connectionId,
-            repoCount: result.repoCount,
-        });
+        // Telemetry removed
     }
 
     private async onSyncJobFailed(job: Job<JobPayload> | undefined, err: unknown) {
         this.logger.info(`Connection sync job for connection ${job?.data.connectionName} (id: ${job?.data.connectionId}, jobId: ${job?.id}) failed with error: ${err}`);
-        Sentry.captureException(err, {
-            tags: {
-                connectionid: job?.data.connectionId,
-                jobId: job?.id,
-                queue: QUEUE_NAME,
-            }
-        });
+        // Sentry error reporting removed
 
         if (job) {
             const { connectionId } = job.data;
 
-            captureEvent('backend_connection_sync_job_failed', {
-                connectionId: connectionId,
-                error: err instanceof BackendException ? err.code : 'UNKNOWN',
-            });
+            // Telemetry removed
 
             // We may have pushed some metadata during the execution of the job, so we make sure to not overwrite the metadata here
             let syncStatusMetadata: Record<string, unknown> = (await this.db.connection.findUnique({

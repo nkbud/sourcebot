@@ -4,7 +4,6 @@ import placeholderAvatar from "@/public/placeholder_avatar.png";
 import { auth } from "@/auth";
 import { Card } from "@/components/ui/card";
 
-
 export const InviteNotFoundCard = async () => {
     const session = await auth();
 

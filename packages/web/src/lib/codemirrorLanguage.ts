@@ -109,7 +109,6 @@ import { webIDL } from "@codemirror/legacy-modes/mode/webidl";
 import { xQuery } from "@codemirror/legacy-modes/mode/xquery";
 import { languageMetadataMap } from "@/lib/languageMetadata";
 
-
 export type CodeMirrorLanguageKey = keyof typeof codemirrorLanguageMap;
 
 export const getCodemirrorLanguage = (linguistLanguage: string): StreamLanguage<unknown> | LanguageSupport | null => {

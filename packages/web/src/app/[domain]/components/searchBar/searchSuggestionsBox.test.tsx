@@ -209,7 +209,7 @@ test('completeSuggestions regex escapes suggestions when regexEscaped is true', 
     const { newQuery, newCursorPosition } = completeSuggestion({
         query,
         suggestionQuery: "github",
-        suggestion: "github.com/sourcebot-dev/sourcebot",
+        suggestion: "github.com/your-sourcebot-org/sourcebot",
         trailingSpace: true,
         regexEscaped: true,
         cursorPosition: query.length,

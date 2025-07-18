@@ -5,10 +5,6 @@ import Link from "next/link"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import useCaptureEvent from "@/hooks/useCaptureEvent"
-
-export default function DemoCard() {
-  const captureEvent = useCaptureEvent();
 
   return (
     <Card className="mb-6 w-full border bg-card text-card-foreground">
@@ -22,7 +18,7 @@ export default function DemoCard() {
 
             <Button asChild variant="outline" size="sm" className="h-8 text-xs">
               <Link 
-                href="https://demo.sourcebot.dev" 
+                href="https://demo.your-sourcebot-instance.com" 
                 target="_blank" 
                 className="flex items-center gap-1.5"
                 onClick={() => captureEvent('wa_demo_card_click', {})}

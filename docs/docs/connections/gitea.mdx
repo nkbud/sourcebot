@@ -16,7 +16,7 @@ Sourcebot can sync code from Gitea Cloud, and self-hosted.
         {
             "type": "gitea",
             "repos": [
-                "sourcebot-dev/sourcebot",
+                "your-sourcebot-org/sourcebot",
                 "getsentry/sentry",
                 "torvalds/linux"
             ]
@@ -28,7 +28,7 @@ Sourcebot can sync code from Gitea Cloud, and self-hosted.
         {
             "type": "gitea",
             "orgs": [
-                "sourcebot-dev",
+                "your-sourcebot-org",
                 "getsentry",
                 "vercel"
             ]
@@ -103,7 +103,7 @@ Next, provide the access token via the `token` property, either as an environmen
         docker run \
             -e GITEA_TOKEN=<PAT> \
             /* additional args */ \
-            ghcr.io/sourcebot-dev/sourcebot:latest
+            ghcr.io/your-sourcebot-org/sourcebot:latest
         ```
     </Tab>
 
@@ -144,7 +144,7 @@ To connect to a custom Gitea deployment, provide the `url` property to your conf
 ## Schema reference
 
 <Accordion title="Reference">
-[schemas/v3/gitea.json](https://github.com/sourcebot-dev/sourcebot/blob/main/schemas/v3/gitea.json)
+[schemas/v3/gitea.json](https://github.com/your-sourcebot-org/sourcebot/blob/main/schemas/v3/gitea.json)
 
 <GiteaSchema />
 

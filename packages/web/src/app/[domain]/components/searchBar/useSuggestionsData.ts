@@ -22,7 +22,6 @@ import { useSearchHistory } from "@/hooks/useSearchHistory";
 import { getDisplayTime, isServiceError } from "@/lib/utils";
 import { useDomain } from "@/hooks/useDomain";
 
-
 interface Props {
     suggestionMode: SuggestionMode;
     suggestionQuery: string;

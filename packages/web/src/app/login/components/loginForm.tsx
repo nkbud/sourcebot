@@ -4,14 +4,14 @@ import { useMemo } from "react";
 import { Card } from "@/components/ui/card";
 import { SourcebotLogo } from "@/app/components/sourcebotLogo";
 import { AuthMethodSelector } from "@/app/components/authMethodSelector";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+
 import DemoCard from "@/app/login/components/demoCard";
 import Link from "next/link";
 import { env } from "@/env.mjs";
 import type { AuthProvider } from "@/lib/authProviders";
 
-const TERMS_OF_SERVICE_URL = "https://sourcebot.dev/terms";
-const PRIVACY_POLICY_URL = "https://sourcebot.dev/privacy";
+const TERMS_OF_SERVICE_URL = "https://your-sourcebot-instance.com
+const PRIVACY_POLICY_URL = "https://your-sourcebot-instance.com
 
 interface LoginFormProps {
     callbackUrl?: string;
@@ -21,7 +21,6 @@ interface LoginFormProps {
 }
 
 export const LoginForm = ({ callbackUrl, error, providers, context }: LoginFormProps) => {
-    const captureEvent = useCaptureEvent();
 
     const errorMessage = useMemo(() => {
         if (!error) {

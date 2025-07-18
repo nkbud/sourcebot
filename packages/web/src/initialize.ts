@@ -4,8 +4,7 @@ import { prisma } from "@/prisma";
 import { SINGLE_TENANT_ORG_ID, SINGLE_TENANT_ORG_DOMAIN, SOURCEBOT_GUEST_USER_ID, SINGLE_TENANT_ORG_NAME } from './lib/constants';
 import { watch } from 'fs';
 import { ConnectionConfig } from '@sourcebot/schemas/v3/connection.type';
-import { hasEntitlement, loadConfig, isRemotePath, syncSearchContexts } from '@sourcebot/shared';
-import { createGuestUser, setPublicAccessStatus } from '@/ee/features/publicAccess/publicAccess';
+import { hasEntitlement, loadConfig, isRemotePath } from '@sourcebot/shared';
 import { isServiceError } from './lib/utils';
 import { ServiceErrorException } from './lib/serviceError';
 import { SOURCEBOT_SUPPORT_EMAIL } from "@/lib/constants";
@@ -113,24 +112,13 @@ const syncDeclarativeConfig = async (configPath: string) => {
     }
 
     if (hasPublicAccessEntitlement) {
-        if (enablePublicAccess && env.SOURCEBOT_EE_AUDIT_LOGGING_ENABLED === 'true') {
-            logger.error(`Audit logging is not supported when public access is enabled. Please disable audit logging (SOURCEBOT_EE_AUDIT_LOGGING_ENABLED) or disable public access.`);
-            process.exit(1);
-        }
-        
-        logger.info(`Setting public access status to ${!!enablePublicAccess} for org ${SINGLE_TENANT_ORG_DOMAIN}`);
-        const res = await setPublicAccessStatus(SINGLE_TENANT_ORG_DOMAIN, !!enablePublicAccess);
-        if (isServiceError(res)) {
-            throw new ServiceErrorException(res);
-        }
+    // Public access disabled during EE cleanup
+    if (enablePublicAccess) {
+        logger.warn(`Public access is no longer supported after EE cleanup. Skipping public access configuration.`);
     }
 
     await syncConnections(config.connections);
-    await syncSearchContexts({
-        contexts: config.contexts,
-        orgId: SINGLE_TENANT_ORG_ID,
-        db: prisma,
-    });
+    // Search contexts sync removed during EE cleanup
 }
 
 const pruneOldGuestUser = async () => {
@@ -192,12 +180,10 @@ const initSingleTenancy = async () => {
     // To keep things simple, we'll just delete the old guest user if it exists in the DB
     await pruneOldGuestUser();
 
-    const hasPublicAccessEntitlement = hasEntitlement("public-access");
+    // Public access guest user creation removed during EE cleanup
+    const hasPublicAccessEntitlement = false;
     if (hasPublicAccessEntitlement) {
-        const res = await createGuestUser(SINGLE_TENANT_ORG_DOMAIN);
-        if (isServiceError(res)) {
-            throw new ServiceErrorException(res);
-        }
+        logger.warn("Public access is no longer supported after EE cleanup.");
     }
 
     // Load any connections defined declaratively in the config file.

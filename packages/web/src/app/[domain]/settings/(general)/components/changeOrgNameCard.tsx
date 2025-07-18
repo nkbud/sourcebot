@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+
 import { useDomain } from "@/hooks/useDomain";
 import { orgNameSchema } from "@/lib/schemas";
 import { isServiceError } from "@/lib/utils";
@@ -30,7 +30,7 @@ interface ChangeOrgNameCardProps {
 export function ChangeOrgNameCard({ orgName, currentUserRole }: ChangeOrgNameCardProps) {
     const domain = useDomain()
     const { toast } = useToast()
-    const captureEvent = useCaptureEvent();
+    
     const router = useRouter();
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -47,17 +47,15 @@ export function ChangeOrgNameCard({ orgName, currentUserRole }: ChangeOrgNameCar
             toast({
                 description: `❌ Failed to update organization name. Reason: ${result.message}`,
             })
-            captureEvent('wa_org_name_updated_fail', {
-                error: result.errorCode,
-            });
+            // Telemetry event removed
         } else {
             toast({
                 description: "✅ Organization name updated successfully",
             });
-            captureEvent('wa_org_name_updated_success', {});
+            // Telemetry event removed
             router.refresh();
         }
-    }, [domain, router, toast, captureEvent]);
+    }, [domain, router, toast]);
 
     return (
         <Card>

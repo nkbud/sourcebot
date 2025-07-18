@@ -1,4 +1,3 @@
-import * as Sentry from "@sentry/node";
 
 type ValidResult<T> = {
     type: 'valid';
@@ -41,7 +40,7 @@ export function processPromiseResults<T>(
 export function throwIfAnyFailed<T>(results: PromiseSettledResult<T>[]) {
     const failedResult = results.find(result => result.status === 'rejected');
     if (failedResult) {
-        Sentry.captureException(failedResult.reason);
+        // Sentry error reporting removed
         throw failedResult.reason;
     }
 }

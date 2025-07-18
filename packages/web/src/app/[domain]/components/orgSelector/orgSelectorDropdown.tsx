@@ -9,7 +9,6 @@ import { useRouter } from "next/navigation";
 import { useCallback, useMemo, useState } from "react";
 import { OrgIcon } from "./orgIcon";
 
-
 interface OrgSelectorDropdownProps {
     orgs: {
         name: string,

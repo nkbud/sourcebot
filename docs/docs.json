@@ -94,12 +94,12 @@
             },
             {
                 "anchor": "Changelog",
-                "href": "https://sourcebot.dev/changelog",
+                "href": "https://your-sourcebot-instance.com
                 "icon": "list-check"
             },
             {
                 "anchor": "Support",
-                "href": "https://github.com/sourcebot-dev/sourcebot/discussions/categories/support",
+                "href": "https://github.com/your-sourcebot-org/sourcebot/discussions/categories/support",
                 "icon": "life-ring"
             }
         ]
@@ -112,12 +112,12 @@
         "primary": {
             "type": "button",
             "label": "GitHub",
-            "href": "https://github.com/sourcebot-dev/sourcebot"
+            "href": "https://github.com/your-sourcebot-org/sourcebot"
         }
     },
     "footer": {
         "socials": {
-            "github": "https://github.com/sourcebot-dev/sourcebot",
+            "github": "https://github.com/your-sourcebot-org/sourcebot",
             "twitter": "https://x.com/sourcebot_dev",
             "discord": "https://discord.gg/Y6b78RqM",
             "linkedin": "https://www.linkedin.com/company/sourcebot"

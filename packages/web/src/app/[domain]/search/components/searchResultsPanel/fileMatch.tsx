@@ -4,7 +4,6 @@ import { useCallback } from "react";
 import { SearchResultFile, SearchResultChunk } from "@/features/search/types";
 import { LightweightCodeHighlighter } from "@/app/[domain]/components/lightweightCodeHighlighter";
 
-
 interface FileMatchProps {
     match: SearchResultChunk;
     file: SearchResultFile;

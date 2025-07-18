@@ -15,7 +15,7 @@ import { useCallback, useMemo, useState } from "react";
 import { cancelInvite } from "@/actions";
 import { useRouter } from "next/navigation";
 import { useDomain } from "@/hooks/useDomain";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+
 interface Invite {
     id: string;
     email: string;
@@ -35,7 +35,6 @@ export const InvitesList = ({ invites, currentUserRole }: InviteListProps) => {
     const { toast } = useToast();
     const router = useRouter();
     const domain = useDomain();
-    const captureEvent = useCaptureEvent();
 
     const filteredInvites = useMemo(() => {
         return invites
@@ -70,7 +69,7 @@ export const InvitesList = ({ invites, currentUserRole }: InviteListProps) => {
                     router.refresh();
                 }
             });
-    }, [domain, toast, router, captureEvent]);
+    }, [domain, toast, router]);
 
     return (
         <div className="w-full mx-auto space-y-6">

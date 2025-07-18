@@ -5,18 +5,16 @@ import { Card } from "@/components/ui/card";
 import { TriangleAlert } from "lucide-react";
 import { useCallback, useEffect } from "react";
 import { dismissMobileUnsupportedSplashScreen } from "@/actions";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
 
 export const MobileUnsupportedSplashScreen = () => {
-    const captureEvent = useCaptureEvent();
 
     useEffect(() => {
-        captureEvent('wa_mobile_unsupported_splash_screen_displayed', {});
+        // Telemetry event removed
     }, [captureEvent]);
 
     const onDismissed = useCallback(() => {
         dismissMobileUnsupportedSplashScreen();
-        captureEvent('wa_mobile_unsupported_splash_screen_dismissed', {});
+        // Telemetry event removed
     }, [captureEvent]);
 
     return (

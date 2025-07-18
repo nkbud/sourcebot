@@ -20,7 +20,6 @@ export function InviteLinkToggle({ inviteLinkEnabled, inviteLink }: InviteLinkTo
     const [isLoading, setIsLoading] = useState(false)
     const [copied, setCopied] = useState(false)
     const { toast } = useToast()
-    
 
     const handleToggle = async (checked: boolean) => {
         setIsLoading(true)

@@ -7,7 +7,7 @@ import { useLocalStorage } from "usehooks-ts";
 import { getVersion } from "@/app/api/(client)/client";
 import { useQuery } from "@tanstack/react-query";
 
-const GITHUB_TAGS_URL = "https://api.github.com/repos/sourcebot-dev/sourcebot/tags";
+const GITHUB_TAGS_URL = "https://api.github.com/repos/your-sourcebot-org/sourcebot/tags";
 const SEMVER_REGEX = /^v(\d+)\.(\d+)\.(\d+)$/;
 const TOAST_TIMEOUT_MS = 1000 * 60 * 60 * 24;
 
@@ -71,7 +71,7 @@ export const UpgradeToast = () => {
                             <ToastAction
                                 altText="Upgrade"
                                 onClick={() => {
-                                    window.open("https://github.com/sourcebot-dev/sourcebot/releases/latest", "_blank");
+                                    window.open("https://github.com/your-sourcebot-org/sourcebot/releases/latest", "_blank");
                                 }}
                             >
                                 Upgrade

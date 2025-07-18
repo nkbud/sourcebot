@@ -28,4 +28,3 @@ export const UpgradeGuard = ({ children }: UpgradeGuardProps) => {
     return content;
 }
 
-

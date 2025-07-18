@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useDomain } from "@/hooks/useDomain";
 import { isServiceError } from "@/lib/utils";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+
 import { ServiceError } from "@/lib/serviceError";
 
 interface Props {
@@ -15,12 +15,9 @@ interface Props {
 
 export const TrialNavIndicator = ({ subscription }: Props) => {
     const domain = useDomain();
-    const captureEvent = useCaptureEvent();
 
     if (isServiceError(subscription)) {
-        captureEvent('wa_trial_nav_subscription_fetch_fail', {
-            error: subscription.errorCode,
-        });
+        // Telemetry event removed
         return null;
     }
 

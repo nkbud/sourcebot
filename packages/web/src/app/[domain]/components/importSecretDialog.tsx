@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+
 import { useDomain } from "@/hooks/useDomain";
 import { CodeHostType, isServiceError } from "@/lib/utils";
 import githubPatCreation from "@/public/github_pat_creation.png";
@@ -21,7 +21,6 @@ import { useCallback, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-
 interface ImportSecretDialogProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
@@ -29,21 +28,16 @@ interface ImportSecretDialogProps {
     codeHostType: CodeHostType;
 }
 
-
 export const ImportSecretDialog = ({ open, onOpenChange, onSecretCreated, codeHostType }: ImportSecretDialogProps) => {
     const [showValue, setShowValue] = useState(false);
     const domain = useDomain();
     const { toast } = useToast();
-    const captureEvent = useCaptureEvent();
 
     const formSchema = z.object({
         key: z.string().min(1).refine(async (key) => {
             const doesSecretExist = await checkIfSecretExists(key, domain);
             if(!isServiceError(doesSecretExist)) {
-                captureEvent('wa_secret_combobox_import_secret_fail', {
-                    type: codeHostType,
-                    error: "A secret with this key already exists.",
-                });
+                // Telemetry event removed
             }
             return isServiceError(doesSecretExist) || !doesSecretExist;
         }, "A secret with this key already exists."),
@@ -65,22 +59,17 @@ export const ImportSecretDialog = ({ open, onOpenChange, onSecretCreated, codeHo
             toast({
                 description: `❌ Failed to create secret. Reason: ${response.message}`
             });
-            captureEvent('wa_secret_combobox_import_secret_fail', {
-                type: codeHostType,
-                error: response.message,
-            });
+            // Telemetry event removed
         } else {
             toast({
                 description: `✅ Secret created successfully!`
             });
-            captureEvent('wa_secret_combobox_import_secret_success', {
-                type: codeHostType,
-            });
+            // Telemetry event removed
             form.reset();
             onOpenChange(false);
             onSecretCreated(data.key);
         }
-    }, [domain, toast, onOpenChange, onSecretCreated, form, codeHostType, captureEvent]);
+    }, [domain, toast, onOpenChange, onSecretCreated, form, codeHostType]);
 
     const codeHostSpecificStep = useMemo(() => {
         switch (codeHostType) {
@@ -99,7 +88,6 @@ export const ImportSecretDialog = ({ open, onOpenChange, onSecretCreated, codeHo
         }
     }, [codeHostType]);
 
-
     return (
         <Dialog
             open={open}
@@ -112,7 +100,7 @@ export const ImportSecretDialog = ({ open, onOpenChange, onSecretCreated, codeHo
                     <DialogTitle className="text-2xl font-semibold">Import a secret</DialogTitle>
                     <DialogDescription>
                         Secrets are used to authenticate with a code host. They are encrypted at rest using <Link href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard" target="_blank" className="underline">AES-256-CBC</Link>.
-                        Checkout our <Link href="https://sourcebot.dev/security" target="_blank" className="underline">security docs</Link> for more information.
+                        Checkout our <Link href="https://your-sourcebot-instance.com target="_blank" className="underline">security docs</Link> for more information.
                     </DialogDescription>
                 </DialogHeader>
 
@@ -271,7 +259,7 @@ const BitbucketCloudPATCreationStep = ({ step }: { step: number }) => {
         <SecretCreationStep
             step={step}
             title="Create an Access Token"
-            description=<span>Please check out our <Link href="https://docs.sourcebot.dev/docs/connections/bitbucket-cloud#authenticating-with-bitbucket-cloud" target="_blank" className="underline">docs</Link> for more information on how to create auth credentials for Bitbucket Cloud.</span>
+            description=<span>Please check out our <Link href="https://docs.your-sourcebot-instance.com target="_blank" className="underline">docs</Link> for more information on how to create auth credentials for Bitbucket Cloud.</span>
         >
         </SecretCreationStep>
     )
@@ -282,7 +270,7 @@ const BitbucketServerPATCreationStep = ({ step }: { step: number }) => {
         <SecretCreationStep
             step={step}
             title="Create an Access Token"
-            description=<span>Please check out our <Link href="https://docs.sourcebot.dev/docs/connections/bitbucket-data-center#authenticating-with-bitbucket-data-center" target="_blank" className="underline">docs</Link> for more information on how to create auth credentials for Bitbucket Data Center.</span>
+            description=<span>Please check out our <Link href="https://docs.your-sourcebot-instance.com target="_blank" className="underline">docs</Link> for more information on how to create auth credentials for Bitbucket Data Center.</span>
         >
         </SecretCreationStep>
     )

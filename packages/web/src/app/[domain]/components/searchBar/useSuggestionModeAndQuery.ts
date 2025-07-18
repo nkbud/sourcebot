@@ -80,7 +80,6 @@ export const useSuggestionModeAndQuery = ({
         setPrevSuggestionMode(suggestionMode);
     }, [prevSuggestionMode, suggestionMode]);
 
-
     return {
         suggestionMode,
         suggestionQuery,

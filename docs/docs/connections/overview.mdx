@@ -14,7 +14,7 @@ docker run \
     -v $(pwd)/config.json:/data/config.json \
     -e CONFIG_PATH=/data/config.json \
     ... \ # other config
-    ghcr.io/sourcebot-dev/sourcebot:latest
+    ghcr.io/your-sourcebot-org/sourcebot:latest
 ```
 
 ## Config Schema
@@ -25,13 +25,13 @@ Each connection defines how Sourcebot should authenticate and interact with a pa
 
 ```json wrap icon="code" Example config with two connections
 {
-    "$schema": "https://raw.githubusercontent.com/sourcebot-dev/sourcebot/main/schemas/v3/index.json",
+    "$schema": "https://raw.githubusercontent.com/your-sourcebot-org/sourcebot/main/schemas/v3/index.json",
     "connections": {
         // 1. A connection to GitHub.com
         "github-connection": {
             "type": "github",
             "repos": [
-                "sourcebot-dev/sourcebot"
+                "your-sourcebot-org/sourcebot"
             ],
             "token": {
                 "env": "GITHUB_TOKEN"
@@ -79,14 +79,14 @@ To learn more about how to create a connection for a specific code host, check o
 
 <SupportedPlatforms />
 
-<Note>Missing your code host? [Submit a feature request on GitHub](https://github.com/sourcebot-dev/sourcebot/discussions/categories/ideas).</Note>
+<Note>Missing your code host? [Submit a feature request on GitHub](https://github.com/your-sourcebot-org/sourcebot/discussions/categories/ideas).</Note>
 
 
 ## Schema reference
 ---
 
 <Accordion title="Reference">
-[schemas/v3/index.json](https://github.com/sourcebot-dev/sourcebot/blob/main/schemas/v3/index.json)
+[schemas/v3/index.json](https://github.com/your-sourcebot-org/sourcebot/blob/main/schemas/v3/index.json)
 
 <ConfigSchema />
 
