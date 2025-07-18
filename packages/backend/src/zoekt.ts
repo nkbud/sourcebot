@@ -6,7 +6,6 @@ import { getShardPrefix } from "./utils.js";
 import { getBranches, getTags } from "./git.js";
 import micromatch from "micromatch";
 import { createLogger } from "@sourcebot/logger";
-import { captureEvent } from "./posthog.js";
 
 const logger = createLogger('zoekt');
 
@@ -50,10 +49,7 @@ export const indexGitRepository = async (repo: Repo, settings: Settings, ctx: Ap
     // zoekt has a limit of 64 branches/tags to index.
     if (revisions.length > 64) {
         logger.warn(`Too many revisions (${revisions.length}) for repo ${repo.id}, truncating to 64`);
-        captureEvent('backend_revisions_truncated', {
-            repoId: repo.id,
-            revisionCount: revisions.length,
-        });
+        // Telemetry removed
         revisions = revisions.slice(0, 64);
     }
     

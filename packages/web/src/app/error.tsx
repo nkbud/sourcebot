@@ -1,6 +1,5 @@
 "use client";
 
-import * as Sentry from "@sentry/nextjs";
 import { useEffect, useMemo } from 'react'
 import { useState } from "react"
 import { Copy, CheckCircle2, TriangleAlert } from "lucide-react"
@@ -13,7 +12,7 @@ import { SOURCEBOT_SUPPORT_EMAIL } from "@/lib/constants";
 
 export default function Error({ error, reset }: { error: Error & { digest?: string }, reset: () => void }) {
     useEffect(() => {
-        Sentry.captureException(error);
+        // Sentry error reporting removed during telemetry cleanup
         console.error(error);
     }, [error]);
 

@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import { QueryClientProvider } from "./queryClientProvider";
-import { PostHogProvider } from "./posthogProvider";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { SessionProvider } from "next-auth/react";
@@ -31,20 +30,18 @@ export default function RootLayout({
                 <Toaster />
                 <SessionProvider>
                     <PlanProvider entitlements={getEntitlements()}>
-                        <PostHogProvider disabled={env.SOURCEBOT_TELEMETRY_DISABLED === "true"}>
-                            <ThemeProvider
-                                attribute="class"
-                                defaultTheme="system"
-                                enableSystem
-                                disableTransitionOnChange
-                            >
-                                <QueryClientProvider>
-                                    <TooltipProvider>
-                                        {children}
-                                    </TooltipProvider>
-                                </QueryClientProvider>
-                            </ThemeProvider>
-                        </PostHogProvider>
+                        <ThemeProvider
+                            attribute="class"
+                            defaultTheme="system"
+                            enableSystem
+                            disableTransitionOnChange
+                        >
+                            <QueryClientProvider>
+                                <TooltipProvider>
+                                    {children}
+                                </TooltipProvider>
+                            </QueryClientProvider>
+                        </ThemeProvider>
                     </PlanProvider>
                 </SessionProvider>
             </body>

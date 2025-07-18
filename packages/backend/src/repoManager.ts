@@ -9,7 +9,6 @@ import { cloneRepository, fetchRepository, upsertGitConfig } from "./git.js";
 import { existsSync, readdirSync, promises } from 'fs';
 import { indexGitRepository } from "./zoekt.js";
 import { PromClient } from './promClient.js';
-import * as Sentry from "@sentry/node";
 import { env } from './env.js';
 
 interface IRepoManager {
@@ -303,7 +302,7 @@ export class RepoManager implements IRepoManager {
         if (!existingRepo) {
             logger.error(`Repo ${repo.id} not found`);
             const e = new Error(`Repo ${repo.id} not found`);
-            Sentry.captureException(e);
+            // Sentry error reporting removed
             throw e;
         }
         const repoAlreadyInIndexingState = existingRepo.repoIndexingStatus === RepoIndexingStatus.INDEXING;
@@ -328,7 +327,7 @@ export class RepoManager implements IRepoManager {
                 await this.syncGitRepository(repo, repoAlreadyInIndexingState);
                 break;
             } catch (error) {
-                Sentry.captureException(error);
+                // Sentry error reporting removed
 
                 attempts++;
                 this.promClient.repoIndexingReattemptsTotal.inc();
@@ -362,13 +361,7 @@ export class RepoManager implements IRepoManager {
 
     private async onIndexJobFailed(job: Job<RepoIndexingPayload> | undefined, err: unknown) {
         logger.info(`Repo index job for repo ${job?.data.repo.displayName} (id: ${job?.data.repo.id}, jobId: ${job?.id}) failed with error: ${err}`);
-        Sentry.captureException(err, {
-            tags: {
-                repoId: job?.data.repo.id,
-                jobId: job?.id,
-                queue: REPO_INDEXING_QUEUE,
-            }
-        });
+        // Sentry error reporting removed
 
         if (job) {
             this.promClient.activeRepoIndexingJobs.dec();
@@ -511,13 +504,7 @@ export class RepoManager implements IRepoManager {
 
     private async onGarbageCollectionJobFailed(job: Job<RepoGarbageCollectionPayload> | undefined, err: unknown) {
         logger.info(`Garbage collection job failed (id: ${job?.id ?? 'unknown'}) with error: ${err}`);
-        Sentry.captureException(err, {
-            tags: {
-                repoId: job?.data.repo.id,
-                jobId: job?.id,
-                queue: REPO_GC_QUEUE,
-            }
-        });
+        // Sentry error reporting removed
 
         if (job) {
             this.promClient.activeRepoGarbageCollectionJobs.dec();

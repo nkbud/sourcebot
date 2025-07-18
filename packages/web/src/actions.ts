@@ -6,7 +6,6 @@ import { notAuthenticated, notFound, orgNotFound, secretAlreadyExists, ServiceEr
 import { CodeHostType, isServiceError } from "@/lib/utils";
 import { prisma } from "@/prisma";
 import { render } from "@react-email/components";
-import * as Sentry from '@sentry/nextjs';
 import { decrypt, encrypt, generateApiKey, hashSecret, getTokenFromConfig } from "@sourcebot/crypto";
 import { ConnectionSyncStatus, OrgRole, Prisma, RepoIndexingStatus, StripeSubscriptionStatus, Org, ApiKey } from "@sourcebot/db";
 import { ConnectionConfig } from "@sourcebot/schemas/v3/connection.type";
@@ -51,7 +50,7 @@ export const sew = async <T>(fn: () => Promise<T>): Promise<T | ServiceError> =>
     try {
         return await fn();
     } catch (e) {
-        Sentry.captureException(e);
+        // Sentry error reporting removed during telemetry cleanup
         logger.error(e);
         return unexpectedError(`An unexpected error occurred. Please try again later.`);
     }

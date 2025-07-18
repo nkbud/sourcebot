@@ -5,7 +5,6 @@ import type { ClientOptions, ClientPathsWithMethod } from "openapi-fetch";
 import { createLogger } from "@sourcebot/logger";
 import { PrismaClient } from "@sourcebot/db";
 import { getTokenFromConfig, measure, fetchWithRetry } from "./utils.js";
-import * as Sentry from "@sentry/node";
 import {
     SchemaRepository as CloudRepository,
 } from "@coderabbitai/bitbucket/cloud/openapi";
@@ -202,7 +201,7 @@ async function cloudGetReposForWorkspace(client: BitbucketClient, workspaces: st
                 data: data,
             };
         } catch (e: any) {
-            Sentry.captureException(e);
+            // Sentry error reporting removed
             logger.error(`Failed to get repos for workspace ${workspace}: ${e}`);
 
             const status = e?.cause?.response?.status;
@@ -260,7 +259,7 @@ async function cloudGetReposForProjects(client: BitbucketClient, projects: strin
                 data: repos
             }
         } catch (e: any) {
-            Sentry.captureException(e);
+            // Sentry error reporting removed
             logger.error(`Failed to fetch repos for project ${project_name}: ${e}`);
 
             const status = e?.cause?.response?.status;
@@ -307,7 +306,7 @@ async function cloudGetRepos(client: BitbucketClient, repos: string[]): Promise<
                 data: [data]
             };
         } catch (e: any) {
-            Sentry.captureException(e);
+            // Sentry error reporting removed
             logger.error(`Failed to fetch repo ${repo}: ${e}`);
 
             const status = e?.cause?.response?.status;
@@ -455,7 +454,7 @@ async function serverGetReposForProjects(client: BitbucketClient, projects: stri
                 data: data,
             };
         } catch (e: any) {
-            Sentry.captureException(e);
+            // Sentry error reporting removed
             logger.error(`Failed to get repos for project ${project}: ${e}`);
 
             const status = e?.cause?.response?.status;
@@ -502,7 +501,7 @@ async function serverGetRepos(client: BitbucketClient, repos: string[]): Promise
                 data: [data]
             };
         } catch (e: any) {
-            Sentry.captureException(e);
+            // Sentry error reporting removed
             logger.error(`Failed to fetch repo ${repo}: ${e}`);
 
             const status = e?.cause?.response?.status;

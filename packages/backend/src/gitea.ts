@@ -6,7 +6,6 @@ import { createLogger } from '@sourcebot/logger';
 import micromatch from 'micromatch';
 import { PrismaClient } from '@sourcebot/db';
 import { processPromiseResults, throwIfAnyFailed } from './connectionUtils.js';
-import * as Sentry from "@sentry/node";
 import { env } from './env.js';
 
 const logger = createLogger('gitea');
@@ -142,7 +141,7 @@ const getReposOwnedByUsers = async <T>(users: string[], api: Api<T>) => {
                 data
             };
         } catch (e: any) {
-            Sentry.captureException(e);
+            // Sentry error reporting removed
 
             if (e?.status === 404) {
                 logger.error(`User ${user} not found or no access`);
@@ -182,7 +181,7 @@ const getReposForOrgs = async <T>(orgs: string[], api: Api<T>) => {
                 data
             };
         } catch (e: any) {
-            Sentry.captureException(e);
+            // Sentry error reporting removed
 
             if (e?.status === 404) {
                 logger.error(`Organization ${org} not found or no access`);
@@ -220,7 +219,7 @@ const getRepos = async <T>(repos: string[], api: Api<T>) => {
                 data: [response.data]
             };
         } catch (e: any) {
-            Sentry.captureException(e);
+            // Sentry error reporting removed
 
             if (e?.status === 404) {
                 logger.error(`Repository ${repo} not found or no access`);
@@ -251,7 +250,7 @@ const paginate = async <T>(request: (page: number) => Promise<HttpResponse<T[], 
     const totalCountString = result.headers.get('x-total-count');
     if (!totalCountString) {
         const e = new Error("Header 'x-total-count' not found");
-        Sentry.captureException(e);
+        // Sentry error reporting removed
         throw e;
     }
     const totalCount = parseInt(totalCountString);

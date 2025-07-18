@@ -1,6 +1,5 @@
-import "./instrument.js";
+// Instrumentation removed during telemetry cleanup
 
-import * as Sentry from "@sentry/node";
 import { existsSync } from 'fs';
 import { mkdir } from 'fs/promises';
 import path from 'path';
@@ -65,7 +64,7 @@ main(prisma, context)
     })
     .catch(async (e) => {
         logger.error(e);
-        Sentry.captureException(e);
+        // Sentry error reporting removed
 
         await prisma.$disconnect();
         process.exit(1);
