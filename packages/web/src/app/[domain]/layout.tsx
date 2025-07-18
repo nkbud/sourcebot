@@ -1,5 +1,5 @@
 import { prisma } from "@/prisma";
-import { auth } from "@/auth";
+import { auth } from "@/lib/auth-new";
 import { getOrgFromDomain } from "@/data/org";
 import { isServiceError } from "@/lib/utils";
 import { OnboardGuard } from "./components/onboardGuard";
@@ -17,7 +17,6 @@ import { PendingApprovalCard } from "./components/pendingApproval";
 import { hasEntitlement } from "@sourcebot/shared";
 import { getPublicAccessStatus } from "@/lib/publicAccess";
 import { env } from "@/env.mjs";
-import { GcpIapAuth } from "./components/gcpIapAuth";
 
 interface LayoutProps {
     children: React.ReactNode,
@@ -38,12 +37,8 @@ export default async function Layout({
     if (!publicAccessEnabled) {
         const session = await auth();
         if (!session) {
-            const ssoEntitlement = await hasEntitlement("sso");
-            if (ssoEntitlement && env.AUTH_EE_GCP_IAP_ENABLED && env.AUTH_EE_GCP_IAP_AUDIENCE) {
-                return <GcpIapAuth callbackUrl={`/${domain}`} />;
-            } else {
-                redirect('/login');
-            }
+            // OAuth2 Proxy handles authentication - redirect to login
+            redirect('/login');
         }
 
         const membership = await prisma.userToOrg.findUnique({

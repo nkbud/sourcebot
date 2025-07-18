@@ -1,0 +1,113 @@
+version: '3.8'
+
+services:
+  oauth2-proxy:
+    image: quay.io/oauth2-proxy/oauth2-proxy:v7.6.0
+    ports:
+      - "4180:4180"
+    environment:
+      # OAuth2 Proxy Configuration
+      OAUTH2_PROXY_HTTP_ADDRESS: "0.0.0.0:4180"
+      OAUTH2_PROXY_UPSTREAMS: "http://sourcebot:3000"
+      OAUTH2_PROXY_PROVIDER: "oidc"
+      OAUTH2_PROXY_SKIP_PROVIDER_BUTTON: "true"
+      
+      # Okta Configuration
+      OAUTH2_PROXY_OIDC_ISSUER_URL: "${OKTA_ISSUER_URL}"
+      OAUTH2_PROXY_CLIENT_ID: "${OKTA_CLIENT_ID}"
+      OAUTH2_PROXY_CLIENT_SECRET: "${OKTA_CLIENT_SECRET}"
+      OAUTH2_PROXY_REDIRECT_URL: "http://localhost:4180/oauth2/callback"
+      
+      # Cookie and Session Settings
+      OAUTH2_PROXY_COOKIE_SECRET: "${OAUTH2_PROXY_COOKIE_SECRET}"
+      OAUTH2_PROXY_COOKIE_DOMAINS: "localhost"
+      OAUTH2_PROXY_COOKIE_SECURE: "false"
+      OAUTH2_PROXY_COOKIE_HTTPONLY: "true"
+      OAUTH2_PROXY_COOKIE_SAMESITE: "lax"
+      
+      # Header Settings
+      OAUTH2_PROXY_SET_XAUTHREQUEST: "true"
+      OAUTH2_PROXY_PASS_BASIC_AUTH: "false"
+      OAUTH2_PROXY_PASS_ACCESS_TOKEN: "false"
+      OAUTH2_PROXY_PASS_USER_HEADERS: "true"
+      
+      # Access Control
+      OAUTH2_PROXY_EMAIL_DOMAINS: "${ALLOWED_EMAIL_DOMAINS:-*}"
+      OAUTH2_PROXY_ALLOWED_GROUPS: "${ALLOWED_GROUPS:-}"
+      
+      # Logging
+      OAUTH2_PROXY_REQUEST_LOGGING: "true"
+      OAUTH2_PROXY_AUTH_LOGGING: "true"
+      OAUTH2_PROXY_STANDARD_LOGGING: "true"
+      
+      # Security
+      OAUTH2_PROXY_SKIP_AUTH_REGEX: "^/api/health|^/api/public|^/_next/|^/static/"
+      
+    depends_on:
+      - sourcebot
+    networks:
+      - sourcebot-network
+
+  sourcebot:
+    build: .
+    environment:
+      # OAuth2 Proxy Integration
+      OAUTH2_PROXY_ENABLED: "true"
+      OAUTH2_PROXY_VALIDATE_HEADERS: "true"
+      
+      # Database
+      DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/postgres"
+      
+      # Other required settings
+      ZOEKT_WEBSERVER_URL: "http://zoekt:6070"
+      REDIS_URL: "redis://redis:6379"
+      DATA_CACHE_DIR: "/app/.sourcebot"
+      SOURCEBOT_PUBLIC_KEY_PATH: "/app/public.pem"
+      
+      # Legacy auth disabled
+      AUTH_CREDENTIALS_LOGIN_ENABLED: "false"
+      AUTH_EMAIL_CODE_LOGIN_ENABLED: "false"
+      
+    depends_on:
+      - postgres
+      - redis
+      - zoekt
+    networks:
+      - sourcebot-network
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - sourcebot-network
+
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis_data:/data
+    networks:
+      - sourcebot-network
+
+  zoekt:
+    image: sourcegraph/zoekt-webserver:insiders
+    ports:
+      - "6070:6070"
+    command: ["-index", "/data/index", "-rpc"]
+    volumes:
+      - zoekt_data:/data
+    networks:
+      - sourcebot-network
+
+volumes:
+  postgres_data:
+  redis_data:
+  zoekt_data:
+
+networks:
+  sourcebot-network:
+    driver: bridge

@@ -4,7 +4,6 @@ import { ThemeProvider } from "next-themes";
 import { QueryClientProvider } from "./queryClientProvider";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { SessionProvider } from "next-auth/react";
 import { PlanProvider } from "@/features/entitlements/planProvider";
 import { getEntitlements } from "@sourcebot/shared";
 
@@ -27,22 +26,20 @@ export default function RootLayout({
         >
             <body>
                 <Toaster />
-                <SessionProvider>
-                    <PlanProvider entitlements={getEntitlements()}>
-                        <ThemeProvider
-                            attribute="class"
-                            defaultTheme="system"
-                            enableSystem
-                            disableTransitionOnChange
-                        >
-                                <QueryClientProvider>
-                                    <TooltipProvider>
-                                        {children}
-                                    </TooltipProvider>
-                                </QueryClientProvider>
-                            </ThemeProvider>
-                    </PlanProvider>
-                </SessionProvider>
+                <PlanProvider entitlements={getEntitlements()}>
+                    <ThemeProvider
+                        attribute="class"
+                        defaultTheme="system"
+                        enableSystem
+                        disableTransitionOnChange
+                    >
+                            <QueryClientProvider>
+                                <TooltipProvider>
+                                    {children}
+                                </TooltipProvider>
+                            </QueryClientProvider>
+                        </ThemeProvider>
+                </PlanProvider>
             </body>
         </html>
     );

@@ -19,18 +19,23 @@ export const env = createEnv({
         TOTAL_MAX_MATCH_COUNT: numberSchema.default(100000),
         ZOEKT_MAX_WALL_TIME_MS: numberSchema.default(10000),
         
-        // Auth
-        AUTH_SECRET: z.string(),
-        AUTH_URL: z.string().url(),
-        AUTH_CREDENTIALS_LOGIN_ENABLED: booleanSchema.default('true'),
+        // OAuth2 Proxy Authentication
+        OAUTH2_PROXY_ENABLED: booleanSchema.default('true'),
+        OAUTH2_PROXY_VALIDATE_HEADERS: booleanSchema.default('true'),
+        OAUTH2_PROXY_REQUIRED_GROUPS: z.string().optional(),
+        
+        // Legacy Auth (deprecated - will be removed)
+        AUTH_SECRET: z.string().optional(),
+        AUTH_URL: z.string().url().optional(),
+        AUTH_CREDENTIALS_LOGIN_ENABLED: booleanSchema.default('false'),
         AUTH_EMAIL_CODE_LOGIN_ENABLED: booleanSchema.default('false'),
 
-        // Dex OAuth2 Support
+        // Dex OAuth2 Support (deprecated - will be removed)
         AUTH_DEX_ISSUER_URL: z.string().optional(),
         AUTH_DEX_CLIENT_ID: z.string().optional(),
         AUTH_DEX_CLIENT_SECRET: z.string().optional(),
 
-        // Enterprise Auth
+        // Enterprise Auth (deprecated - will be removed)
         AUTH_EE_ENABLE_JIT_PROVISIONING: booleanSchema.default('false'),
 
         AUTH_EE_GITHUB_CLIENT_ID: z.string().optional(),
