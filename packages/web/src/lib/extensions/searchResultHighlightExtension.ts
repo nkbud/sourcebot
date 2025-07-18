@@ -14,7 +14,6 @@ const convertToCodeMirrorRange = (range: SourceRange, document: Text) => {
     return { from, to };
 }
 
-
 const matchHighlighter = StateField.define<DecorationSet>({
     create () {
         return Decoration.none;

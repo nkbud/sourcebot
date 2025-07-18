@@ -32,7 +32,7 @@ export default function VerificationFailed() {
       </div>
 
       <div className="mt-8 flex gap-6 text-sm text-gray-500">
-        <a href="https://www.sourcebot.dev" className="hover:text-gray-300">
+        <a href="https://your-sourcebot-instance.com" className="hover:text-gray-300">
           About
         </a>
         <a href={`mailto:${SOURCEBOT_SUPPORT_EMAIL}`} className="hover:text-gray-300">

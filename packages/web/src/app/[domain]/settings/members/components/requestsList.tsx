@@ -14,7 +14,6 @@ import { useCallback, useMemo, useState } from "react";
 import { approveAccountRequest, rejectAccountRequest } from "@/actions";
 import { useRouter } from "next/navigation";
 import { useDomain } from "@/hooks/useDomain";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
 
 interface Request {
     id: string;
@@ -37,7 +36,6 @@ export const RequestsList = ({ requests, currentUserRole }: RequestsListProps) =
     const { toast } = useToast();
     const router = useRouter();
     const domain = useDomain();
-    const captureEvent = useCaptureEvent();
 
     const filteredRequests = useMemo(() => {
         return requests
@@ -73,7 +71,7 @@ export const RequestsList = ({ requests, currentUserRole }: RequestsListProps) =
                     router.refresh();
                 }
             });
-    }, [domain, toast, router, captureEvent]);
+    }, [domain, toast, router]);
 
     const onRejectRequest = useCallback((requestId: string) => {
         rejectAccountRequest(requestId, domain)
@@ -93,7 +91,7 @@ export const RequestsList = ({ requests, currentUserRole }: RequestsListProps) =
                     router.refresh();
                 }
             });
-    }, [domain, toast, router, captureEvent]);
+    }, [domain, toast, router]);
 
     return (
         <div className="w-full mx-auto space-y-6">

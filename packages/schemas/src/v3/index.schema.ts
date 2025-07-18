@@ -79,26 +79,26 @@ const schema = {
       "properties": {
         "include": {
           "type": "array",
-          "description": "List of repositories to include in the search context. Expected to be formatted as a URL without any leading http(s):// prefix (e.g., 'github.com/sourcebot-dev/sourcebot'). Glob patterns are supported.",
+          "description": "List of repositories to include in the search context. Expected to be formatted as a URL without any leading http(s):// prefix (e.g., 'github.com/your-sourcebot-org/sourcebot'). Glob patterns are supported.",
           "items": {
             "type": "string"
           },
           "examples": [
             [
-              "github.com/sourcebot-dev/**",
+              "github.com/your-sourcebot-org/**",
               "gerrit.example.org/sub/path/**"
             ]
           ]
         },
         "exclude": {
           "type": "array",
-          "description": "List of repositories to exclude from the search context. Expected to be formatted as a URL without any leading http(s):// prefix (e.g., 'github.com/sourcebot-dev/sourcebot'). Glob patterns are supported.",
+          "description": "List of repositories to exclude from the search context. Expected to be formatted as a URL without any leading http(s):// prefix (e.g., 'github.com/your-sourcebot-org/sourcebot'). Glob patterns are supported.",
           "items": {
             "type": "string"
           },
           "examples": [
             [
-              "github.com/sourcebot-dev/sourcebot",
+              "github.com/your-sourcebot-org/sourcebot",
               "gerrit.example.org/sub/path/**"
             ]
           ]
@@ -187,7 +187,7 @@ const schema = {
     },
     "contexts": {
       "type": "object",
-      "description": "[Sourcebot EE] Defines a collection of search contexts. This is only available in single-tenancy mode. See: https://docs.sourcebot.dev/docs/features/search/search-contexts",
+      "description": "[Sourcebot EE] Defines a collection of search contexts. This is only available in single-tenancy mode. See: https://docs.your-sourcebot-instance.com
       "patternProperties": {
         "^[a-zA-Z0-9_-]+$": {
           "$schema": "http://json-schema.org/draft-07/schema#",
@@ -197,26 +197,26 @@ const schema = {
           "properties": {
             "include": {
               "type": "array",
-              "description": "List of repositories to include in the search context. Expected to be formatted as a URL without any leading http(s):// prefix (e.g., 'github.com/sourcebot-dev/sourcebot'). Glob patterns are supported.",
+              "description": "List of repositories to include in the search context. Expected to be formatted as a URL without any leading http(s):// prefix (e.g., 'github.com/your-sourcebot-org/sourcebot'). Glob patterns are supported.",
               "items": {
                 "type": "string"
               },
               "examples": [
                 [
-                  "github.com/sourcebot-dev/**",
+                  "github.com/your-sourcebot-org/**",
                   "gerrit.example.org/sub/path/**"
                 ]
               ]
             },
             "exclude": {
               "type": "array",
-              "description": "List of repositories to exclude from the search context. Expected to be formatted as a URL without any leading http(s):// prefix (e.g., 'github.com/sourcebot-dev/sourcebot'). Glob patterns are supported.",
+              "description": "List of repositories to exclude from the search context. Expected to be formatted as a URL without any leading http(s):// prefix (e.g., 'github.com/your-sourcebot-org/sourcebot'). Glob patterns are supported.",
               "items": {
                 "type": "string"
               },
               "examples": [
                 [
-                  "github.com/sourcebot-dev/sourcebot",
+                  "github.com/your-sourcebot-org/sourcebot",
                   "gerrit.example.org/sub/path/**"
                 ]
               ]
@@ -325,7 +325,7 @@ const schema = {
                       "my-org-name"
                     ],
                     [
-                      "sourcebot-dev",
+                      "your-sourcebot-org",
                       "commaai"
                     ]
                   ],
@@ -1076,7 +1076,7 @@ const schema = {
                   "description": "The URL to the git repository. This can either be a remote URL (prefixed with `http://` or `https://`) or a absolute path to a directory on the local machine (prefixed with `file://`). If a local directory is specified, it must point to the root of a git repository. Local directories are treated as read-only modified. Local directories support glob patterns.",
                   "pattern": "^(https?:\\/\\/[^\\s/$.?#].[^\\s]*|file:\\/\\/\\/[^\\s]+)$",
                   "examples": [
-                    "https://github.com/sourcebot-dev/sourcebot",
+                    "https://github.com/your-sourcebot-org/sourcebot",
                     "file:///path/to/repo",
                     "file:///repos/*"
                   ]

@@ -5,7 +5,7 @@ import {
     ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import { Separator } from "@/components/ui/separator";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+
 import { useNonEmptyQueryParam } from "@/hooks/useNonEmptyQueryParam";
 import { useSearchHistory } from "@/hooks/useSearchHistory";
 import { SearchQueryParams } from "@/lib/types";
@@ -49,7 +49,7 @@ const SearchPageInternal = () => {
     const router = useRouter();
     const searchQuery = useNonEmptyQueryParam(SearchQueryParams.query) ?? "";
     const { setSearchHistory } = useSearchHistory();
-    const captureEvent = useCaptureEvent();
+    
     const domain = useDomain();
     const { toast } = useToast();
 
@@ -83,7 +83,6 @@ const SearchPageInternal = () => {
         }
     }, [error, toast]);
 
-
     // Write the query to the search history
     useEffect(() => {
         if (searchQuery.length === 0) {
@@ -107,30 +106,8 @@ const SearchPageInternal = () => {
 
         const fileLanguages = searchResponse.files?.map(file => file.language) || [];
 
-        captureEvent("search_finished", {
-            durationMs: searchResponse.durationMs,
-            fileCount: searchResponse.zoektStats.fileCount,
-            matchCount: searchResponse.zoektStats.matchCount,
-            filesSkipped: searchResponse.zoektStats.filesSkipped,
-            contentBytesLoaded: searchResponse.zoektStats.contentBytesLoaded,
-            indexBytesLoaded: searchResponse.zoektStats.indexBytesLoaded,
-            crashes: searchResponse.zoektStats.crashes,
-            shardFilesConsidered: searchResponse.zoektStats.shardFilesConsidered,
-            filesConsidered: searchResponse.zoektStats.filesConsidered,
-            filesLoaded: searchResponse.zoektStats.filesLoaded,
-            shardsScanned: searchResponse.zoektStats.shardsScanned,
-            shardsSkipped: searchResponse.zoektStats.shardsSkipped,
-            shardsSkippedFilter: searchResponse.zoektStats.shardsSkippedFilter,
-            ngramMatches: searchResponse.zoektStats.ngramMatches,
-            ngramLookups: searchResponse.zoektStats.ngramLookups,
-            wait: searchResponse.zoektStats.wait,
-            matchTreeConstruction: searchResponse.zoektStats.matchTreeConstruction,
-            matchTreeSearch: searchResponse.zoektStats.matchTreeSearch,
-            regexpsConsidered: searchResponse.zoektStats.regexpsConsidered,
-            flushReason: searchResponse.zoektStats.flushReason,
-            fileLanguages,
-        });
-    }, [captureEvent, searchQuery, searchResponse]);
+        // Telemetry event removed
+    }, [searchQuery, searchResponse]);
 
     const { fileMatches, searchDurationMs, totalMatchCount, isBranchFilteringEnabled, repositoryInfo, matchCount } = useMemo(() => {
         if (!searchResponse) {

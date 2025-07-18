@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from "@/components/ui/button";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 
@@ -16,7 +16,7 @@ export const CodeHostIconButton = ({
     logo,
     onClick,
 }: CodeHostIconButton) => {
-    const captureEvent = useCaptureEvent();
+    
     return (
         <Button
             className="flex flex-col items-center justify-center p-4 w-36 h-36 cursor-pointer gap-2"

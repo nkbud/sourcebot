@@ -5,7 +5,6 @@ import { ReloadIcon } from "@radix-ui/react-icons"
 import { toast } from "@/components/hooks/use-toast";
 import { flagReposForIndex } from "@/actions";
 import { isServiceError } from "@/lib/utils";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
 
 interface RetryRepoIndexButtonProps {
     repoId: number;
@@ -13,7 +12,6 @@ interface RetryRepoIndexButtonProps {
 }
 
 export const RetryRepoIndexButton = ({ repoId, domain }: RetryRepoIndexButtonProps) => {
-    const captureEvent = useCaptureEvent();
 
     return (
         <Button
@@ -26,14 +24,12 @@ export const RetryRepoIndexButton = ({ repoId, domain }: RetryRepoIndexButtonPro
                     toast({
                         description: `❌ Failed to flag repository for indexing.`,
                     });
-                    captureEvent('wa_repo_retry_index_fail', {
-                        error: result.errorCode,
-                    });
+                    // Telemetry event removed
                 } else {
                     toast({
                         description: "✅ Repository flagged for indexing.",
                     });
-                    captureEvent('wa_repo_retry_index_success', {});
+                    // Telemetry event removed
                 }
             }}
         >

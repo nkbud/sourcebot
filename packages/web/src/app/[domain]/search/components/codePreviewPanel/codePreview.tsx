@@ -24,8 +24,6 @@ import { SymbolDefinition } from "@/ee/features/codeNav/components/symbolHoverPo
 import { createAuditAction } from "@/ee/features/audit/actions";
 import { useDomain } from "@/hooks/useDomain";
 
-import useCaptureEvent from "@/hooks/useCaptureEvent";
-
 export interface CodePreviewFile {
     content: string;
     filepath: string;
@@ -61,8 +59,6 @@ export const CodePreview = ({
     const keymapExtension = useKeymapExtension(editorRef?.view);
     const languageExtension = useCodeMirrorLanguageExtension(file?.language ?? '', editorRef?.view);
     const [currentSelection, setCurrentSelection] = useState<SelectionRange>();
-
-    const captureEvent = useCaptureEvent();
 
     const extensions = useMemo(() => {
         return [
@@ -119,7 +115,7 @@ export const CodePreview = ({
     }, [onSelectedMatchIndexChange]);
 
     const onGotoDefinition = useCallback((symbolName: string, symbolDefinitions: SymbolDefinition[]) => {
-        captureEvent('wa_preview_panel_goto_definition_pressed', {});
+        // Telemetry event removed
         createAuditAction({
             action: "user.performed_goto_definition",
             metadata: {
@@ -160,10 +156,10 @@ export const CodePreview = ({
                 }
             });
         }
-    }, [captureEvent, file.filepath, file.language, file.revision, navigateToPath, repoName, domain]);
+    }, [file.filepath, file.language, file.revision, navigateToPath, repoName, domain]);
     
     const onFindReferences = useCallback((symbolName: string) => {
-        captureEvent('wa_preview_panel_find_references_pressed', {});
+        // Telemetry event removed
         createAuditAction({
             action: "user.performed_find_references",
             metadata: {
@@ -187,7 +183,7 @@ export const CodePreview = ({
                 isBottomPanelCollapsed: false,
             }
         })
-    }, [captureEvent, file.filepath, file.language, file.revision, navigateToPath, repoName, domain]);
+    }, [file.filepath, file.language, file.revision, navigateToPath, repoName, domain]);
 
     return (
         <div className="flex flex-col h-full">

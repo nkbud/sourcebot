@@ -10,17 +10,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.3] - 2025-06-18
 
 ### Changed
-- Updated API client to match the latest Sourcebot release. [#356](https://github.com/sourcebot-dev/sourcebot/pull/356)
+- Updated API client to match the latest Sourcebot release. [#356](https://github.com/your-sourcebot-org/sourcebot/pull/356)
 
 ## [1.0.2] - 2025-05-28
 
 ### Changed
-- Added API key support. [#311](https://github.com/sourcebot-dev/sourcebot/pull/311)
+- Added API key support. [#311](https://github.com/your-sourcebot-org/sourcebot/pull/311)
 
 ## [1.0.1] - 2025-05-15
 
 ### Changed
-- Updated API client to match the latest Sourcebot release. [#307](https://github.com/sourcebot-dev/sourcebot/pull/307)
+- Updated API client to match the latest Sourcebot release. [#307](https://github.com/your-sourcebot-org/sourcebot/pull/307)
 
 ## [1.0.0] - 2025-05-07
 

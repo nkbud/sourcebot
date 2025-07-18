@@ -184,7 +184,6 @@ export const PathHeader = ({
         });
     }, [repo.name, branchDisplayName, navigateToPath, pathType]);
 
-
     const renderSegmentWithHighlight = (segment: BreadcrumbSegment) => {
         if (!segment.highlightRange) {
             return segment.name;

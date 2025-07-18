@@ -77,7 +77,6 @@ export const RepositoryTable = () => {
         return columns(domain);
     }, [reposLoading, domain]);
 
-
     if (reposError) {
         return <div>Error loading repositories</div>;
     }

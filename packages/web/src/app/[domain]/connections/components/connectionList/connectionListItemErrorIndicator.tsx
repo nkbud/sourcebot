@@ -2,7 +2,6 @@
 
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { CircleX } from "lucide-react";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
 
 interface ConnectionListItemErrorIndicatorProps {
     failedRepos: { repoId: number; repoName: string; }[] | undefined;

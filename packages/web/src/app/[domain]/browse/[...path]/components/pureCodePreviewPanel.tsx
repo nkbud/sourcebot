@@ -16,7 +16,7 @@ import { EditorContextMenu } from "../../../components/editorContextMenu";
 import { BrowseHighlightRange, HIGHLIGHT_RANGE_QUERY_PARAM, useBrowseNavigation } from "../../hooks/useBrowseNavigation";
 import { useBrowseState } from "../../hooks/useBrowseState";
 import { rangeHighlightingExtension } from "./rangeHighlightingExtension";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+
 import { createAuditAction } from "@/ee/features/audit/actions";
 import { useDomain } from "@/hooks/useDomain";
 
@@ -43,7 +43,6 @@ export const PureCodePreviewPanel = ({
     const { updateBrowseState } = useBrowseState();
     const { navigateToPath } = useBrowseNavigation();
     const domain = useDomain();
-    const captureEvent = useCaptureEvent();
 
     const highlightRangeQuery = useNonEmptyQueryParam(HIGHLIGHT_RANGE_QUERY_PARAM);
     const highlightRange = useMemo((): BrowseHighlightRange | undefined => {
@@ -136,7 +135,7 @@ export const PureCodePreviewPanel = ({
     }, [editorRef, highlightRange]);
 
     const onFindReferences = useCallback((symbolName: string) => {
-        captureEvent('wa_browse_find_references_pressed', {});
+        // Telemetry event removed
         createAuditAction({
             action: "user.performed_find_references",
             metadata: {
@@ -154,13 +153,12 @@ export const PureCodePreviewPanel = ({
             isBottomPanelCollapsed: false,
             activeExploreMenuTab: "references",
         })
-    }, [captureEvent, updateBrowseState, repoName, revisionName, language, domain]);
-
+    }, [updateBrowseState, repoName, revisionName, language, domain]);
 
     // If we resolve multiple matches, instead of navigating to the first match, we should
     // instead popup the bottom sheet with the list of matches.
     const onGotoDefinition = useCallback((symbolName: string, symbolDefinitions: SymbolDefinition[]) => {
-        captureEvent('wa_browse_goto_definition_pressed', {});
+        // Telemetry event removed
         createAuditAction({
             action: "user.performed_goto_definition",
             metadata: {
@@ -195,7 +193,7 @@ export const PureCodePreviewPanel = ({
                 isBottomPanelCollapsed: false,
             })
         }
-    }, [captureEvent, navigateToPath, revisionName, updateBrowseState, repoName, language, domain]);
+    }, [navigateToPath, revisionName, updateBrowseState, repoName, language, domain]);
 
     const theme = useCodeMirrorTheme();
 

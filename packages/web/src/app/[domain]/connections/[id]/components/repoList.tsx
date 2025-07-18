@@ -15,7 +15,7 @@ import { env } from "@/env.mjs";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { MultiSelect } from "@/components/ui/multi-select";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+
 import { useToast } from "@/components/hooks/use-toast";
 
 interface RepoListProps {
@@ -58,7 +58,7 @@ export const RepoList = ({ connectionId }: RepoListProps) => {
     const { toast } = useToast();
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
-    const captureEvent = useCaptureEvent();
+    
     const [isRetryAllFailedReposLoading, setIsRetryAllFailedReposLoading] = useState(false);
 
     const { data: unfilteredRepos, isPending: isReposPending, error: reposError, refetch: refetchRepos } = useQuery({
@@ -86,11 +86,9 @@ export const RepoList = ({ connectionId }: RepoListProps) => {
         queryFn: () => unwrapServiceError(getConnectionInfo(connectionId, domain)),
     })
 
-
     const failedRepos = useMemo(() => {
         return unfilteredRepos?.filter((repo) => repo.repoIndexingStatus === RepoIndexingStatus.FAILED) ?? [];
     }, [unfilteredRepos]);
-
 
     const onRetryAllFailedRepos = useCallback(() => {
         if (failedRepos.length === 0) {
@@ -101,12 +99,12 @@ export const RepoList = ({ connectionId }: RepoListProps) => {
         flagReposForIndex(failedRepos.map((repo) => repo.repoId), domain)
             .then((response) => {
                 if (isServiceError(response)) {
-                    captureEvent('wa_connection_retry_all_failed_repos_fail', {});
+                    // Telemetry event removed
                     toast({
                         description: `❌ Failed to flag repositories for indexing. Reason: ${response.message}`,
                     });
                 } else {
-                    captureEvent('wa_connection_retry_all_failed_repos_success', {});
+                    // Telemetry event removed
                     toast({
                         description: `✅ ${failedRepos.length} repositories flagged for indexing.`,
                     });
@@ -116,7 +114,7 @@ export const RepoList = ({ connectionId }: RepoListProps) => {
             .finally(() => {
                 setIsRetryAllFailedReposLoading(false);
             });
-    }, [captureEvent, domain, failedRepos, refetchRepos, toast]);
+    }, [domain, failedRepos, refetchRepos, toast]);
 
     const filteredRepos = useMemo(() => {
         if (isServiceError(unfilteredRepos)) {

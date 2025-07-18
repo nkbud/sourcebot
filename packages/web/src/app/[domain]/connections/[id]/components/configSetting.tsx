@@ -97,7 +97,6 @@ export const ConfigSetting = (props: ConfigSettingProps) => {
     return null;
 }
 
-
 function ConfigSettingInternal<T>({
     connectionId,
     config,

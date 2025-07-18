@@ -46,7 +46,6 @@ export default function NewConnectionPage({
     if (type === 'bitbucket-server') {
         return <BitbucketDataCenterConnectionCreationForm onCreated={onCreated} />;
     }
-    
 
     router.push(`/${domain}/connections`);
 }

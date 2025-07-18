@@ -7,7 +7,6 @@ import { RepoIndexingStatus } from "@sourcebot/db";
 import { useMemo } from "react";
 import { RetryRepoIndexButton } from "./repoRetryIndexButton";
 
-
 interface RepoListItemProps {
     name: string;
     status: RepoIndexingStatus;

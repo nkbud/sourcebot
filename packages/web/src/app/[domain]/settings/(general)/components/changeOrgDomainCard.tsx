@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+
 import { useDomain } from "@/hooks/useDomain";
 import { orgDomainSchema } from "@/lib/schemas";
 import { isServiceError } from "@/lib/utils";
@@ -32,7 +32,7 @@ interface ChangeOrgDomainCardProps {
 export function ChangeOrgDomainCard({ orgDomain, currentUserRole, rootDomain }: ChangeOrgDomainCardProps) {
     const domain = useDomain()
     const { toast } = useToast()
-    const captureEvent = useCaptureEvent();
+    
     const router = useRouter();
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const form = useForm<z.infer<typeof formSchema>>({
@@ -49,17 +49,15 @@ export function ChangeOrgDomainCard({ orgDomain, currentUserRole, rootDomain }: 
             toast({
                 description: `❌ Failed to update organization url. Reason: ${result.message}`,
             })
-            captureEvent('wa_org_domain_updated_fail', {
-                error: result.errorCode,
-            });
+            // Telemetry event removed
         } else {
             toast({
                 description: "✅ Organization url updated successfully",
             });
-            captureEvent('wa_org_domain_updated_success', {});
+            // Telemetry event removed
             router.replace(`/${data.domain}/settings`);
         }
-    }, [domain, router, toast, captureEvent]);
+    }, [domain, router, toast]);
 
     return (
         <>

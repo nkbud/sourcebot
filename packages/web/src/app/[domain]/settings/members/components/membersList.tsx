@@ -15,7 +15,6 @@ import { transferOwnership, removeMemberFromOrg, leaveOrg } from "@/actions";
 import { isServiceError } from "@/lib/utils";
 import { useToast } from "@/components/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
 
 type Member = {
     id: string
@@ -45,7 +44,6 @@ export const MembersList = ({ members, currentUserId, currentUserRole, orgName }
     const [isTransferOwnershipDialogOpen, setIsTransferOwnershipDialogOpen] = useState(false)
     const [isLeaveOrgDialogOpen, setIsLeaveOrgDialogOpen] = useState(false)
     const router = useRouter();
-    const captureEvent = useCaptureEvent();
 
     const filteredMembers = useMemo(() => {
         return members
@@ -81,7 +79,7 @@ export const MembersList = ({ members, currentUserId, currentUserRole, orgName }
                     router.refresh();
                 }
             });
-    }, [domain, toast, router, captureEvent]);
+    }, [domain, toast, router]);
 
     const onTransferOwnership = useCallback((memberId: string) => {
         transferOwnership(memberId, domain)
@@ -101,7 +99,7 @@ export const MembersList = ({ members, currentUserId, currentUserRole, orgName }
                     router.refresh();
                 }
             });
-    }, [domain, toast, router, captureEvent]);
+    }, [domain, toast, router]);
 
     const onLeaveOrg = useCallback(() => {
         leaveOrg(domain)
@@ -121,7 +119,7 @@ export const MembersList = ({ members, currentUserId, currentUserRole, orgName }
                     router.push("/");
                 }
             });
-    }, [domain, toast, router, captureEvent]);
+    }, [domain, toast, router]);
 
     return (
         <div>

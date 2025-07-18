@@ -16,7 +16,7 @@ import { useDomain } from "@/hooks/useDomain";
 import { isServiceError } from "@/lib/utils";
 import { useToast } from "@/components/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+
 export const inviteMemberFormSchema = z.object({
     emails: z.array(z.object({
         email: z.string().email()
@@ -39,7 +39,6 @@ export const InviteMemberCard = ({ currentUserRole, isBillingEnabled, seatsAvail
     const domain = useDomain();
     const { toast } = useToast();   
     const router = useRouter();
-    const captureEvent = useCaptureEvent();
 
     const form = useForm<z.infer<typeof inviteMemberFormSchema>>({
         resolver: zodResolver(inviteMemberFormSchema),
@@ -61,10 +60,7 @@ export const InviteMemberCard = ({ currentUserRole, isBillingEnabled, seatsAvail
                     toast({
                         description: `❌ Failed to invite members. Reason: ${res.message}`
                     });
-                    captureEvent('wa_invite_member_card_invite_fail', {
-                        error: res.errorCode,
-                        num_emails: data.emails.length,
-                    });
+                    // Telemetry event removed
                 } else {
                     form.reset();
                     router.push(`?tab=invites`);
@@ -72,15 +68,13 @@ export const InviteMemberCard = ({ currentUserRole, isBillingEnabled, seatsAvail
                     toast({
                         description: `✅ Successfully invited ${data.emails.length} members`
                     });
-                    captureEvent('wa_invite_member_card_invite_success', {
-                        num_emails: data.emails.length,
-                    });
+                    // Telemetry event removed
                 }
             })
             .finally(() => {
                 setIsLoading(false);
             });
-    }, [domain, form, toast, router, captureEvent]);
+    }, [domain, form, toast, router]);
 
     const isDisabled = !seatsAvailable || currentUserRole !== OrgRole.OWNER || isLoading;
 

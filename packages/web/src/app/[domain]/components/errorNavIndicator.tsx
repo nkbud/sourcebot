@@ -5,7 +5,7 @@ import { HoverCard, HoverCardTrigger, HoverCardContent } from "@/components/ui/h
 import { CircleXIcon } from "lucide-react";
 import { useDomain } from "@/hooks/useDomain";
 import { unwrapServiceError } from "@/lib/utils";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+
 import { env } from "@/env.mjs";
 import { useQuery } from "@tanstack/react-query";
 import { ConnectionSyncStatus, RepoIndexingStatus } from "@sourcebot/db";
@@ -15,7 +15,6 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 
 export const ErrorNavIndicator = () => {
     const domain = useDomain();
-    const captureEvent = useCaptureEvent();
 
     const { data: repos, isPending: isPendingRepos, isError: isErrorRepos } = useQuery({
         queryKey: ['repos', domain],

@@ -10,7 +10,6 @@ import { signIn } from "next-auth/react";
 import { verifyCredentialsRequestSchema } from "@/lib/schemas";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
 
 interface CredentialsFormProps {
     callbackUrl?: string;
@@ -18,7 +17,7 @@ interface CredentialsFormProps {
 }
 
 export const CredentialsForm = ({ callbackUrl, context }: CredentialsFormProps) => {
-    const captureEvent = useCaptureEvent();
+    
     const [isLoading, setIsLoading] = useState(false);
     const form = useForm<z.infer<typeof verifyCredentialsRequestSchema>>({
         resolver: zodResolver(verifyCredentialsRequestSchema),
@@ -30,7 +29,7 @@ export const CredentialsForm = ({ callbackUrl, context }: CredentialsFormProps) 
 
     const onSubmit = (values: z.infer<typeof verifyCredentialsRequestSchema>) => {
         setIsLoading(true);
-        captureEvent("wa_login_with_credentials", {});
+        // Telemetry event removed
         signIn("credentials", {
             email: values.email,
             password: values.password,

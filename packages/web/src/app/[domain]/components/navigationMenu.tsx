@@ -18,7 +18,7 @@ import { auth } from "@/auth";
 import WhatsNewIndicator from "./whatsNewIndicator";
 
 const SOURCEBOT_DISCORD_URL = "https://discord.gg/6Fhp27x7Pb";
-const SOURCEBOT_GITHUB_URL = "https://github.com/sourcebot-dev/sourcebot";
+const SOURCEBOT_GITHUB_URL = "https://github.com/your-sourcebot-org/sourcebot";
 
 interface NavigationMenuProps {
     domain: string;
@@ -140,7 +140,6 @@ export const NavigationMenu = async ({
             </div>
             <Separator />
         </div>
-
 
     )
 }

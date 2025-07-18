@@ -23,7 +23,6 @@ import { KeyboardShortcutHint } from "@/app/components/keyboardShortcutHint";
 import { useBrowseParams } from "@/app/[domain]/browse/hooks/useBrowseParams";
 import { SearchIcon } from "lucide-react";
 
-
 interface FileTreePanelProps {
     order: number;
 }
@@ -31,7 +30,6 @@ interface FileTreePanelProps {
 const FILE_TREE_PANEL_DEFAULT_SIZE = 20;
 const FILE_TREE_PANEL_MIN_SIZE = 10;
 const FILE_TREE_PANEL_MAX_SIZE = 30;
-
 
 export const FileTreePanel = ({ order }: FileTreePanelProps) => {
     const {
@@ -168,7 +166,6 @@ export const FileTreePanel = ({ order }: FileTreePanelProps) => {
         </>
     )
 }
-
 
 const FileTreePanelSkeleton = () => {
     return (

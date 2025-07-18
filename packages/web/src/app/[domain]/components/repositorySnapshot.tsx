@@ -91,7 +91,7 @@ function EmptyRepoState() {
                     <span className="text-sm text-muted-foreground">
                         <>
                             Create a{" "}
-                            <Link href={`https://docs.sourcebot.dev/docs/connections/overview`} className="text-blue-500 hover:underline inline-flex items-center gap-1">
+                            <Link href={`https://docs.your-sourcebot-instance.com className="text-blue-500 hover:underline inline-flex items-center gap-1">
                                 connection
                             </Link>{" "}
                             to start indexing repositories

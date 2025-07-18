@@ -115,7 +115,6 @@ export const SearchResultsPanel = ({
         }
     }, [showAllMatchesStates, virtualizer]);
 
-
     return (
         <div
             ref={parentRef}

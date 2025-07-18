@@ -6,26 +6,26 @@
     "properties": {
         "include": {
             "type": "array",
-            "description": "List of repositories to include in the search context. Expected to be formatted as a URL without any leading http(s):// prefix (e.g., 'github.com/sourcebot-dev/sourcebot'). Glob patterns are supported.",
+            "description": "List of repositories to include in the search context. Expected to be formatted as a URL without any leading http(s):// prefix (e.g., 'github.com/your-sourcebot-org/sourcebot'). Glob patterns are supported.",
             "items": {
                 "type": "string"
             },
             "examples": [
                 [
-                    "github.com/sourcebot-dev/**",
+                    "github.com/your-sourcebot-org/**",
                     "gerrit.example.org/sub/path/**"
                 ]
             ]
         },
         "exclude": {
             "type": "array",
-            "description": "List of repositories to exclude from the search context. Expected to be formatted as a URL without any leading http(s):// prefix (e.g., 'github.com/sourcebot-dev/sourcebot'). Glob patterns are supported.",
+            "description": "List of repositories to exclude from the search context. Expected to be formatted as a URL without any leading http(s):// prefix (e.g., 'github.com/your-sourcebot-org/sourcebot'). Glob patterns are supported.",
             "items": {
                 "type": "string"
             },
             "examples": [
                 [
-                    "github.com/sourcebot-dev/sourcebot",
+                    "github.com/your-sourcebot-org/sourcebot",
                     "gerrit.example.org/sub/path/**"
                 ]
             ]

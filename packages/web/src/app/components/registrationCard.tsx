@@ -34,7 +34,7 @@ export default function RegistrationCard() {
         </div>
       </CardContent>
       <CardFooter className="flex flex-col space-y-3 pt-0">
-        <Link href="https://app.sourcebot.dev" className="w-full" rel="noopener noreferrer" onClick={() => captureEvent("wa_demo_try_card_pressed", {})}>
+        <Link href="https://app.your-sourcebot-instance.com" className="w-full" rel="noopener noreferrer" onClick={() => captureEvent("wa_demo_try_card_pressed", {})}>
           <Button className={`w-full transition-all duration-300 ${isHovered ? "translate-y-[-2px]" : ""}`}>
             Try With Your Code
             <ArrowRight className="ml-2 h-4 w-4" />

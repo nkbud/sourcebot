@@ -2,7 +2,7 @@
 
 import { getRepos } from "@/actions";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+
 import { useDomain } from "@/hooks/useDomain";
 import { env } from "@/env.mjs";
 import { unwrapServiceError } from "@/lib/utils";
@@ -13,7 +13,6 @@ import Link from "next/link";
 
 export const ProgressNavIndicator = () => {
     const domain = useDomain();
-    const captureEvent = useCaptureEvent();
 
     const { data: inProgressRepos, isPending, isError } = useQuery({
         queryKey: ['repos', domain],

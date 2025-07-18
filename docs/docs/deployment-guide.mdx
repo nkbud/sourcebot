@@ -24,7 +24,7 @@ Watch this quick walkthrough video to learn how to deploy Sourcebot using Docker
 ## Step-by-step guide
 ---
 
-<Note>Hit an issue? Please let us know on [GitHub discussions](https://github.com/sourcebot-dev/sourcebot/discussions/categories/support) or by [emailing us](mailto:team@sourcebot.dev).</Note>
+<Note>Hit an issue? Please let us know on [GitHub discussions](https://github.com/your-sourcebot-org/sourcebot/discussions/categories/support) or by [emailing us](mailto:team@your-sourcebot-instance.com).</Note>
 
 <Steps>
     <Step title="Requirements">
@@ -36,20 +36,20 @@ Watch this quick walkthrough video to learn how to deploy Sourcebot using Docker
         ```bash wrap icon="terminal" Create example config
         touch config.json
         echo '{
-            "$schema": "https://raw.githubusercontent.com/sourcebot-dev/sourcebot/main/schemas/v3/index.json",
+            "$schema": "https://raw.githubusercontent.com/your-sourcebot-org/sourcebot/main/schemas/v3/index.json",
             "connections": {
                 // comments are supported 
                 "starter-connection": {
                     "type": "github",
                     "repos": [
-                        "sourcebot-dev/sourcebot"
+                        "your-sourcebot-org/sourcebot"
                     ]
                 }
             }
         }' > config.json
         ```
 
-        This config creates a single GitHub connection named `starter-connection` that specifies [Sourcebot](https://github.com/sourcebot-dev/sourcebot) as a repo to sync. [Learn more about the config file](/docs/connections/overview).
+        This config creates a single GitHub connection named `starter-connection` that specifies [Sourcebot](https://github.com/your-sourcebot-org/sourcebot) as a repo to sync. [Learn more about the config file](/docs/connections/overview).
     </Step>
 
     <Step title="Launch your instance">
@@ -66,7 +66,7 @@ Watch this quick walkthrough video to learn how to deploy Sourcebot using Docker
             -v $(pwd):/data \
             -e CONFIG_PATH=/data/config.json \
             --name sourcebot \
-            ghcr.io/sourcebot-dev/sourcebot:latest
+            ghcr.io/your-sourcebot-org/sourcebot:latest
         ```
 
         <Accordion title="Details">

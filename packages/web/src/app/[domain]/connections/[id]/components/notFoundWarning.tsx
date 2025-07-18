@@ -3,7 +3,7 @@
 import { AlertTriangle } from "lucide-react"
 import { Prisma, ConnectionSyncStatus } from "@sourcebot/db"
 import { SyncStatusMetadataSchema } from "@/lib/syncStatusMetadataSchema"
-import useCaptureEvent from "@/hooks/useCaptureEvent";
+
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 
@@ -16,7 +16,6 @@ interface NotFoundWarningProps {
 }
 
 export const NotFoundWarning = ({ syncStatus, syncStatusMetadata, onSecretsClick, connectionType, onRetrySync }: NotFoundWarningProps) => {
-    const captureEvent = useCaptureEvent();
 
     const parseResult = SyncStatusMetadataSchema.safeParse(syncStatusMetadata);
     if (syncStatus !== ConnectionSyncStatus.SYNCED_WITH_WARNINGS || !parseResult.success || !parseResult.data.notFound) {
@@ -28,7 +27,7 @@ export const NotFoundWarning = ({ syncStatus, syncStatusMetadata, onSecretsClick
     if (notFound.users.length === 0 && notFound.orgs.length === 0 && notFound.repos.length === 0) {
         return null;
     } else {
-        captureEvent('wa_connection_not_found_warning_displayed', {});
+        // Telemetry event removed
     }
 
     return (

@@ -54,7 +54,6 @@ export const useCodeMirrorTheme = () => {
     return cmTheme;
 }
 
-
 // @see: https://github.com/uiwjs/react-codemirror/blob/e365f7d1f8a0ec2cd88455b7a248f6338c859cc7/themes/theme/src/index.tsx
 const createThemeExtension = ({ theme, settings = {} }: CreateThemeOptions): Extension => {
     const themeOptions: Record<string, StyleSpec> = {

@@ -7,7 +7,6 @@ import { FileTreeItemComponent } from "./fileTreeItemComponent";
 import { useBrowseNavigation } from "@/app/[domain]/browse/hooks/useBrowseNavigation";
 import { useBrowseParams } from "@/app/[domain]/browse/hooks/useBrowseParams";
 
-
 export type FileTreeNode = Omit<RawFileTreeNode, 'children'> & {
     isCollapsed: boolean;
     children: FileTreeNode[];

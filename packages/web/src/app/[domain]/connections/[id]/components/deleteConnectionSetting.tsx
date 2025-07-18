@@ -19,7 +19,6 @@ import { isServiceError } from "@/lib/utils";
 import { useToast } from "@/components/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { useDomain } from "@/hooks/useDomain";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
 
 interface DeleteConnectionSettingProps {
     connectionId: number;
@@ -35,7 +34,6 @@ export const DeleteConnectionSetting = ({
     const domain = useDomain();
     const { toast } = useToast();
     const router = useRouter();
-    const captureEvent = useCaptureEvent();
 
     const handleDelete = useCallback(() => {
         setIsDialogOpen(false);
@@ -46,14 +44,12 @@ export const DeleteConnectionSetting = ({
                     toast({
                         description: `❌ Failed to delete connection. Reason: ${response.message}`
                     });
-                    captureEvent('wa_connection_delete_fail', {
-                        error: response.errorCode,
-                    });
+                    // Telemetry event removed
                 } else {
                     toast({
                         description: `✅ Connection deleted successfully.`
                     });
-                    captureEvent('wa_connection_delete_success', {});
+                    // Telemetry event removed
                     router.replace(`/${domain}/connections`);
                     router.refresh();
                 }
@@ -61,7 +57,7 @@ export const DeleteConnectionSetting = ({
             .finally(() => {
                 setIsLoading(false);
             });
-    }, [connectionId, domain, router, toast, captureEvent]);
+    }, [connectionId, domain, router, toast]);
 
     return (
         <div className="flex flex-col w-full bg-background border rounded-lg p-6">

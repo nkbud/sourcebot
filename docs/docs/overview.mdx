@@ -2,13 +2,13 @@
 title: "Overview"
 ---
 
-[Sourcebot]((https://github.com/sourcebot-dev/sourcebot)) is an open-source, self-hosted code search tool. It allows you to search and navigate across millions of lines of code across several code host platforms.
+[Sourcebot]((https://github.com/your-sourcebot-org/sourcebot)) is an open-source, self-hosted code search tool. It allows you to search and navigate across millions of lines of code across several code host platforms.
 
 <CardGroup>
 <Card title="Deployment guide" icon="server" href="/docs/deployment-guide" horizontal="true">
   Learn how to self-host Sourcebot in a few simple steps.
 </Card>
-<Card title="Public demo" icon="globe" href="https://demo.sourcebot.dev/" horizontal="true">
+<Card title="Public demo" icon="globe" href="https://demo.your-sourcebot-instance.com horizontal="true">
   Check out Sourcebot's features on our public demo instance.
 </Card>
 </CardGroup>
@@ -16,7 +16,7 @@ title: "Overview"
 <AccordionGroup>
   <Accordion title="Why Sourcebot?">
     - **Full-featured search:** Fast indexed-based search with regex support, filters, branch search, boolean logic, and more.
-    - **Self-hosted:** Deploy it in minutes using our official [docker container](https://github.com/sourcebot-dev/sourcebot/pkgs/container/sourcebot). All of your data stays on your machine.
+    - **Self-hosted:** Deploy it in minutes using our official [docker container](https://github.com/your-sourcebot-org/sourcebot/pkgs/container/sourcebot). All of your data stays on your machine.
     - **Modern design:** Light/Dark mode, vim keybindings, keyboard shortcuts, syntax highlighting, etc.
     - **Scalable:** Scales to millions of lines of code.
     - **Open-source:** Core features are MIT licensed.
@@ -39,7 +39,7 @@ Search across millions of lines of code instantly using Sourcebot's blazingly fa
 - **Query language:** Scope searches to specific files, repos, languages, symbol definitions and more using a rich [query language](/docs/features/search/syntax-reference).
 - **Branch search:** Specify a list of branches to search across ([docs](/docs/features/search/multi-branch-indexing)).
 - **Fast & scalable:** Sourcebot uses [trigram indexing](https://en.wikipedia.org/wiki/Trigram_search), allowing it to scale to massive codebases.
-- **Syntax highlighting:** Syntax highlighting support for over [100+ languages](https://github.com/sourcebot-dev/sourcebot/blob/57724689303f351c279d37f45b6406f1d5d5d5ab/packages/web/src/lib/codemirrorLanguage.ts#L125).
+- **Syntax highlighting:** Syntax highlighting support for over [100+ languages](https://github.com/your-sourcebot-org/sourcebot/blob/57724689303f351c279d37f45b6406f1d5d5d5ab/packages/web/src/lib/codemirrorLanguage.ts#L125).
 - **Multi-repository:** Search across all of your repositories in a single search.
 - **Search suggestions:** Get search suggestions as you craft your query.
 - **Filter panel:** Filter results by repository or by language.
@@ -130,7 +130,7 @@ Sourcebot comes with built-in support for authentication via [email/password](/d
 Sourcebot is designed to be easily self-hosted, allowing you to deploy it onto your own infrastructure, keeping your code private and secure.
 
 <Accordion title="Key benefits">
-- **Easy deployment:** Sourcebot is shipped as a [single docker container](https://github.com/sourcebot-dev/sourcebot/pkgs/container/sourcebot) that can be deployed to a k8s cluster, a VM, or any other platform that supports docker.
+- **Easy deployment:** Sourcebot is shipped as a [single docker container](https://github.com/your-sourcebot-org/sourcebot/pkgs/container/sourcebot) that can be deployed to a k8s cluster, a VM, or any other platform that supports docker.
 - **Secure:** Your code **never** leaves your infrastructure.
 - **No-vendor lock-in:** Avoid dependency on a third-party SaaS provider; you can modify, extend, or migrate your deployment as needed.
 </Accordion>
@@ -169,22 +169,22 @@ You can use managed Redis / Postgres services that run outside of the Sourcebot 
 
 One of our design philosophies for Sourcebot is to keep our infrastructure [radically simple](https://www.radicalsimpli.city/) while balancing scalability concerns. Depending on the number of repositories you have indexed and the instance you are running Sourcebot on, you may experience slow search times or other performance degradations. Our recommendation is to vertically scale your instance by increasing the number of CPU cores and memory.
 
-Sourcebot does not support horizontal scaling at this time, but it is on our roadmap. If this is something your team would be interested in, please contact us at [team@sourcebot.dev](mailto:team@sourcebot.dev).
+Sourcebot does not support horizontal scaling at this time, but it is on our roadmap. If this is something your team would be interested in, please contact us at [team@your-sourcebot-instance.com](mailto:team@your-sourcebot-instance.com).
 
 ## License key
 ---
 
-Sourcebot's core features are available under an [MIT license](https://github.com/sourcebot-dev/sourcebot/blob/HEAD/LICENSE) without any limits. Some [additional features](/docs/license-key#feature-availability) such as SSO and code navigation require a [license key](/docs/license-key).
+Sourcebot's core features are available under an [MIT license](https://github.com/your-sourcebot-org/sourcebot/blob/HEAD/LICENSE) without any limits. Some [additional features](/docs/license-key#feature-availability) such as SSO and code navigation require a [license key](/docs/license-key).
 
 <CardGroup cols={2}>
-    <Card title="Pricing page" href="https://www.sourcebot.dev/pricing" />
-    <Card title="Request trial key" href="https://www.sourcebot.dev/contact" />
+    <Card title="Pricing page" href="https://your-sourcebot-instance.com />
+    <Card title="Request trial key" href="https://your-sourcebot-instance.com />
 </CardGroup>
 
 ## Telemetry
 ---
 
-By default, Sourcebot collects anonymized usage data through [PostHog](https://posthog.com/) to help us improve the performance and reliability of our tool. We don't collect or transmit <a href="https://demo.sourcebot.dev/~/search?query=captureEvent%5C(%20repo%3Asourcebot">any information related to your codebase</a>. In addition, all events are [sanitized](https://github.com/sourcebot-dev/sourcebot/blob/HEAD/packages/web/src/app/posthogProvider.tsx) to ensure that no sensitive details (ex. ip address, query info) leave your machine. 
+By default, Sourcebot collects anonymized usage data through [PostHog](https://posthog.com/) to help us improve the performance and reliability of our tool. We don't collect or transmit <a href="https://demo.your-sourcebot-instance.com information related to your codebase</a>. In addition, all events are [sanitized](https://github.com/your-sourcebot-org/sourcebot/blob/HEAD/packages/web/src/app/posthogProvider.tsx) to ensure that no sensitive details (ex. ip address, query info) leave your machine. 
 
 The data we collect includes general usage statistics and metadata such as query performance (e.g., search duration, error rates) to monitor the application's health and functionality. This information helps us better understand how Sourcebot is used and where improvements can be made.
 
@@ -194,7 +194,7 @@ If you'd like to disable all telemetry, you can do so by setting the environment
 docker run \
   -e SOURCEBOT_TELEMETRY_DISABLED=true \
   /* additional args */ \
-  ghcr.io/sourcebot-dev/sourcebot:latest
+  ghcr.io/your-sourcebot-org/sourcebot:latest
 ```
 
 If you disabled telemetry correctly, you'll see the following log when starting Sourcebot:

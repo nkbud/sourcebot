@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export const numberSchema = z.coerce.number();
 
-const SOURCEBOT_DEMO_HOST = "https://demo.sourcebot.dev";
+const SOURCEBOT_DEMO_HOST = "https://demo.your-sourcebot-instance.com";
 
 export const env = createEnv({
     server: {

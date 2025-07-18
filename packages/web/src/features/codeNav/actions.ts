@@ -44,7 +44,6 @@ export const findSearchBasedSymbolReferences = async (
         }, /* minRequiredRole = */ OrgRole.GUEST), /* allowSingleTenantUnauthedAccess = */ true)
 );
 
-
 export const findSearchBasedSymbolDefinitions = async (
     props: {
         symbolName: string,

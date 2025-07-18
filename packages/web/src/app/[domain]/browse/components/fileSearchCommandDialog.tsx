@@ -25,7 +25,6 @@ type SearchResult = {
     };
 }
 
-
 export const FileSearchCommandDialog = () => {
     const { repoName, revisionName } = useBrowseParams();
     const domain = useDomain();

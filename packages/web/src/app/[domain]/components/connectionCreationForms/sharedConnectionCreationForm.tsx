@@ -21,7 +21,6 @@ import { InfoIcon, Loader2 } from "lucide-react";
 import { ReactCodeMirrorRef } from "@uiw/react-codemirror";
 import { SecretCombobox } from "./secretCombobox";
 import strings from "@/lib/strings";
-import useCaptureEvent from "@/hooks/useCaptureEvent";
 
 interface SharedConnectionCreationFormProps<T> {
     type: CodeHostType;
@@ -40,7 +39,6 @@ interface SharedConnectionCreationFormProps<T> {
     additionalConfigValidation?: (config: T) => { message: string, isValid: boolean };
 }
 
-
 export default function SharedConnectionCreationForm<T>({
     type,
     defaultValues,
@@ -54,7 +52,7 @@ export default function SharedConnectionCreationForm<T>({
     const { toast } = useToast();
     const domain = useDomain();
     const editorRef = useRef<ReactCodeMirrorRef>(null);
-    const captureEvent = useCaptureEvent();
+    
     const formSchema = useMemo(() => {
         return z.object({
             name: z.string().min(1),
@@ -81,20 +79,15 @@ export default function SharedConnectionCreationForm<T>({
             toast({
                 description: `❌ Failed to create connection. Reason: ${response.message}`
             });
-            captureEvent('wa_create_connection_fail', {
-                type: type,
-                error: response.message,
-            });
+            // Telemetry event removed
         } else {
             toast({
                 description: `✅ Connection created successfully.`
             });
-            captureEvent('wa_create_connection_success', {
-                type: type,
-            });
+            // Telemetry event removed
             onCreated?.(response.id);
         }
-    }, [domain, toast, type, onCreated, captureEvent]);
+    }, [domain, toast, type, onCreated]);
 
     const onConfigChange = useCallback((value: string) => {
         form.setValue("config", value);

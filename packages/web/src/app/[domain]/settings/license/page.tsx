@@ -33,7 +33,7 @@ export default async function LicensePage({ params: { domain } }: LicensePagePro
                     <Info className="h-12 w-12 text-muted-foreground mb-4" />
                     <h3 className="text-lg font-medium mb-2">No License Found</h3>
                     <p className="text-sm text-muted-foreground text-center max-w-md mb-6">
-                        Check out the <a href="https://docs.sourcebot.dev/docs/license-key" target="_blank" rel="noopener noreferrer" className="text-primary">docs</a> for more information.
+                        Check out the <a href="https://docs.your-sourcebot-instance.com target="_blank" rel="noopener noreferrer" className="text-primary">docs</a> for more information.
                     </p>
                     <div className="mb-8 max-w-md rounded-lg bg-slate-50 p-4 dark:bg-slate-800">
                         <p className="text-base text-center">
@@ -42,7 +42,7 @@ export default async function LicensePage({ params: { domain } }: LicensePagePro
                         </p>
                     </div>
                     <Button asChild>
-                        <a href={`https://sourcebot.dev/contact`} target="_blank" rel="noopener noreferrer">
+                        <a href={`https://your-sourcebot-instance.com target="_blank" rel="noopener noreferrer">
                             <Mail className="h-4 w-4 mr-2" />
                             Request a trial license
                         </a>
@@ -72,7 +72,7 @@ export default async function LicensePage({ params: { domain } }: LicensePagePro
                 </div>
 
                 <Button asChild>
-                    <a href={`mailto:support@sourcebot.dev?subject=License Support - ${licenseKey.id}&body=License ID: ${licenseKey.id}`}>
+                    <a href={`mailto:support@your-sourcebot-instance.com?subject=License Support - ${licenseKey.id}&body=License ID: ${licenseKey.id}`}>
                         <Mail className="h-4 w-4 mr-2" />
                         Contact Support
                     </a>
