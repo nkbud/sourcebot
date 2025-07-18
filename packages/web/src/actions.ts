@@ -44,7 +44,7 @@ const logger = createLogger('web-actions');
  * "Service Error Wrapper".
  * 
  * Captures any thrown exceptions and converts them to a unexpected
- * service error. Also logs them with Sentry.
+ * service error. Also logs them with console.error.
  */
 export const sew = async <T>(fn: () => Promise<T>): Promise<T | ServiceError> => {
     try {
