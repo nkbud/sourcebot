@@ -23,28 +23,23 @@ import { cookies, headers } from "next/headers";
 import { createTransport } from "nodemailer";
 import { auth } from "./auth";
 import { getConnection } from "./data/connection";
-import { IS_BILLING_ENABLED } from "./ee/features/billing/stripe";
-import InviteUserEmail from "./emails/inviteUserEmail";
 import { MOBILE_UNSUPPORTED_SPLASH_SCREEN_DISMISSED_COOKIE_NAME, SINGLE_TENANT_ORG_DOMAIN, SOURCEBOT_GUEST_USER_ID, SOURCEBOT_SUPPORT_EMAIL } from "./lib/constants";
 import { orgDomainSchema, orgNameSchema, repositoryQuerySchema } from "./lib/schemas";
 import { TenancyMode, ApiKeyPayload } from "./lib/types";
-import { decrementOrgSeatCount, getSubscriptionForOrg } from "./ee/features/billing/serverUtils";
 import { bitbucketSchema } from "@sourcebot/schemas/v3/bitbucket.schema";
 import { genericGitHostSchema } from "@sourcebot/schemas/v3/genericGitHost.schema";
 import { getPlan, hasEntitlement } from "@sourcebot/shared";
-import { getPublicAccessStatus } from "./ee/features/publicAccess/publicAccess";
 import JoinRequestSubmittedEmail from "./emails/joinRequestSubmittedEmail";
 import JoinRequestApprovedEmail from "./emails/joinRequestApprovedEmail";
 import { createLogger } from "@sourcebot/logger";
-import { getAuditService } from "@/ee/features/audit/factory";
 import { addUserToOrganization, orgHasAvailability } from "@/lib/authUtils";
+import InviteUserEmail from "./emails/inviteUserEmail";
 
 const ajv = new Ajv({
     validateFormats: false,
 });
 
 const logger = createLogger('web-actions');
-const auditService = getAuditService();
 
 /**
  * "Service Error Wrapper".
@@ -66,9 +61,9 @@ export const withAuth = async <T>(fn: (userId: string, apiKeyHash: string | unde
     const session = await auth();
 
     if (!session) {
-        // First we check if public access is enabled and supported. If not, then we check if an api key was provided. If not,
+        // First we check if an api key was provided. If not,
         // then this is an invalid unauthed request and we return a 401.
-        const publicAccessEnabled = await getPublicAccessStatus(SINGLE_TENANT_ORG_DOMAIN);
+        const publicAccessEnabled = false; // Public access disabled after EE removal
         if (apiKey) {
             const apiKeyOrError = await verifyApiKey(apiKey);
             if (isServiceError(apiKeyOrError)) {
@@ -255,31 +250,13 @@ export const updateOrgDomain = async (newDomain: string, existingDomain: string)
 export const completeOnboarding = async (domain: string): Promise<{ success: boolean } | ServiceError> => sew(() =>
     withAuth((userId) =>
         withOrgMembership(userId, domain, async ({ org }) => {
-            // If billing is not enabled, we can just mark the org as onboarded.
-            if (!IS_BILLING_ENABLED) {
-                await prisma.org.update({
-                    where: { id: org.id },
-                    data: {
-                        isOnboarded: true,
-                    }
-                });
-
-                // Else, validate that the org has an active subscription.
-            } else {
-                const subscriptionOrError = await getSubscriptionForOrg(org.id, prisma);
-                if (isServiceError(subscriptionOrError)) {
-                    return subscriptionOrError;
+            // Mark the org as onboarded without billing checks
+            await prisma.org.update({
+                where: { id: org.id },
+                data: {
+                    isOnboarded: true,
                 }
-
-                await prisma.org.update({
-                    where: { id: org.id },
-                    data: {
-                        isOnboarded: true,
-                        stripeSubscriptionStatus: StripeSubscriptionStatus.ACTIVE,
-                        stripeLastUpdatedAt: new Date(),
-                    }
-                });
-            }
+            });
 
             return {
                 success: true,
@@ -467,18 +444,7 @@ export const createApiKey = async (name: string, domain: string): Promise<{ key:
                 }
             });
 
-            await auditService.createAudit({
-                action: "api_key.created",
-                actor: {
-                    id: userId,
-                    type: "user"
-                },
-                target: {
-                    id: apiKey.hash,
-                    type: "api_key"
-                },
-                orgId: org.id
-            });
+            // Audit logging removed during EE cleanup
 
             return {
                 key,
@@ -525,21 +491,7 @@ export const deleteApiKey = async (name: string, domain: string): Promise<{ succ
                 },
             });
 
-            await auditService.createAudit({
-                action: "api_key.deleted",
-                actor: {
-                    id: userId,
-                    type: "user"
-                },
-                target: {
-                    id: apiKey.hash,
-                    type: "api_key"
-                },
-                orgId: org.id,
-                metadata: {
-                    api_key: name
-                }
-            });
+            // Audit logging removed during EE cleanup
 
             return {
                 success: true,
@@ -940,22 +892,7 @@ export const createInvites = async (emails: string[], domain: string): Promise<{
     withAuth((userId) =>
         withOrgMembership(userId, domain, async ({ org }) => {
             const failAuditCallback = async (error: string) => {
-                await auditService.createAudit({
-                    action: "user.invite_failed",
-                    actor: {
-                        id: userId,
-                        type: "user"
-                    },
-                    target: {
-                        id: org.id.toString(),
-                        type: "org"
-                    },
-                    orgId: org.id,
-                    metadata: {
-                        message: error,
-                        emails: emails.join(", ")
-                    }
-                });
+                // Audit logging removed during EE cleanup
             }
             const user = await getMe();
             if (isServiceError(user)) {
@@ -964,22 +901,7 @@ export const createInvites = async (emails: string[], domain: string): Promise<{
 
             const hasAvailability = await orgHasAvailability(domain);
             if (!hasAvailability) {
-                await auditService.createAudit({
-                    action: "user.invite_failed",
-                    actor: {
-                        id: userId,
-                        type: "user"
-                    },
-                    target: {
-                        id: org.id.toString(),
-                        type: "org"
-                    },
-                    orgId: org.id,
-                    metadata: {
-                        message: "Organization has reached maximum number of seats",
-                        emails: emails.join(", ")
-                    }
-                });
+                // Audit logging removed during EE cleanup
                 return {
                     statusCode: StatusCodes.BAD_REQUEST,
                     errorCode: ErrorCode.ORG_SEAT_COUNT_REACHED,
@@ -1094,21 +1016,7 @@ export const createInvites = async (emails: string[], domain: string): Promise<{
                 logger.warn(`SMTP_CONNECTION_URL or EMAIL_FROM_ADDRESS not set. Skipping invite email to ${emails.join(", ")}`);
             }
 
-            await auditService.createAudit({
-                action: "user.invites_created",
-                actor: {
-                    id: userId,
-                    type: "user"
-                },
-                target: {
-                    id: org.id.toString(),
-                    type: "org"
-                },
-                orgId: org.id,
-                metadata: {
-                    emails: emails.join(", ")
-                }
-            });
+            // Audit logging removed during EE cleanup
             return {
                 success: true,
             }
@@ -1202,21 +1110,7 @@ export const redeemInvite = async (inviteId: string): Promise<{ success: boolean
         }
 
         const failAuditCallback = async (error: string) => {
-            await auditService.createAudit({
-                action: "user.invite_accept_failed",
-                actor: {
-                    id: user.id,
-                    type: "user"
-                },
-                target: {
-                    id: inviteId,
-                    type: "invite"
-                },
-                orgId: invite.org.id,
-                metadata: {
-                    message: error
-                }
-            });
+            // Audit logging removed during EE cleanup
         }
 
 
@@ -1242,18 +1136,7 @@ export const redeemInvite = async (inviteId: string): Promise<{ success: boolean
             return addUserToOrgRes;
         }
 
-        await auditService.createAudit({
-            action: "user.invite_accepted",
-            actor: {
-                id: user.id,
-                type: "user"
-            },
-            orgId: invite.org.id,
-            target: {
-                id: inviteId,
-                type: "invite"
-            }
-        });
+        // Audit logging removed during EE cleanup
 
         return {
             success: true,
@@ -1434,13 +1317,6 @@ export const removeMemberFromOrg = async (memberId: string, domain: string): Pro
                         }
                     }
                 });
-
-                if (IS_BILLING_ENABLED) {
-                    const result = await decrementOrgSeatCount(org.id, tx);
-                    if (isServiceError(result)) {
-                        throw result;
-                    }
-                }
             });
 
             return {
@@ -1469,13 +1345,6 @@ export const leaveOrg = async (domain: string): Promise<{ success: boolean } | S
                         }
                     }
                 });
-
-                if (IS_BILLING_ENABLED) {
-                    const result = await decrementOrgSeatCount(org.id, tx);
-                    if (isServiceError(result)) {
-                        throw result;
-                    }
-                }
             });
 
             return {
@@ -1733,21 +1602,7 @@ export const approveAccountRequest = async (requestId: string, domain: string) =
     withAuth(async (userId) =>
         withOrgMembership(userId, domain, async ({ org }) => {
             const failAuditCallback = async (error: string) => {
-                await auditService.createAudit({
-                    action: "user.join_request_approve_failed",
-                    actor: {
-                        id: userId,
-                        type: "user"
-                    },
-                    target: {
-                        id: requestId,
-                        type: "account_join_request"
-                    },
-                    orgId: org.id,
-                    metadata: {
-                        message: error,
-                    }
-                });
+                // Audit logging removed during EE cleanup
             }
 
             const request = await prisma.accountRequest.findUnique({
@@ -1802,18 +1657,7 @@ export const approveAccountRequest = async (requestId: string, domain: string) =
                 logger.warn(`SMTP_CONNECTION_URL or EMAIL_FROM_ADDRESS not set. Skipping approval email to ${request.requestedBy.email}`);
             }
 
-            await auditService.createAudit({
-                action: "user.join_request_approved",
-                actor: {
-                    id: userId,
-                    type: "user"
-                },
-                orgId: org.id,
-                target: {
-                    id: requestId,
-                    type: "account_join_request"
-                }
-            });
+            // Audit logging removed during EE cleanup
             return {
                 success: true,
             }

@@ -9,7 +9,7 @@ import { BackendError, BackendException } from "@sourcebot/error";
 import { captureEvent } from "./posthog.js";
 import { env } from "./env.js";
 import * as Sentry from "@sentry/node";
-import { loadConfig, syncSearchContexts } from "@sourcebot/shared";
+import { loadConfig } from "@sourcebot/shared";
 
 interface IConnectionManager {
     scheduleConnectionSync: (connection: Connection) => Promise<void>;
@@ -292,21 +292,9 @@ export class ConnectionManager implements IConnectionManager {
             }
         });
 
-        // After a connection has synced, we need to re-sync the org's search contexts as
-        // there may be new repos that match the search context's include/exclude patterns.
+        // Search contexts sync removed during EE cleanup
         if (env.CONFIG_PATH) {
-            try {
-                const config = await loadConfig(env.CONFIG_PATH);
-
-                await syncSearchContexts({
-                    db: this.db,
-                    orgId,
-                    contexts: config.contexts,
-                });
-            } catch (err) {
-                this.logger.error(`Failed to sync search contexts for connection ${connectionId}: ${err}`);
-                Sentry.captureException(err);
-            }
+            this.logger.info(`Search contexts sync skipped for connection ${connectionId} - feature removed during EE cleanup`);
         }
 
 
