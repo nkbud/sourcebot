@@ -1,4 +1,4 @@
 [submodule "vendor/zoekt"]
 	path = vendor/zoekt
-	url = https://github.com/sourcegraph/zoekt
+	url = https://github.com/sourcebot-dev/zoekt
 	branch=main
