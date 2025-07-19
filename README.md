@@ -115,5 +115,27 @@ To learn how to configure Sourcebot to index your own repos, please refer to our
 >[!NOTE]
 > Building from source is only required if you'd like to contribute. If you'd just like to use Sourcebot, we recommend checking out our self-hosting [docs](https://docs.your-sourcebot-instance.com
 
-If you'd like to build from source, please checkout the `CONTRIBUTING.md` file for more information.
+## Building the Docker Image
+
+To build the Docker image from source:
+
+1. **Clone the repository with submodules:**
+   ```sh
+   git clone --recurse-submodules https://github.com/your-sourcebot-org/sourcebot.git
+   cd sourcebot
+   ```
+
+   **OR** if you already cloned without submodules, initialize them:
+   ```sh
+   ./init-submodules.sh
+   ```
+
+2. **Build the Docker image:**
+   ```sh
+   docker build -t sourcebot .
+   ```
+
+## Development Setup
+
+If you'd like to build from source for development, please checkout the `CONTRIBUTING.md` file for more information.
 

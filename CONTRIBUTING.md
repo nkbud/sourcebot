@@ -22,6 +22,11 @@
     ```sh
     git clone --recurse-submodules https://github.com/your-sourcebot-org/sourcebot.git
     ```
+
+    **Alternative:** If you already cloned without submodules, you can initialize them:
+    ```sh
+    ./init-submodules.sh
+    ```
 4. Run `make` to build zoekt and install dependencies:
     ```sh
     cd sourcebot
