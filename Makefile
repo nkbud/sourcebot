@@ -1,13 +1,16 @@
 
 CMDS := zoekt yarn
 
-ALL: $(CMDS)
+ALL: init-submodules $(CMDS)
+
+init-submodules:
+	@./init-submodules.sh
 
 yarn:
 	yarn install
 	yarn build:deps
 
-zoekt:
+zoekt: init-submodules
 	mkdir -p bin
 	go build -C vendor/zoekt -o $(PWD)/bin ./cmd/...
 	export PATH="$(PWD)/bin:$(PATH)"
@@ -44,4 +47,4 @@ soft-reset:
 	yarn dev:prisma:migrate:reset
 
 
-.PHONY: bin
+.PHONY: ALL init-submodules yarn zoekt clean soft-reset
