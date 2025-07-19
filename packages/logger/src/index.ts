@@ -67,7 +67,7 @@ const createLogger = (label: string) => {
                         datadogFormat(),
                         json()
                     ),
-                ])
+                })
             ] : []),
             // Logtail transport removed during telemetry cleanup
         ]
