@@ -10,8 +10,8 @@ import Link from "next/link";
 import { env } from "@/env.mjs";
 import type { AuthProvider } from "@/lib/authProviders";
 
-const TERMS_OF_SERVICE_URL = "https://your-sourcebot-instance.com
-const PRIVACY_POLICY_URL = "https://your-sourcebot-instance.com
+const TERMS_OF_SERVICE_URL = "https://your-sourcebot-instance.com";
+const PRIVACY_POLICY_URL = "https://your-sourcebot-instance.com";
 
 interface LoginFormProps {
     callbackUrl?: string;

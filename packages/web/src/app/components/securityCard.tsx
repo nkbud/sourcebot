@@ -79,4 +79,3 @@ import { Shield, Lock, CheckCircle, ExternalLink, Mail } from "lucide-react"
         </div>
     )
 }
-

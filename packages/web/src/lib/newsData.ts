@@ -5,19 +5,19 @@ export const newsData: NewsItem[] = [
         unique_id: "member-approval",
         header: "Member Approval",
         sub_header: "We've added a toggle to control whether new users need to be approved.",
-        url: "https://docs.your-sourcebot-instance.com
+        url: "https://docs.your-sourcebot-instance.com",
     },
     {
         unique_id: "analytics",
         header: "Analytics Dashboard",
         sub_header: "Understand your team's Sourcebot usage",
-        url: "https://docs.your-sourcebot-instance.com
+        url: "https://docs.your-sourcebot-instance.com",
     },
     {
         unique_id: "audit-logs",
         header: "Audit Logs",
         sub_header: "We've added support for audit logs",
-        url: "https://docs.your-sourcebot-instance.com
+        url: "https://docs.your-sourcebot-instance.com",
     },
     {
         unique_id: "file-explorer",
@@ -29,24 +29,24 @@ export const newsData: NewsItem[] = [
         unique_id: "structured-logging",
         header: "Structured Logging",
         sub_header: "We've added support for structured logging",
-        url: "https://docs.your-sourcebot-instance.com
+        url: "https://docs.your-sourcebot-instance.com",
     },
     {
         unique_id: "code-nav",
         header: "Code Navigation",
         sub_header: "Built in go-to definition and find references",
-        url: "https://docs.your-sourcebot-instance.com
+        url: "https://docs.your-sourcebot-instance.com",
     },
     {
         unique_id: "sso",
         header: "SSO",
         sub_header: "We've added support for SSO providers",
-        url: "https://docs.your-sourcebot-instance.com
+        url: "https://docs.your-sourcebot-instance.com",
     },
     {
         unique_id: "search-contexts",
         header: "Search Contexts",
         sub_header: "Filter searches by groups of repos",
-        url: "https://docs.your-sourcebot-instance.com
+        url: "https://docs.your-sourcebot-instance.com",
     }
 ]; 
