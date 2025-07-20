@@ -5,6 +5,10 @@ import Link from "next/link"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { useCaptureEvent } from "@/hooks/useCaptureEvent"
+
+export default function DemoCard() {
+  const captureEvent = useCaptureEvent()
 
   return (
     <Card className="mb-6 w-full border bg-card text-card-foreground">
