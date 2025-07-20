@@ -67,7 +67,7 @@ import { Shield, Lock, CheckCircle, ExternalLink, Mail } from "lucide-react"
                 </div>
 
                 <Link
-                    href="https://your-sourcebot-instance.com
+                    href="https://your-sourcebot-instance.com"
                     target="_blank"
                     className="inline-flex items-center justify-center px-5 py-2.5 rounded-md bg-backgroundSecondary border border-[#1E2A3A] text-foreground hover:bg-backgroundSecondary/80 transition-colors"
                     onClick={() => captureEvent('wa_security_page_click', {})}
@@ -79,4 +79,3 @@ import { Shield, Lock, CheckCircle, ExternalLink, Mail } from "lucide-react"
         </div>
     )
 }
-

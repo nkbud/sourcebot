@@ -11,6 +11,17 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { useCallback, useState, Suspense } from "react"
 import VerificationFailed from "./verificationFailed"
 import { SourcebotLogo } from "@/app/components/sourcebotLogo"
+import { Footer } from "@/app/components/footer"
+import { SOURCEBOT_SUPPORT_EMAIL } from "@/lib/constants"
+import useCaptureEvent from "@/hooks/useCaptureEvent"
+
+function VerifyPageContent() {
+    const router = useRouter()
+    const searchParams = useSearchParams()
+    const [value, setValue] = useState('')
+    const captureEvent = useCaptureEvent()
+
+    const email = searchParams.get('email')
 
     const handleSubmit = useCallback(() => {
         if (email && value.length === 6) {

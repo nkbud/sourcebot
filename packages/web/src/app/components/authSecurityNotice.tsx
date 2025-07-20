@@ -84,7 +84,7 @@ export const AuthSecurityNotice = ({ closable = false }: AuthSecurityNoticeProps
                 <span>
                     <strong>Security Notice:</strong> Authentication data is managed by your deployment and is encrypted at rest. Zero data leaves your deployment.{' '}
                     <a
-                        href="https://docs.your-sourcebot-instance.com
+                        href="https://docs.your-sourcebot-instance.com"
                         target="_blank"
                         rel="noopener"
                         className="underline text-[var(--highlight)] hover:text-[var(--highlight)]/80 font-medium"
