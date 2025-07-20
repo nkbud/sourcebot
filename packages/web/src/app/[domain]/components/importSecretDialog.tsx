@@ -100,7 +100,7 @@ export const ImportSecretDialog = ({ open, onOpenChange, onSecretCreated, codeHo
                     <DialogTitle className="text-2xl font-semibold">Import a secret</DialogTitle>
                     <DialogDescription>
                         Secrets are used to authenticate with a code host. They are encrypted at rest using <Link href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard" target="_blank" className="underline">AES-256-CBC</Link>.
-                        Checkout our <Link href="https://your-sourcebot-instance.com target="_blank" className="underline">security docs</Link> for more information.
+                        Checkout our <Link href="https://your-sourcebot-instance.com" target="_blank" className="underline">security docs</Link> for more information.
                     </DialogDescription>
                 </DialogHeader>
 
@@ -205,7 +205,7 @@ const GitHubPATCreationStep = ({ step }: { step: number }) => {
         <SecretCreationStep
             step={step}
             title="Create a Personal Access Token"
-            description=<span>Navigate <Link href="https://github.com/settings/tokens/new" target="_blank" className="underline">here on github.com</Link> (or your enterprise instance) and create a new personal access token. Sourcebot needs the <strong>repo</strong> scope in order to access private repositories:</span>
+            description={<span>Navigate <Link href="https://github.com/settings/tokens/new" target="_blank" className="underline">here on github.com</Link> (or your enterprise instance) and create a new personal access token. Sourcebot needs the <strong>repo</strong> scope in order to access private repositories:</span>}
         >
             <Image
                 className="mx-auto rounded-sm"
@@ -223,7 +223,7 @@ const GitLabPATCreationStep = ({ step }: { step: number }) => {
         <SecretCreationStep
             step={step}
             title="Create a Personal Access Token"
-            description=<span>Navigate <Link href="https://gitlab.com/-/user_settings/personal_access_tokens" target="_blank" className="underline">here on gitlab.com</Link> (or your self-hosted instance) and create a new personal access token. Sourcebot needs the <strong>read_api</strong> scope in order to access private projects:</span>
+            description={<span>Navigate <Link href="https://gitlab.com/-/user_settings/personal_access_tokens" target="_blank" className="underline">here on gitlab.com</Link> (or your self-hosted instance) and create a new personal access token. Sourcebot needs the <strong>read_api</strong> scope in order to access private projects:</span>}
         >
             <Image
                 className="mx-auto rounded-sm"
@@ -241,7 +241,7 @@ const GiteaPATCreationStep = ({ step }: { step: number }) => {
         <SecretCreationStep
             step={step}
             title="Create a Personal Access Token"
-            description=<span>Navigate <Link href="https://gitea.com/user/settings/applications" target="_blank" className="underline">here on gitea.com</Link> (or your self-hosted instance) and create a new access token. Sourcebot needs the <strong>read:repository</strong>, <strong>read:user</strong>, and <strong>read:organization</strong> scopes:</span>
+            description={<span>Navigate <Link href="https://gitea.com/user/settings/applications" target="_blank" className="underline">here on gitea.com</Link> (or your self-hosted instance) and create a new access token. Sourcebot needs the <strong>read:repository</strong>, <strong>read:user</strong>, and <strong>read:organization</strong> scopes:</span>}
         >
             <Image
                 className="mx-auto rounded-sm"
@@ -259,7 +259,7 @@ const BitbucketCloudPATCreationStep = ({ step }: { step: number }) => {
         <SecretCreationStep
             step={step}
             title="Create an Access Token"
-            description=<span>Please check out our <Link href="https://docs.your-sourcebot-instance.com target="_blank" className="underline">docs</Link> for more information on how to create auth credentials for Bitbucket Cloud.</span>
+            description={<span>Please check out our <Link href="https://docs.your-sourcebot-instance.com" target="_blank" className="underline">docs</Link> for more information on how to create auth credentials for Bitbucket Cloud.</span>}
         >
         </SecretCreationStep>
     )
@@ -270,7 +270,7 @@ const BitbucketServerPATCreationStep = ({ step }: { step: number }) => {
         <SecretCreationStep
             step={step}
             title="Create an Access Token"
-            description=<span>Please check out our <Link href="https://docs.your-sourcebot-instance.com target="_blank" className="underline">docs</Link> for more information on how to create auth credentials for Bitbucket Data Center.</span>
+            description={<span>Please check out our <Link href="https://docs.your-sourcebot-instance.com" target="_blank" className="underline">docs</Link> for more information on how to create auth credentials for Bitbucket Data Center.</span>}
         >
         </SecretCreationStep>
     )

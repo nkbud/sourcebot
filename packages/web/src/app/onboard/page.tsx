@@ -91,21 +91,21 @@ export default async function Onboarding({ searchParams }: OnboardingProps) {
             id: "code-host-connections",
             title: "Code Host Connections",
             description: "Learn how to index repos across Sourcebot's supported platforms",
-            href: "https://docs.your-sourcebot-instance.com
+            href: "https://docs.your-sourcebot-instance.com",
             icon: <GitBranchIcon className="w-4 h-4" />,
         },
         {
             id: "authentication-system",
             title: "Authentication System",
             description: "Learn how to setup additional auth providers, invite members, and more",
-            href: "https://docs.your-sourcebot-instance.com
+            href: "https://docs.your-sourcebot-instance.com",
             icon: <LockIcon className="w-4 h-4" />,
         },
         {
             id: "mcp-server",
             title: "MCP Server",
             description: "Learn how to setup Sourcebot's MCP server to provide code context to your AI agents",
-            href: "https://docs.your-sourcebot-instance.com
+            href: "https://docs.your-sourcebot-instance.com",
             icon: <BetweenHorizontalStart className="w-4 h-4" />,
         }
     ]
@@ -130,7 +130,7 @@ export default async function Onboarding({ searchParams }: OnboardingProps) {
                 <>
                     Use your preferred authentication method to create your owner account. To set up additional authentication providers, check out our{" "}
                     <a
-                        href="https://docs.your-sourcebot-instance.com
+                        href="https://docs.your-sourcebot-instance.com"
                         target="_blank"
                         rel="noopener"
                         className="underline text-[var(--primary)] hover:text-[var(--primary)]/80 transition-colors"
@@ -287,7 +287,7 @@ export default async function Onboarding({ searchParams }: OnboardingProps) {
                                     <p className="text-xs text-muted-foreground leading-5">
                                         Need help? Check out our{" "}
                                         <a
-                                            href="https://docs.your-sourcebot-instance.com
+                                            href="https://docs.your-sourcebot-instance.com"
                                             className="text-primary hover:underline font-medium transition-colors"
                                             target="_blank"
                                             rel="noopener"
@@ -391,7 +391,7 @@ function NonOwnerOnboardingMessage() {
                                 <div className="text-xs text-muted-foreground leading-relaxed">
                                     Need help? Contact your organization owner or check out our{" "}
                                     <a
-                                        href="https://docs.your-sourcebot-instance.com
+                                        href="https://docs.your-sourcebot-instance.com"
                                         className="text-primary hover:text-primary/80 underline transition-colors"
                                         target="_blank"
                                         rel="noopener"
