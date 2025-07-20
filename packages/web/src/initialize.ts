@@ -112,9 +112,10 @@ const syncDeclarativeConfig = async (configPath: string) => {
     }
 
     if (hasPublicAccessEntitlement) {
-    // Public access disabled during EE cleanup
-    if (enablePublicAccess) {
-        logger.warn(`Public access is no longer supported after EE cleanup. Skipping public access configuration.`);
+        // Public access disabled during EE cleanup
+        if (enablePublicAccess) {
+            logger.warn(`Public access is no longer supported after EE cleanup. Skipping public access configuration.`);
+        }
     }
 
     await syncConnections(config.connections);
