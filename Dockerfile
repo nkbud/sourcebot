@@ -100,6 +100,7 @@ COPY --from=shared-libs-builder /app/packages/shared ./packages/shared
 RUN yarn workspace @sourcebot/web install
 
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV NEXT_DISABLE_ESLINT=1
 RUN yarn workspace @sourcebot/web build
 ENV SKIP_ENV_VALIDATION=0
 # ------------------------------

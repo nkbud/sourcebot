@@ -24,3 +24,6 @@ export async function getSubscriptionInfo(): Promise<BillingInfo | null> {
 export const stripe = {
   // Stub stripe client
 };
+
+// Stub for EE billing feature
+export const IS_BILLING_ENABLED = false
