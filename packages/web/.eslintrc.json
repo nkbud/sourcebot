@@ -21,6 +21,8 @@
         "caughtErrorsIgnorePattern": "^_"
       }
     ],
-    "no-extra-semi": "off"
+    "no-extra-semi": "off",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/no-empty-object-type": "warn"
   }
 }
