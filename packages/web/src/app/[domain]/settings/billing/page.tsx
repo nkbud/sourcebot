@@ -1,18 +1,10 @@
-import { getCurrentUserRole } from "@/actions"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { getSubscriptionBillingEmail, getSubscriptionInfo } from "@/ee/features/billing/actions"
-import { ChangeBillingEmailCard } from "@/ee/features/billing/components/changeBillingEmailCard"
-import { ManageSubscriptionButton } from "@/ee/features/billing/components/manageSubscriptionButton"
-import { IS_BILLING_ENABLED } from "@/ee/features/billing/stripe"
-import { ServiceErrorException } from "@/lib/serviceError"
-import { isServiceError } from "@/lib/utils"
-import { CalendarIcon, DollarSign, Users } from "lucide-react"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 
 export const metadata: Metadata = {
     title: "Billing | Settings",
-    description: "Manage your subscription and billing information",
+    description: "Billing functionality has been removed",
 }
 
 interface BillingPageProps {
@@ -24,29 +16,9 @@ interface BillingPageProps {
 export default async function BillingPage({
     params: { domain },
 }: BillingPageProps) {
-    if (!IS_BILLING_ENABLED) {
-        notFound();
-    }
-
-    const subscription = await getSubscriptionInfo(domain)
-
-    if (isServiceError(subscription)) {
-        throw new ServiceErrorException(subscription);
-    }
-
-    if (!subscription) {
-        throw new Error("Subscription not found");
-    }
-
-    const currentUserRole = await getCurrentUserRole(domain)
-    if (isServiceError(currentUserRole)) {
-        throw new ServiceErrorException(currentUserRole);
-    }
-
-    const billingEmail = await getSubscriptionBillingEmail(domain);
-    if (isServiceError(billingEmail)) {
-        throw new ServiceErrorException(billingEmail);
-    }
+    // Billing functionality has been removed - return not found
+    notFound();
+}
 
     return (
         <div className="space-y-6">
