@@ -13,13 +13,9 @@ import { createTransport } from 'nodemailer';
 import { render } from '@react-email/render';
 import MagicLinkEmail from './emails/magicLinkEmail';
 import bcrypt from 'bcryptjs';
-import { getSSOProviders } from '@/ee/features/sso/sso';
 import { hasEntitlement } from '@sourcebot/shared';
 import { onCreateUser } from '@/lib/authUtils';
-import { getAuditService } from '@/ee/features/audit/factory';
 import { SINGLE_TENANT_ORG_ID } from './lib/constants';
-
-const auditService = getAuditService();
 
 export const runtime = 'nodejs';
 
@@ -40,9 +36,7 @@ declare module 'next-auth/jwt' {
 export const getProviders = () => {
     const providers: Provider[] = [];
 
-    if (hasEntitlement("sso")) {
-        providers.push(...getSSOProviders());
-    }
+    // SSO providers removed (EE feature)
 
     if (env.SMTP_CONNECTION_URL && env.EMAIL_FROM_ADDRESS && env.AUTH_EMAIL_CODE_LOGIN_ENABLED === 'true') {
         providers.push(EmailProvider({
@@ -142,37 +136,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     events: {
         createUser: onCreateUser,
         signIn: async ({ user }) => {
-            if (user.id) {
-                await auditService.createAudit({
-                    action: "user.signed_in",
-                    actor: {
-                        id: user.id,
-                        type: "user"
-                    },
-                    orgId: SINGLE_TENANT_ORG_ID, // TODO(mt)
-                    target: {
-                        id: user.id,
-                        type: "user"
-                    }
-                });
-            }
+            // Audit logging removed (EE feature)
         },
         signOut: async (message) => {
-            const token = message as { token: { userId: string } | null };
-            if (token?.token?.userId) {
-                await auditService.createAudit({
-                    action: "user.signed_out",
-                    actor: {
-                        id: token.token.userId,
-                        type: "user"
-                    },
-                    orgId: SINGLE_TENANT_ORG_ID, // TODO(mt)
-                    target: {
-                        id: token.token.userId,
-                        type: "user"
-                    }
-                });
-            }
+            // Audit logging removed (EE feature)
         }
     },
     callbacks: {

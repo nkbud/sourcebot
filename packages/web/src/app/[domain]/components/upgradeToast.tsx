@@ -1,23 +1,10 @@
 'use client';
 
-import { useToast } from "@/components/hooks/use-toast";
-import { ToastAction } from "@/components/ui/toast";
-import { useEffect } from "react";
-import { useLocalStorage } from "usehooks-ts";
-import { getVersion } from "@/app/api/(client)/client";
-import { useQuery } from "@tanstack/react-query";
-
-const GITHUB_TAGS_URL = "https://api.github.com/repos/sourcebot-dev/sourcebot/tags";
-const SEMVER_REGEX = /^v(\d+)\.(\d+)\.(\d+)$/;
-const TOAST_TIMEOUT_MS = 1000 * 60 * 60 * 24;
-
-type Version = {
-    major: number;
-    minor: number;
-    patch: number;
-};
-
+// Stub component - upgrade toast functionality removed (EE feature)
 export const UpgradeToast = () => {
+    // No upgrade toast needed
+    return null;
+};
     const { toast } = useToast();
     const [ upgradeToastLastShownDate, setUpgradeToastLastShownDate ] = useLocalStorage<string>(
         "upgradeToastLastShownDate",

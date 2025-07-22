@@ -6,34 +6,16 @@ import { getPlan, getSeats, hasEntitlement, SOURCEBOT_UNLIMITED_SEATS } from "@s
 import { isServiceError } from "@/lib/utils";
 import { orgNotFound, ServiceError, userNotFound } from "@/lib/serviceError";
 import { createLogger } from "@sourcebot/logger";
-import { getAuditService } from "@/ee/features/audit/factory";
 import { StatusCodes } from "http-status-codes";
 import { ErrorCode } from "./errorCodes";
-import { IS_BILLING_ENABLED } from "@/ee/features/billing/stripe";
-import { incrementOrgSeatCount } from "@/ee/features/billing/serverUtils";
 import { getOrgFromDomain } from "@/data/org";
 
 const logger = createLogger('web-auth-utils');
-const auditService = getAuditService();
 
 export const onCreateUser = async ({ user }: { user: AuthJsUser }) => {
     if (!user.id) {
         logger.error("User ID is undefined on user creation");
-        await auditService.createAudit({
-            action: "user.creation_failed",
-            actor: {
-                id: "undefined",
-                type: "user"
-            },
-            target: {
-                id: "undefined",
-                type: "user"
-            },
-            orgId: SINGLE_TENANT_ORG_ID,
-            metadata: {
-                message: "User ID is undefined on user creation"
-            }
-        });
+        // Audit logging removed (EE feature)
         throw new Error("User ID is undefined on user creation");
     }
 
@@ -54,21 +36,8 @@ export const onCreateUser = async ({ user }: { user: AuthJsUser }) => {
 
     // We expect the default org to have been created on app initialization
     if (defaultOrg === null) {
-        await auditService.createAudit({
-            action: "user.creation_failed",
-            actor: {
-                id: user.id,
-                type: "user"
-            },
-            target: {
-                id: user.id,
-                type: "user"
-            },
-            orgId: SINGLE_TENANT_ORG_ID,
-            metadata: {
-                message: "Default org not found on single tenant user creation"
-            }
-        });
+        logger.error("Default org not found on single tenant user creation");
+        // Audit logging removed (EE feature)
         throw new Error("Default org not found on single tenant user creation");
     }
 
@@ -95,18 +64,7 @@ export const onCreateUser = async ({ user }: { user: AuthJsUser }) => {
             });
         });
 
-        await auditService.createAudit({
-            action: "user.owner_created",
-            actor: {
-                id: user.id,
-                type: "user"
-            },
-            orgId: SINGLE_TENANT_ORG_ID,
-            target: {
-                id: SINGLE_TENANT_ORG_ID.toString(),
-                type: "org"
-            }
-        });
+        // Audit logging removed (EE feature)
     } else if (!defaultOrg.memberApprovalRequired) { 
         const hasAvailability = await orgHasAvailability(defaultOrg.domain);
         if (!hasAvailability) {
@@ -258,12 +216,7 @@ export const addUserToOrganization = async (userId: string, orgId: number): Prom
             }
         });
 
-        if (IS_BILLING_ENABLED) {
-            const result = await incrementOrgSeatCount(orgId, tx);
-            if (isServiceError(result)) {
-                throw result;
-            }
-        }
+        // Billing-related seat count increment removed (EE feature)
 
         // Delete the account request if it exists since we've added the user to the org
         const accountRequest = await tx.accountRequest.findUnique({
