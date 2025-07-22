@@ -47,19 +47,19 @@ const logger = createLogger('web-actions');
 const IS_BILLING_ENABLED = false;
 
 // Stub functions for removed EE features
-const getSubscriptionForOrg = async (orgId: number, prisma: any) => {
+const getSubscriptionForOrg = async (_orgId: number, _prisma: unknown) => {
     logger.warn("getSubscriptionForOrg: EE billing feature removed");
     return { status: "active" }; // Stub return
 };
 
-const decrementOrgSeatCount = async (orgId: number, tx: any) => {
+const decrementOrgSeatCount = async (_orgId: number, _tx: unknown) => {
     logger.warn("decrementOrgSeatCount: EE billing feature removed");
     return { success: true }; // Stub return
 };
 
 // Stub audit service
 const auditService = {
-    createAudit: async (auditData: any) => {
+    createAudit: async (_auditData: unknown) => {
         logger.warn("auditService.createAudit: EE audit feature removed");
         // No-op stub
     }

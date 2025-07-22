@@ -1,24 +1,25 @@
 // Stub implementations for removed EE features
 
 import { createLogger } from "@sourcebot/logger";
+import React from "react";
 
 const logger = createLogger('ee-stubs');
 
 // Billing stubs
 export const IS_BILLING_ENABLED = false;
 
-export const getSubscriptionInfo = async (domain: string) => {
+export const getSubscriptionInfo = async (_domain: string) => {
     logger.warn("getSubscriptionInfo: EE billing feature removed");
     return { status: "active" }; // Stub return to avoid redirect issues
 };
 
-export const getSubscriptionBillingEmail = async (domain: string) => {
+export const getSubscriptionBillingEmail = async (_domain: string) => {
     logger.warn("getSubscriptionBillingEmail: EE billing feature removed");
     return null;
 };
 
 // Audit stubs
-export const createAuditAction = async (action: any) => {
+export const createAuditAction = async (_action: unknown) => {
     logger.warn("createAuditAction: EE audit feature removed");
     return { success: true };
 };
@@ -29,7 +30,7 @@ export const stripeClient = {
 };
 
 // Component stubs
-export const SymbolHoverPopup = ({ children }: { children: React.ReactNode }) => {
+export const SymbolHoverPopup = ({ children }: { children?: React.ReactNode }) => {
     return <>{children}</>;
 };
 
@@ -54,7 +55,7 @@ export const ManageSubscriptionButton = () => {
 };
 
 // Stub types for removed EE features
-export type SymbolDefinition = any;
+export type SymbolDefinition = unknown;
 
 // Stub extensions
 export const symbolHoverTargetsExtension = [];

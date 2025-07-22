@@ -13,9 +13,7 @@ import { createTransport } from 'nodemailer';
 import { render } from '@react-email/render';
 import MagicLinkEmail from './emails/magicLinkEmail';
 import bcrypt from 'bcryptjs';
-import { hasEntitlement } from '@sourcebot/shared';
 import { onCreateUser } from '@/lib/authUtils';
-import { SINGLE_TENANT_ORG_ID } from './lib/constants';
 
 export const runtime = 'nodejs';
 
@@ -135,10 +133,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     trustHost: true,
     events: {
         createUser: onCreateUser,
-        signIn: async ({ user }) => {
+        signIn: async (_props) => {
             // Audit logging removed (EE feature)
         },
-        signOut: async (message) => {
+        signOut: async (_message) => {
             // Audit logging removed (EE feature)
         }
     },
