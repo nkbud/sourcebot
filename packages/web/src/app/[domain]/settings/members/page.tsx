@@ -7,7 +7,7 @@ import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { TabSwitcher } from "@/components/ui/tab-switcher";
 import { InvitesList } from "./components/invitesList";
 import { getOrgInvites, getMe, getOrgAccountRequests } from "@/actions";
-import { IS_BILLING_ENABLED } from "@/ee/features/billing/stripe";
+import { IS_BILLING_ENABLED } from "@/lib/eeStubs";
 import { ServiceErrorException } from "@/lib/serviceError";
 import { getSeats, SOURCEBOT_UNLIMITED_SEATS } from "@sourcebot/shared";
 import { RequestsList } from "./components/requestsList";

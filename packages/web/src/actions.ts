@@ -23,19 +23,16 @@ import { cookies, headers } from "next/headers";
 import { createTransport } from "nodemailer";
 import { auth } from "./auth";
 import { getConnection } from "./data/connection";
-import { IS_BILLING_ENABLED } from "./ee/features/billing/stripe";
 import InviteUserEmail from "./emails/inviteUserEmail";
 import { MOBILE_UNSUPPORTED_SPLASH_SCREEN_DISMISSED_COOKIE_NAME, SINGLE_TENANT_ORG_DOMAIN, SOURCEBOT_GUEST_USER_ID, SOURCEBOT_SUPPORT_EMAIL } from "./lib/constants";
 import { orgDomainSchema, orgNameSchema, repositoryQuerySchema } from "./lib/schemas";
 import { TenancyMode, ApiKeyPayload } from "./lib/types";
-import { decrementOrgSeatCount, getSubscriptionForOrg } from "./ee/features/billing/serverUtils";
 import { bitbucketSchema } from "@sourcebot/schemas/v3/bitbucket.schema";
 import { genericGitHostSchema } from "@sourcebot/schemas/v3/genericGitHost.schema";
 import { getPlan, hasEntitlement } from "@sourcebot/shared";
 import JoinRequestSubmittedEmail from "./emails/joinRequestSubmittedEmail";
 import JoinRequestApprovedEmail from "./emails/joinRequestApprovedEmail";
 import { createLogger } from "@sourcebot/logger";
-import { getAuditService } from "@/ee/features/audit/factory";
 import { addUserToOrganization, orgHasAvailability } from "@/lib/authUtils";
 import { getOrgMetadata } from "@/lib/utils";
 import { getOrgFromDomain } from "./data/org";
@@ -45,7 +42,28 @@ const ajv = new Ajv({
 });
 
 const logger = createLogger('web-actions');
-const auditService = getAuditService();
+
+// EE features removed - provide stub constants
+const IS_BILLING_ENABLED = false;
+
+// Stub functions for removed EE features
+const getSubscriptionForOrg = async (_orgId: number, _prisma: unknown) => {
+    logger.warn("getSubscriptionForOrg: EE billing feature removed");
+    return { status: "active" }; // Stub return
+};
+
+const decrementOrgSeatCount = async (_orgId: number, _tx: unknown) => {
+    logger.warn("decrementOrgSeatCount: EE billing feature removed");
+    return { success: true }; // Stub return
+};
+
+// Stub audit service
+const auditService = {
+    createAudit: async (_auditData: unknown) => {
+        logger.warn("auditService.createAudit: EE audit feature removed");
+        // No-op stub
+    }
+};
 
 /**
  * "Service Error Wrapper".

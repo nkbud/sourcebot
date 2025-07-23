@@ -3,10 +3,21 @@ import { indexSchema } from "@sourcebot/schemas/v3/index.schema";
 import { readFile } from 'fs/promises';
 import stripJsonComments from 'strip-json-comments';
 import { Ajv } from "ajv";
+import { SearchContext } from "@sourcebot/schemas/v3/index.type";
+import { createLogger } from "@sourcebot/logger";
 
 const ajv = new Ajv({
     validateFormats: false,
 });
+
+const logger = createLogger('shared-utils');
+
+// Stub interface for syncSearchContexts
+interface SyncSearchContextsParams {
+    contexts?: { [key: string]: SearchContext } | undefined;
+    orgId: number;
+    db: any; // Use any instead of PrismaClient to avoid dependency issues
+}
 
 // From https://developer.mozilla.org/en-US/docs/Glossary/Base64#the_unicode_problem
 export const base64Decode = (base64: string): string => {
@@ -39,4 +50,15 @@ export const loadConfig = async (configPath: string): Promise<SourcebotConfig> =
         throw new Error(`Config file '${configPath}' is invalid: ${ajv.errorsText(ajv.errors)}`);
     }
     return config;
+}
+
+// Stub implementation of syncSearchContexts - EE feature removed
+export const syncSearchContexts = async (params: SyncSearchContextsParams): Promise<boolean> => {
+    const { contexts } = params;
+    
+    if (contexts) {
+        logger.warn("Search contexts feature has been removed - this is a stub implementation");
+    }
+    
+    return false;  // Feature not available in non-EE version
 }

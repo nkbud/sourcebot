@@ -13,8 +13,6 @@ export {
     base64Decode,
     loadConfig,
     isRemotePath,
-} from "./utils.js";
-export {
     syncSearchContexts,
-} from "./ee/syncSearchContexts.js";
+} from "./utils.js";
 export * from "./constants.js";
