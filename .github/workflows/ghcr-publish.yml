@@ -17,8 +17,8 @@ env:
 
 jobs:
   build:
-    runs-on: ${{ matrix.runs-on}}
-    environment: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' ? 'oss' : 'approval-required' }}
+    runs-on: ${{ matrix.runs-on }}
+    environment: "${{ github.event_name == 'push' && github.ref == 'refs/heads/main' ? 'oss' : 'approval-required' }}"
     permissions:
       contents: read
       packages: write
