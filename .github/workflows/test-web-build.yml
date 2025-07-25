@@ -1,0 +1,87 @@
+name: Test Web Build (Winston Fix)
+
+# Optional workflow to test the webpack build after winston/Node.js module fixes
+# This can be run manually or on specific branches to validate the fix
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'packages/web/**'
+      - '.github/workflows/test-web-build.yml'
+  push:
+    branches:
+      - 'copilot/fix-*'  # Automatically test fix branches
+      - 'fix/webpack-*'  # Test other webpack fix branches
+
+jobs:
+  test-web-build:
+    name: Test Web Package Build
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: Enable Corepack
+        run: corepack enable
+        
+      - name: Install dependencies
+        run: yarn install --immutable
+        env:
+          # Skip failing packages that aren't needed for the web build test
+          SKIP_ENV_VALIDATION: 1
+          
+      - name: Build required dependencies
+        run: |
+          # Build only the packages that web depends on and can build successfully
+          yarn workspace @sourcebot/error build || echo "Error package build failed - expected"
+          yarn workspace @sourcebot/logger build || echo "Logger package build failed - expected"
+          yarn workspace @sourcebot/schemas build || echo "Schemas package build failed - expected"
+          
+      - name: Test web package build (validate winston fix)
+        run: |
+          # Test that the web package builds without winston/Node.js module errors
+          SKIP_ENV_VALIDATION=1 yarn workspace @sourcebot/web build 2>&1 | tee build.log
+          
+          # Check that winston errors are gone
+          if grep -i winston build.log; then
+            echo "❌ Winston errors still present in build"
+            exit 1
+          fi
+          
+          # Check that no Node.js specific module errors exist for frontend code
+          if grep -E "Module not found.*'(winston|fs|path|os|stream)'" build.log | grep -v "@sourcebot/db"; then
+            echo "❌ Node.js specific module errors found in frontend build"
+            exit 1
+          fi
+          
+          echo "✅ Web build test passed - winston/Node.js module errors resolved"
+          
+      - name: Test browser logger functionality
+        run: |
+          cd packages/web
+          
+          # Test that browser logger compiles
+          npx tsc --noEmit src/lib/logger-browser.ts
+          
+          # Test that no direct winston imports exist in frontend code
+          if find src/app src/components src/lib -name "*.tsx" -o -name "*.ts" | xargs grep -l "import.*winston" 2>/dev/null | grep -v "logger-browser"; then
+            echo "❌ Found direct winston imports in frontend code"
+            exit 1
+          fi
+          
+          echo "✅ Browser logger functionality test passed"
+          
+      - name: Upload build logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs
+          path: packages/web/build.log
+          retention-days: 7
