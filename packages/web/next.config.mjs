@@ -10,6 +10,17 @@ const nextConfig = {
     // @see: https://env.t3.gg/docs/nextjs#create-your-schema
     transpilePackages: ["@t3-oss/env-nextjs", "@t3-oss/env-core"],
 
+    webpack: (config, { isServer }) => {
+        // Replace @sourcebot/logger with browser-compatible version for client builds
+        if (!isServer) {
+            config.resolve.alias = {
+                ...config.resolve.alias,
+                '@sourcebot/logger': './src/lib/logger-browser.ts',
+            };
+        }
+        return config;
+    },
+
     // @see : https://posthog.com/docs/advanced/proxy/nextjs
     async rewrites() {
         return [
