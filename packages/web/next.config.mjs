@@ -1,6 +1,10 @@
 await import("./src/env.mjs");
 import { withSentryConfig } from "@sentry/nextjs";
+import { fileURLToPath } from 'url';
+import { dirname, resolve } from 'path';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -15,7 +19,7 @@ const nextConfig = {
         if (!isServer) {
             config.resolve.alias = {
                 ...config.resolve.alias,
-                '@sourcebot/logger': './src/lib/logger-browser.ts',
+                '@sourcebot/logger': resolve(__dirname, 'src/lib/logger-browser.ts'),
             };
         }
         return config;
