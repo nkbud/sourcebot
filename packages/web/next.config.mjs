@@ -1,10 +1,5 @@
 await import("./src/env.mjs");
 import { withSentryConfig } from "@sentry/nextjs";
-import { fileURLToPath } from 'url';
-import { dirname, resolve } from 'path';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -15,11 +10,28 @@ const nextConfig = {
     transpilePackages: ["@t3-oss/env-nextjs", "@t3-oss/env-core"],
 
     webpack: (config, { isServer }) => {
-        // Replace @sourcebot/logger with browser-compatible version for client builds
+        // For client-side builds, exclude Node.js modules that cause bundling issues
         if (!isServer) {
+            config.resolve.fallback = {
+                ...config.resolve.fallback,
+                fs: false,
+                net: false,
+                tls: false,
+                crypto: false,
+                os: false,
+                path: false,
+                stream: false,
+            };
+            
+            // Provide empty modules for winston and its dependencies
             config.resolve.alias = {
                 ...config.resolve.alias,
-                '@sourcebot/logger': resolve(__dirname, 'src/lib/logger-browser.ts'),
+                winston: false,
+                '@logtail/winston': false,
+                '@logtail/node': false,
+                'triple-beam': false,
+                // Replace @sourcebot/logger with universal logger for client builds
+                '@sourcebot/logger': require.resolve('./src/lib/logger-browser.ts'),
             };
         }
         return config;
