@@ -9,9 +9,28 @@ const nextConfig = {
     // @see: https://env.t3.gg/docs/nextjs#create-your-schema
     transpilePackages: ["@t3-oss/env-nextjs", "@t3-oss/env-core"],
 
-    webpack: (config, { isServer }) => {
-        // For client-side builds, exclude Node.js modules that cause bundling issues
+    experimental: {
+        // Improve ESM handling
+        esmExternals: true,
+    },
+
+    webpack: (config, { isServer, dev }) => {
+        // For client-side builds, completely avoid Node.js modules
         if (!isServer) {
+            // Set externals to avoid bundling Node.js modules
+            const originalExternals = config.externals || [];
+            config.externals = [
+                ...originalExternals,
+                // Exclude winston and related packages
+                function ({ context, request }, callback) {
+                    if (/^(winston|@logtail\/winston|@logtail\/node|triple-beam)$/.test(request)) {
+                        return callback(null, 'commonjs ' + request);
+                    }
+                    callback();
+                }
+            ];
+
+            // Comprehensive fallbacks for Node.js built-ins
             config.resolve.fallback = {
                 ...config.resolve.fallback,
                 fs: false,
@@ -21,17 +40,27 @@ const nextConfig = {
                 os: false,
                 path: false,
                 stream: false,
-            };
-            
-            // Provide empty modules for winston and its dependencies
-            config.resolve.alias = {
-                ...config.resolve.alias,
                 winston: false,
                 '@logtail/winston': false,
                 '@logtail/node': false,
                 'triple-beam': false,
-                // Replace @sourcebot/logger with universal logger for client builds
-                '@sourcebot/logger': require.resolve('./src/lib/logger-browser.ts'),
+            };
+            
+            // Replace @sourcebot/logger module entirely
+            config.resolve.alias = {
+                ...config.resolve.alias,
+                // Use exact match to avoid conflicts
+                '@sourcebot/logger$': require.resolve('./src/lib/logger-browser.ts'),
+            };
+
+            // Add a condition to ignore certain warnings about externals
+            config.stats = {
+                ...config.stats,
+                warningsFilter: [
+                    'Module not found: Can\'t resolve \'winston\'',
+                    'Module not found: Can\'t resolve \'@logtail/winston\'',
+                    'Module not found: Can\'t resolve \'triple-beam\'',
+                ],
             };
         }
         return config;

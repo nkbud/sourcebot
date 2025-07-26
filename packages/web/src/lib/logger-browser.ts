@@ -1,57 +1,48 @@
 // Universal logger implementation for @sourcebot/logger
 // This provides a winston-compatible interface that works in both Node.js and browser environments
 
-interface Logger {
-  info: (message: string, ...args: unknown[]) => void;
-  warn: (message: string, ...args: unknown[]) => void;
-  error: (message: string, ...args: unknown[]) => void;
-  debug: (message: string, ...args: unknown[]) => void;
-  log: (level: string, message: string, ...args: unknown[]) => void;
-}
-
 // Check if we're in a browser environment
 const isBrowser = typeof window !== 'undefined' && typeof window.document !== 'undefined';
 
 /**
  * Browser-compatible logger implementation
  */
-const createBrowserLogger = (label: string): Logger => {
+function createBrowserLogger(label) {
   return {
-    info: (message: string, ...args: unknown[]) => {
+    info: function(message, ...args) {
       console.info(`[${label}] ${message}`, ...args);
     },
-    warn: (message: string, ...args: unknown[]) => {
+    warn: function(message, ...args) {
       console.warn(`[${label}] ${message}`, ...args);
     },
-    error: (message: string, ...args: unknown[]) => {
+    error: function(message, ...args) {
       console.error(`[${label}] ${message}`, ...args);
     },
-    debug: (message: string, ...args: unknown[]) => {
+    debug: function(message, ...args) {
       console.debug(`[${label}] ${message}`, ...args);
     },
-    log: (level: string, message: string, ...args: unknown[]) => {
-      const levelMethod = level.toLowerCase() as keyof Console;
+    log: function(level, message, ...args) {
+      const levelMethod = level.toLowerCase();
       if (typeof console[levelMethod] === 'function') {
-        (console[levelMethod] as any)(`[${label}] ${message}`, ...args);
+        console[levelMethod](`[${label}] ${message}`, ...args);
       } else {
         console.log(`[${label}] ${level.toUpperCase()}: ${message}`, ...args);
       }
     }
   };
-};
+}
 
 /**
  * Node.js logger implementation - tries to use the original winston logger
  */
-const createNodeLogger = (label: string): Logger => {
+function createNodeLogger(label) {
   try {
     // This will only work in Node.js environments where winston is available
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const winston = require('winston');
     const format = winston.format;
     const { combine, colorize, timestamp, errors, printf, label: labelFn } = format;
 
-    const humanReadableFormat = printf(({ level, message, timestamp, stack, label: _label }: any) => {
+    const humanReadableFormat = printf(function({ level, message, timestamp, stack, label: _label }) {
       const labelStr = `[${_label}] `;
       if (stack) {
         return `${timestamp} ${level}: ${labelStr}${message}\n${stack}`;
@@ -82,15 +73,19 @@ const createNodeLogger = (label: string): Logger => {
     console.warn(`Winston not available for label "${label}", falling back to console`);
     return createBrowserLogger(label);
   }
-};
+}
 
 /**
  * Universal createLogger function that works in both environments
  */
-export const createLogger = (label: string): Logger => {
+function createLogger(label) {
   if (isBrowser) {
     return createBrowserLogger(label);
   } else {
     return createNodeLogger(label);
   }
-};
+}
+
+// Export using both CommonJS and ES modules syntax for maximum compatibility
+module.exports = { createLogger };
+exports.createLogger = createLogger;
