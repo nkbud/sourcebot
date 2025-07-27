@@ -10,7 +10,8 @@ on:
 
 env:
   # Use docker.io for Docker Hub if empty
-  REGISTRY_IMAGE: ghcr.io/sourcebot-dev/sourcebot
+  REGISTRY_IMAGE: ghcr.io/nkbud/sourcebot
+  MCP_REGISTRY_IMAGE: ghcr.io/nkbud/sourcebot-mcp
 
 jobs:
   build:
@@ -24,6 +25,15 @@ jobs:
       id-token: write
     strategy:
       matrix:
+        image:
+          - name: sourcebot
+            context: .
+            dockerfile: ./Dockerfile
+            registry: ${{ env.REGISTRY_IMAGE }}
+          - name: sourcebot-mcp
+            context: ./packages/mcp
+            dockerfile: ./packages/mcp/Dockerfile
+            registry: ${{ env.MCP_REGISTRY_IMAGE }}
         platform: [linux/amd64, linux/arm64]
         include:
           - platform: linux/amd64
@@ -36,6 +46,7 @@ jobs:
         run: |
           platform=${{ matrix.platform }}
           echo "PLATFORM_PAIR=${platform//\//-}" >> $GITHUB_ENV
+          echo "IMAGE_NAME=${{ matrix.image.name }}" >> $GITHUB_ENV
 
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -48,7 +59,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY_IMAGE }}
+          images: ${{ matrix.image.registry }}
 
       # Install the cosign tool except on PR
       # https://github.com/sigstore/cosign-installer
@@ -71,12 +82,13 @@ jobs:
         id: build
         uses: docker/build-push-action@v6
         with:
-          context: .
+          context: ${{ matrix.image.context }}
+          file: ${{ matrix.image.dockerfile }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: ${{ matrix.platform }}
-          outputs: type=image,name=${{ env.REGISTRY_IMAGE }},push-by-digest=true,name-canonical=true,push=true,annotation.org.opencontainers.image.description=Blazingly fast code search
+          outputs: type=image,name=${{ matrix.image.registry }},push-by-digest=true,name-canonical=true,push=true,annotation.org.opencontainers.image.description=Blazingly fast code search
           build-args: |
             NEXT_PUBLIC_SOURCEBOT_VERSION=${{ github.ref_name }}
             NEXT_PUBLIC_POSTHOG_PAPIK=${{ vars.NEXT_PUBLIC_POSTHOG_PAPIK }}
@@ -90,7 +102,7 @@ jobs:
       - name: Upload digest
         uses: actions/upload-artifact@v4
         with:
-          name: digests-${{ env.PLATFORM_PAIR }}
+          name: digests-${{ env.IMAGE_NAME }}-${{ env.PLATFORM_PAIR }}
           path: /tmp/digests/*
           if-no-files-found: error
           retention-days: 1
@@ -115,12 +127,19 @@ jobs:
       packages: write
     needs:
       - build
+    strategy:
+      matrix:
+        image:
+          - name: sourcebot
+            registry: ${{ env.REGISTRY_IMAGE }}
+          - name: sourcebot-mcp
+            registry: ${{ env.MCP_REGISTRY_IMAGE }}
     steps:
       - name: Download digests
         uses: actions/download-artifact@v4
         with:
           path: /tmp/digests
-          pattern: digests-*
+          pattern: digests-${{ matrix.image.name }}-*
           merge-multiple: true
       
       - name: Set up Docker Buildx
@@ -130,7 +149,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY_IMAGE }}
+          images: ${{ matrix.image.registry }}
 
       - name: Login to GitHub Packages Docker Registry
         uses: docker/login-action@v3
@@ -143,8 +162,8 @@ jobs:
         working-directory: /tmp/digests
         run: |
           docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
-            $(printf '${{ env.REGISTRY_IMAGE }}@sha256:%s ' *)
+            $(printf '${{ matrix.image.registry }}@sha256:%s ' *)
       
       - name: Inspect image
         run: |
-          docker buildx imagetools inspect ${{ env.REGISTRY_IMAGE }}:${{ steps.meta.outputs.version }}         
+          docker buildx imagetools inspect ${{ matrix.image.registry }}:${{ steps.meta.outputs.version }}         

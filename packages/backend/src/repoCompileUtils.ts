@@ -502,7 +502,7 @@ export const compileGenericGitHostConfig_file = async (
         const remoteUrl = GitUrlParse(origin);
 
         // @note: matches the naming here:
-        // https://github.com/sourcebot-dev/zoekt/blob/main/gitindex/index.go#L293
+        // https://github.com/nkbud/zoekt/blob/main/gitindex/index.go#L293
         const repoName = path.join(remoteUrl.host, remoteUrl.pathname.replace(/\.git$/, ''));
 
         const repo: RepoData = {
@@ -571,7 +571,7 @@ export const compileGenericGitHostConfig_url = async (
     }
 
     // @note: matches the naming here:
-    // https://github.com/sourcebot-dev/zoekt/blob/main/gitindex/index.go#L293
+    // https://github.com/nkbud/zoekt/blob/main/gitindex/index.go#L293
     const repoName = path.join(remoteUrl.host, remoteUrl.pathname.replace(/\.git$/, ''));
 
     const repo: RepoData = {

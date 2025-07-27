@@ -8,5 +8,5 @@ This directory contains Sourcebot's file browser implementation. URL paths are u
 
 For example, to view `packages/backend/src/env.ts` in Sourcebot, we would use the following path:
 ```sh
-/browse/github.com/sourcebot-dev/sourcebot@HEAD/-/blob/packages/backend/src/env.ts
+/browse/github.com/nkbud/sourcebot@HEAD/-/blob/packages/backend/src/env.ts
 ```

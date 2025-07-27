@@ -109,7 +109,7 @@
             },
             {
                 "anchor": "Support",
-                "href": "https://github.com/sourcebot-dev/sourcebot/discussions/categories/support",
+                "href": "https://github.com/nkbud/sourcebot/discussions/categories/support",
                 "icon": "life-ring"
             }
         ]
@@ -122,12 +122,12 @@
         "primary": {
             "type": "button",
             "label": "GitHub",
-            "href": "https://github.com/sourcebot-dev/sourcebot"
+            "href": "https://github.com/nkbud/sourcebot"
         }
     },
     "footer": {
         "socials": {
-            "github": "https://github.com/sourcebot-dev/sourcebot",
+            "github": "https://github.com/nkbud/sourcebot",
             "twitter": "https://x.com/sourcebot_dev",
             "discord": "https://discord.gg/Y6b78RqM",
             "linkedin": "https://www.linkedin.com/company/sourcebot"

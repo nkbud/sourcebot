@@ -24,7 +24,7 @@ describe('calculateVisibleRanges', () => {
                     startLine: 10,
                     endLine: 15
                 },
-                repo: 'github.com/sourcebot-dev/sourcebot'
+                repo: 'github.com/nkbud/sourcebot'
             }
         ];
 
@@ -43,14 +43,14 @@ describe('calculateVisibleRanges', () => {
                 id: '1',
                 type: 'file',
                 range: { startLine: 10, endLine: 15 },
-                repo: 'github.com/sourcebot-dev/sourcebot'
+                repo: 'github.com/nkbud/sourcebot'
             },
             {
                 path: 'test.ts',
                 id: '2',
                 type: 'file',
                 range: { startLine: 12, endLine: 20 },
-                repo: 'github.com/sourcebot-dev/sourcebot'
+                repo: 'github.com/nkbud/sourcebot'
             }
         ];
 
@@ -69,14 +69,14 @@ describe('calculateVisibleRanges', () => {
                 id: '1',
                 type: 'file',
                 range: { startLine: 10, endLine: 15 },
-                repo: 'github.com/sourcebot-dev/sourcebot'
+                repo: 'github.com/nkbud/sourcebot'
             },
             {
                 path: 'test.ts',
                 id: '2',
                 type: 'file',
                 range: { startLine: 19, endLine: 25 },
-                repo: 'github.com/sourcebot-dev/sourcebot'
+                repo: 'github.com/nkbud/sourcebot'
             }
         ];
 
@@ -97,14 +97,14 @@ describe('calculateVisibleRanges', () => {
                 id: '1',
                 type: 'file',
                 range: { startLine: 10, endLine: 15 },
-                repo: 'github.com/sourcebot-dev/sourcebot'
+                repo: 'github.com/nkbud/sourcebot'
             },
             {
                 path: 'test.ts',
                 id: '2',
                 type: 'file',
                 range: { startLine: 25, endLine: 30 },
-                repo: 'github.com/sourcebot-dev/sourcebot'
+                repo: 'github.com/nkbud/sourcebot'
             }
         ];
 
@@ -123,7 +123,7 @@ describe('calculateVisibleRanges', () => {
                 id: '1',
                 type: 'file',
                 range: { startLine: 1, endLine: 5 },
-                repo: 'github.com/sourcebot-dev/sourcebot'
+                repo: 'github.com/nkbud/sourcebot'
             }
         ];
 
@@ -142,7 +142,7 @@ describe('calculateVisibleRanges', () => {
                 id: '1',
                 type: 'file',
                 range: { startLine: 95, endLine: 100 },
-                repo: 'github.com/sourcebot-dev/sourcebot'
+                repo: 'github.com/nkbud/sourcebot'
             }
         ];
 
@@ -161,28 +161,28 @@ describe('calculateVisibleRanges', () => {
                 id: '1',
                 type: 'file',
                 range: { startLine: 10, endLine: 15 },
-                repo: 'github.com/sourcebot-dev/sourcebot'
+                repo: 'github.com/nkbud/sourcebot'
             },
             {
                 path: 'test.ts',
                 id: '2',
                 type: 'file',
                 range: { startLine: 20, endLine: 25 },
-                repo: 'github.com/sourcebot-dev/sourcebot'
+                repo: 'github.com/nkbud/sourcebot'
             },
             {
                 path: 'test.ts',
                 id: '3',
                 type: 'file',
                 range: { startLine: 22, endLine: 30 },
-                repo: 'github.com/sourcebot-dev/sourcebot'
+                repo: 'github.com/nkbud/sourcebot'
             },
             {
                 path: 'test.ts',
                 id: '4',
                 type: 'file',
                 range: { startLine: 50, endLine: 55 },
-                repo: 'github.com/sourcebot-dev/sourcebot'
+                repo: 'github.com/nkbud/sourcebot'
             }
         ];
 
@@ -212,14 +212,14 @@ describe('calculateVisibleRanges', () => {
                 id: '1',
                 type: 'file',
                 // No range property
-                repo: 'github.com/sourcebot-dev/sourcebot'
+                repo: 'github.com/nkbud/sourcebot'
             },
             {
                 path: 'test.ts',
                 id: '2',
                 type: 'file',
                 range: { startLine: 10, endLine: 15 },
-                repo: 'github.com/sourcebot-dev/sourcebot'
+                repo: 'github.com/nkbud/sourcebot'
             }
         ];
 
@@ -238,7 +238,7 @@ describe('calculateVisibleRanges', () => {
                 id: '1',
                 type: 'file',
                 range: { startLine: 10, endLine: 15 },
-                repo: 'github.com/sourcebot-dev/sourcebot'
+                repo: 'github.com/nkbud/sourcebot'
             }
         ];
 
@@ -257,7 +257,7 @@ describe('calculateVisibleRanges', () => {
                 id: '1',
                 type: 'file',
                 range: { startLine: 10, endLine: 10 },
-                repo: 'github.com/sourcebot-dev/sourcebot'
+                repo: 'github.com/nkbud/sourcebot'
             }
         ];
 
@@ -276,21 +276,21 @@ describe('calculateVisibleRanges', () => {
                 id: '1',
                 type: 'file',
                 range: { startLine: 50, endLine: 55 },
-                repo: 'github.com/sourcebot-dev/sourcebot'
+                repo: 'github.com/nkbud/sourcebot'
             },
             {
                 path: 'test.ts',
                 id: '2',
                 type: 'file',
                 range: { startLine: 10, endLine: 15 },
-                repo: 'github.com/sourcebot-dev/sourcebot'
+                repo: 'github.com/nkbud/sourcebot'
             },
             {
                 path: 'test.ts',
                 id: '3',
                 type: 'file',
                 range: { startLine: 30, endLine: 35 },
-                repo: 'github.com/sourcebot-dev/sourcebot'
+                repo: 'github.com/nkbud/sourcebot'
             }
         ];
 
@@ -404,14 +404,14 @@ describe('StateField Integration', () => {
                 id: '1',
                 type: 'file',
                 range: { startLine: 10, endLine: 15 },
-                repo: 'github.com/sourcebot-dev/sourcebot'
+                repo: 'github.com/nkbud/sourcebot'
             },
             {
                 path: 'test.ts',
                 id: '2',
                 type: 'file',
                 range: { startLine: 25, endLine: 30 },
-                repo: 'github.com/sourcebot-dev/sourcebot'
+                repo: 'github.com/nkbud/sourcebot'
             }
         ];
 
@@ -483,7 +483,7 @@ describe('StateField Integration', () => {
                 id: '1',
                 type: 'file',
                 range: { startLine: 10, endLine: 15 },
-                repo: 'github.com/sourcebot-dev/sourcebot'
+                repo: 'github.com/nkbud/sourcebot'
             }
         ];
 
@@ -509,7 +509,7 @@ describe('StateField Integration', () => {
                 id: '1',
                 type: 'file',
                 range: { startLine: 20, endLine: 25 },
-                repo: 'github.com/sourcebot-dev/sourcebot'
+                repo: 'github.com/nkbud/sourcebot'
             }
         ];
 
@@ -556,7 +556,7 @@ describe('StateField Integration', () => {
                 id: '1',
                 type: 'file',
                 range: { startLine: 20, endLine: 25 },
-                repo: 'github.com/sourcebot-dev/sourcebot'
+                repo: 'github.com/nkbud/sourcebot'
             }
         ];
 
@@ -593,7 +593,7 @@ describe('StateField Integration', () => {
                 id: '1',
                 type: 'file',
                 range: { startLine: 10, endLine: 15 },
-                repo: 'github.com/sourcebot-dev/sourcebot'
+                repo: 'github.com/nkbud/sourcebot'
             }
         ];
 
@@ -636,7 +636,7 @@ describe('StateField Integration', () => {
                 id: '1',
                 type: 'file',
                 range: { startLine: 10, endLine: 15 },
-                repo: 'github.com/sourcebot-dev/sourcebot'
+                repo: 'github.com/nkbud/sourcebot'
             }
         ];
 
@@ -678,14 +678,14 @@ describe('StateField Integration', () => {
                 id: '1',
                 type: 'file',
                 range: { startLine: 20, endLine: 25 },
-                repo: 'github.com/sourcebot-dev/sourcebot'
+                repo: 'github.com/nkbud/sourcebot'
             },
             {
                 path: 'test.ts',
                 id: '2',
                 type: 'file',
                 range: { startLine: 60, endLine: 65 },
-                repo: 'github.com/sourcebot-dev/sourcebot'
+                repo: 'github.com/nkbud/sourcebot'
             }
         ];
 
