@@ -15,7 +15,7 @@ import { sew, withAuth, withOrgMembership } from "@/actions";
 import { base64Decode } from "@sourcebot/shared";
 
 // List of supported query prefixes in zoekt.
-// @see : https://github.com/nkbud/zoekt/blob/main/query/parse.go#L417
+// @see : https://github.com/sourcebot-dev/zoekt/blob/main/query/parse.go#L417
 enum zoektPrefixes {
     archived = "archived:",
     branchShort = "b:",
@@ -50,7 +50,7 @@ const transformZoektQuery = async (query: string, orgId: number): Promise<string
 
             // Special case: `*` -> search all revisions.
             // In zoekt, providing a blank string will match all branches.
-            // @see: https://github.com/nkbud/zoekt/blob/main/eval.go#L560-L562
+            // @see: https://github.com/sourcebot-dev/zoekt/blob/main/eval.go#L560-L562
             if (revisionName === "*") {
                 revisionName = "";
             }
@@ -150,7 +150,7 @@ export const search = async ({ query, matches, contextLines, whole }: SearchRequ
 
             const body = JSON.stringify({
                 q: query,
-                // @see: https://github.com/nkbud/zoekt/blob/main/api.go#L892
+                // @see: https://github.com/sourcebot-dev/zoekt/blob/main/api.go#L892
                 opts: {
                     ChunkMatches: true,
                     MaxMatchDisplayCount: matches,
@@ -194,7 +194,7 @@ export const search = async ({ query, matches, contextLines, whole }: SearchRequ
                 // 'gitea.com/org/repo', etc.).
                 // 
                 // Note: When a repository is re-indexed (every hour) this ID will be populated.
-                // @see: https://github.com/nkbud/zoekt/pull/6
+                // @see: https://github.com/sourcebot-dev/zoekt/pull/6
                 const repoIdentifiers = new Set(Result.Files?.map((file) => file.RepositoryID ?? file.Repository) ?? []);
                 const repos = new Map<string | number, Repo>();
 

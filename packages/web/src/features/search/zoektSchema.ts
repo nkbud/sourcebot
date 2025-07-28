@@ -1,7 +1,7 @@
 
 import { z } from "zod";
 
-// @see : https://github.com/nkbud/zoekt/blob/main/api.go#L212
+// @see : https://github.com/sourcebot-dev/zoekt/blob/main/api.go#L212
 export const zoektLocationSchema = z.object({
     // 0-based byte offset from the beginning of the file
     ByteOffset: z.number(),
@@ -16,7 +16,7 @@ export const zoektRangeSchema = z.object({
     End: zoektLocationSchema,
 });
 
-// @see : https://github.com/nkbud/zoekt/blob/3780e68cdb537d5a7ed2c84d9b3784f80c7c5d04/api.go#L350
+// @see : https://github.com/sourcebot-dev/zoekt/blob/3780e68cdb537d5a7ed2c84d9b3784f80c7c5d04/api.go#L350
 export const zoektSearchResponseStats = {
     ContentBytesLoaded: z.number(),
     IndexBytesLoaded: z.number(),
@@ -47,7 +47,7 @@ export const zoektSymbolSchema = z.object({
     ParentKind: z.string(),
 });
 
-// @see : https://github.com/nkbud/zoekt/blob/3780e68cdb537d5a7ed2c84d9b3784f80c7c5d04/api.go#L497
+// @see : https://github.com/sourcebot-dev/zoekt/blob/3780e68cdb537d5a7ed2c84d9b3784f80c7c5d04/api.go#L497
 export const zoektSearchResponseSchema = z.object({
     Result: z.object({
         ...zoektSearchResponseStats,
@@ -75,7 +75,7 @@ export const zoektSearchResponseSchema = z.object({
     }),
 });
 
-// @see : https://github.com/nkbud/zoekt/blob/3780e68cdb537d5a7ed2c84d9b3784f80c7c5d04/api.go#L728
+// @see : https://github.com/sourcebot-dev/zoekt/blob/3780e68cdb537d5a7ed2c84d9b3784f80c7c5d04/api.go#L728
 const zoektRepoStatsSchema = z.object({
     Repos: z.number(),
     Shards: z.number(),
@@ -87,7 +87,7 @@ const zoektRepoStatsSchema = z.object({
     OtherBranchesNewLinesCount: z.number(),
 });
 
-// @see : https://github.com/nkbud/zoekt/blob/3780e68cdb537d5a7ed2c84d9b3784f80c7c5d04/api.go#L716
+// @see : https://github.com/sourcebot-dev/zoekt/blob/3780e68cdb537d5a7ed2c84d9b3784f80c7c5d04/api.go#L716
 const zoektIndexMetadataSchema = z.object({
     IndexFormatVersion: z.number(),
     IndexFeatureVersion: z.number(),
@@ -100,7 +100,7 @@ const zoektIndexMetadataSchema = z.object({
 });
 
 
-// @see : https://github.com/nkbud/zoekt/blob/3780e68cdb537d5a7ed2c84d9b3784f80c7c5d04/api.go#L555
+// @see : https://github.com/sourcebot-dev/zoekt/blob/3780e68cdb537d5a7ed2c84d9b3784f80c7c5d04/api.go#L555
 export const zoektRepositorySchema = z.object({
     Name: z.string(),
     URL: z.string(),
