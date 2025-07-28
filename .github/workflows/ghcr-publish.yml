@@ -8,11 +8,6 @@ on:
     branches: ["main"]
     tags: ["v*.*.*"]
 
-env:
-  # Use docker.io for Docker Hub if empty
-  REGISTRY_IMAGE: ghcr.io/nkbud/sourcebot
-  MCP_REGISTRY_IMAGE: ghcr.io/nkbud/sourcebot-mcp
-
 jobs:
   build:
     runs-on: ${{ matrix.runs-on}}
@@ -29,11 +24,11 @@ jobs:
           - name: sourcebot
             context: .
             dockerfile: ./Dockerfile
-            registry: ${{ env.REGISTRY_IMAGE }}
+            registry: ghcr.io/nkbud/sourcebot
           - name: sourcebot-mcp
             context: ./packages/mcp
             dockerfile: ./packages/mcp/Dockerfile
-            registry: ${{ env.MCP_REGISTRY_IMAGE }}
+            registry: ghcr.io/nkbud/sourcebot-mcp
         platform: [linux/amd64, linux/arm64]
         include:
           - platform: linux/amd64
@@ -131,9 +126,9 @@ jobs:
       matrix:
         image:
           - name: sourcebot
-            registry: ${{ env.REGISTRY_IMAGE }}
+            registry: ghcr.io/nkbud/sourcebot
           - name: sourcebot-mcp
-            registry: ${{ env.MCP_REGISTRY_IMAGE }}
+            registry: ghcr.io/nkbud/sourcebot-mcp
     steps:
       - name: Download digests
         uses: actions/download-artifact@v4
