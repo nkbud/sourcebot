@@ -19,13 +19,13 @@
 
    <div>
       <a href="https://docs.sourcebot.dev/"><strong>Docs</strong></a> ·
-      <a href="https://github.com/sourcebot-dev/sourcebot/issues"><strong>Report Bug</strong></a> ·
-      <a href="https://github.com/sourcebot-dev/sourcebot/discussions/categories/ideas"><strong>Feature Request</strong></a> ·
+      <a href="https://github.com/nkbud/sourcebot/issues"><strong>Report Bug</strong></a> ·
+      <a href="https://github.com/nkbud/sourcebot/discussions/categories/ideas"><strong>Feature Request</strong></a> ·
       <a href="https://www.sourcebot.dev/changelog"><strong>Changelog</strong></a> ·
       <a href="https://www.sourcebot.dev/contact"><strong>Contact</strong></a> ·
    </div>
    <br/>
-   <span>Sourcebot uses <a href="https://github.com/sourcebot-dev/sourcebot/discussions"><strong>Github Discussions</strong></a>  for Support and Feature Requests.</span>
+   <span>Sourcebot uses <a href="https://github.com/nkbud/sourcebot/discussions"><strong>Github Discussions</strong></a>  for Support and Feature Requests.</span>
    <br/>
    <br/>
    <div>
@@ -33,8 +33,8 @@
 </div>
 <p align="center">
   <a href="mailto:team@sourcebot.dev"><img src="https://img.shields.io/badge/Email%20Us-brightgreen" /></a>
-  <a href="https://github.com/sourcebot-dev/sourcebot/actions/workflows/ghcr-publish.yml"><img src="https://img.shields.io/github/actions/workflow/status/sourcebot-dev/sourcebot/ghcr-publish.yml"/><a>
-  <a href="https://github.com/sourcebot-dev/sourcebot/stargazers"><img src="https://img.shields.io/github/stars/sourcebot-dev/sourcebot" /></a>
+  <a href="https://github.com/nkbud/sourcebot/actions/workflows/ghcr-publish.yml"><img src="https://img.shields.io/github/actions/workflow/status/nkbud/sourcebot/ghcr-publish.yml"/><a>
+  <a href="https://github.com/nkbud/sourcebot/stargazers"><img src="https://img.shields.io/github/stars/nkbud/sourcebot" /></a>
 </p>
 <p align="center">
 <p align="center">
@@ -70,13 +70,13 @@ Sourcebot can be deployed in seconds using our official docker image. Visit our 
 ```sh
 touch config.json
 echo '{
-    "$schema": "https://raw.githubusercontent.com/sourcebot-dev/sourcebot/main/schemas/v3/index.json",
+    "$schema": "https://raw.githubusercontent.com/nkbud/sourcebot/main/schemas/v3/index.json",
     "connections": {
         // Comments are supported
         "starter-connection": {
             "type": "github",
             "repos": [
-                "sourcebot-dev/sourcebot"
+                "nkbud/sourcebot"
             ]
         }
     }
@@ -92,14 +92,14 @@ docker run \
   -v $(pwd):/data \
   -e CONFIG_PATH=/data/config.json \
   --name sourcebot \
-  ghcr.io/sourcebot-dev/sourcebot:latest
+  ghcr.io/nkbud/sourcebot:latest
 ```
 <details>
 <summary>What does this command do?</summary>
 
-- Pull and run the Sourcebot docker image from [ghcr.io/sourcebot-dev/sourcebot:latest](https://github.com/sourcebot-dev/sourcebot/pkgs/container/sourcebot).
+- Pull and run the Sourcebot docker image from [ghcr.io/nkbud/sourcebot:latest](https://github.com/nkbud/sourcebot/pkgs/container/sourcebot).
 - Mount the current directory (`-v $(pwd):/data`) to allow Sourcebot to persist the `.sourcebot` cache.
-- Clones sourcebot at `HEAD` into `.sourcebot/github/sourcebot-dev/sourcebot`.
+- Clones sourcebot at `HEAD` into `.sourcebot/github/nkbud/sourcebot`.
 - Indexes sourcebot into a .zoekt index file in `.sourcebot/index/`.
 - Map port 3000 between your machine and the docker image.
 - Starts the web server on port 3000.

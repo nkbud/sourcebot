@@ -86,7 +86,7 @@ const schema = {
               "my-org-name"
             ],
             [
-              "sourcebot-dev",
+              "nkbud",
               "commaai"
             ]
           ],
@@ -837,7 +837,7 @@ const schema = {
           "description": "The URL to the git repository. This can either be a remote URL (prefixed with `http://` or `https://`) or a absolute path to a directory on the local machine (prefixed with `file://`). If a local directory is specified, it must point to the root of a git repository. Local directories are treated as read-only modified. Local directories support glob patterns.",
           "pattern": "^(https?:\\/\\/[^\\s/$.?#].[^\\s]*|file:\\/\\/\\/[^\\s]+)$",
           "examples": [
-            "https://github.com/sourcebot-dev/sourcebot",
+            "https://github.com/nkbud/sourcebot",
             "file:///path/to/repo",
             "file:///repos/*"
           ]

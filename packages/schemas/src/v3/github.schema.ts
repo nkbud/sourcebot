@@ -82,7 +82,7 @@ const schema = {
           "my-org-name"
         ],
         [
-          "sourcebot-dev",
+          "nkbud",
           "commaai"
         ]
       ],

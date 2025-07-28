@@ -80,26 +80,26 @@ const schema = {
       "properties": {
         "include": {
           "type": "array",
-          "description": "List of repositories to include in the search context. Expected to be formatted as a URL without any leading http(s):// prefix (e.g., 'github.com/sourcebot-dev/sourcebot'). Glob patterns are supported.",
+          "description": "List of repositories to include in the search context. Expected to be formatted as a URL without any leading http(s):// prefix (e.g., 'github.com/nkbud/sourcebot'). Glob patterns are supported.",
           "items": {
             "type": "string"
           },
           "examples": [
             [
-              "github.com/sourcebot-dev/**",
+              "github.com/nkbud/**",
               "gerrit.example.org/sub/path/**"
             ]
           ]
         },
         "exclude": {
           "type": "array",
-          "description": "List of repositories to exclude from the search context. Expected to be formatted as a URL without any leading http(s):// prefix (e.g., 'github.com/sourcebot-dev/sourcebot'). Glob patterns are supported.",
+          "description": "List of repositories to exclude from the search context. Expected to be formatted as a URL without any leading http(s):// prefix (e.g., 'github.com/nkbud/sourcebot'). Glob patterns are supported.",
           "items": {
             "type": "string"
           },
           "examples": [
             [
-              "github.com/sourcebot-dev/sourcebot",
+              "github.com/nkbud/sourcebot",
               "gerrit.example.org/sub/path/**"
             ]
           ]
@@ -199,26 +199,26 @@ const schema = {
           "properties": {
             "include": {
               "type": "array",
-              "description": "List of repositories to include in the search context. Expected to be formatted as a URL without any leading http(s):// prefix (e.g., 'github.com/sourcebot-dev/sourcebot'). Glob patterns are supported.",
+              "description": "List of repositories to include in the search context. Expected to be formatted as a URL without any leading http(s):// prefix (e.g., 'github.com/nkbud/sourcebot'). Glob patterns are supported.",
               "items": {
                 "type": "string"
               },
               "examples": [
                 [
-                  "github.com/sourcebot-dev/**",
+                  "github.com/nkbud/**",
                   "gerrit.example.org/sub/path/**"
                 ]
               ]
             },
             "exclude": {
               "type": "array",
-              "description": "List of repositories to exclude from the search context. Expected to be formatted as a URL without any leading http(s):// prefix (e.g., 'github.com/sourcebot-dev/sourcebot'). Glob patterns are supported.",
+              "description": "List of repositories to exclude from the search context. Expected to be formatted as a URL without any leading http(s):// prefix (e.g., 'github.com/nkbud/sourcebot'). Glob patterns are supported.",
               "items": {
                 "type": "string"
               },
               "examples": [
                 [
-                  "github.com/sourcebot-dev/sourcebot",
+                  "github.com/nkbud/sourcebot",
                   "gerrit.example.org/sub/path/**"
                 ]
               ]
@@ -327,7 +327,7 @@ const schema = {
                       "my-org-name"
                     ],
                     [
-                      "sourcebot-dev",
+                      "nkbud",
                       "commaai"
                     ]
                   ],
@@ -1078,7 +1078,7 @@ const schema = {
                   "description": "The URL to the git repository. This can either be a remote URL (prefixed with `http://` or `https://`) or a absolute path to a directory on the local machine (prefixed with `file://`). If a local directory is specified, it must point to the root of a git repository. Local directories are treated as read-only modified. Local directories support glob patterns.",
                   "pattern": "^(https?:\\/\\/[^\\s/$.?#].[^\\s]*|file:\\/\\/\\/[^\\s]+)$",
                   "examples": [
-                    "https://github.com/sourcebot-dev/sourcebot",
+                    "https://github.com/nkbud/sourcebot",
                     "file:///path/to/repo",
                     "file:///repos/*"
                   ]

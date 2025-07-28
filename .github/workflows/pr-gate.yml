@@ -1,6 +1,6 @@
 name: PR Gate
 
-# This gate simply validates that we can build the docker container.
+# This gate validates that we can build both docker containers.
 
 on:
   pull_request:
@@ -11,14 +11,30 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    strategy:
+      matrix:
+        image:
+          - name: sourcebot
+            context: .
+            dockerfile: ./Dockerfile
+          - name: sourcebot-mcp
+            context: ./packages/mcp
+            dockerfile: ./packages/mcp/Dockerfile
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           submodules: "true"
 
-      - name: Build Docker image
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image (${{ matrix.image.name }})
         id: build
         uses: docker/build-push-action@v6
         with:
-          context: .
+          context: ${{ matrix.image.context }}
+          file: ${{ matrix.image.dockerfile }}
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

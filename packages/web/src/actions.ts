@@ -685,7 +685,7 @@ export const getRepoInfoByName = async (repoName: string, domain: string) => sew
         withOrgMembership(userId, domain, async ({ org }) => {
             // @note: repo names are represented by their remote url
             // on the code host. E.g.,:
-            // - github.com/sourcebot-dev/sourcebot
+            // - github.com/nkbud/sourcebot
             // - gitlab.com/gitlab-org/gitlab
             // - gerrit.wikimedia.org/r/mediawiki/extensions/OnionsPorFavor
             // etc.
@@ -701,7 +701,7 @@ export const getRepoInfoByName = async (repoName: string, domain: string) => sew
             //         "connection-1": {
             //             "type": "github",
             //             "repos": [
-            //                 "sourcebot-dev/sourcebot"
+            //                 "nkbud/sourcebot"
             //             ]
             //         },
             //         "connection-2": {
@@ -712,7 +712,7 @@ export const getRepoInfoByName = async (repoName: string, domain: string) => sew
             // }
             // ```
             //
-            // In this scenario, both repos will be named "github.com/sourcebot-dev/sourcebot".
+            // In this scenario, both repos will be named "github.com/nkbud/sourcebot".
             // We will leave this as an edge case for now since it's unlikely to happen in practice.
             //
             // @v4-todo: we could add a unique constraint on repo name + orgId to help de-duplicate
