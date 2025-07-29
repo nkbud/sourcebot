@@ -165,5 +165,81 @@ export const getSSOProviders = (): Provider[] => {
         }));
     }
 
+    // OAuth2 Proxy header-based authentication
+    if (env.SOURCEBOT_TRUST_PROXY_HEADERS === 'true') {
+        providers.push(Credentials({
+            id: "oauth2-proxy",
+            name: "OAuth2 Proxy",
+            credentials: {},
+            authorize: async (credentials, req) => {
+                try {
+                    const userHeader = req.headers?.get(env.SOURCEBOT_PROXY_USER_HEADER);
+                    const emailHeader = req.headers?.get(env.SOURCEBOT_PROXY_EMAIL_HEADER);
+                    const nameHeader = req.headers?.get(env.SOURCEBOT_PROXY_NAME_HEADER || 'X-Forwarded-Preferred-Username');
+                    const groupsHeader = req.headers?.get(env.SOURCEBOT_PROXY_GROUPS_HEADER || 'X-Forwarded-Groups');
+
+                    if (!emailHeader || typeof emailHeader !== "string") {
+                        logger.warn("No email header found or invalid email header in OAuth2 Proxy request");
+                        return null;
+                    }
+
+                    const email = emailHeader;
+                    const name = nameHeader || userHeader || email;
+                    const groups = groupsHeader ? groupsHeader.split(',').map(g => g.trim()) : [];
+
+                    if (!email) {
+                        logger.warn("Missing email in OAuth2 Proxy headers");
+                        return null;
+                    }
+
+                    logger.info(`OAuth2 Proxy authentication for user: ${email}, groups: ${groups.join(', ')}`);
+
+                    const existingUser = await prisma.user.findUnique({
+                        where: { email }
+                    });
+
+                    if (!existingUser) {
+                        const newUser = await prisma.user.create({
+                            data: {
+                                email,
+                                name,
+                                // Store groups in user metadata if needed
+                                image: null,
+                            }
+                        });
+
+                        const authJsUser: AuthJsUser = {
+                            id: newUser.id,
+                            email: newUser.email,
+                            name: newUser.name,
+                            image: newUser.image,
+                        };
+
+                        await onCreateUser({ user: authJsUser });
+                        return authJsUser;
+                    } else {
+                        // Update user info from headers if needed
+                        if (existingUser.name !== name) {
+                            await prisma.user.update({
+                                where: { id: existingUser.id },
+                                data: { name }
+                            });
+                        }
+
+                        return {
+                            id: existingUser.id,
+                            email: existingUser.email,
+                            name: name || existingUser.name,
+                            image: existingUser.image,
+                        };
+                    }
+                } catch (error) {
+                    logger.error("Error processing OAuth2 Proxy headers:", error);
+                    return null;
+                }
+            },
+        }));
+    }
+
     return providers;
 }

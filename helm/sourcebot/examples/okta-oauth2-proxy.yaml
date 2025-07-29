@@ -1,0 +1,104 @@
+# Example values for Sourcebot with OAuth2 Proxy and Okta
+# Copy this file and update with your specific values
+
+# Required secrets - replace with your actual values
+secrets:
+  sourcebot:
+    # Generate with: openssl rand -base64 32
+    authSecret: "REPLACE_WITH_32_CHARACTER_SECRET"
+    # Your PostgreSQL connection string
+    databaseUrl: "postgresql://username:password@hostname:5432/sourcebot"
+  
+  oauth2Proxy:
+    # Your Okta application client secret
+    clientSecret: "REPLACE_WITH_OKTA_CLIENT_SECRET"
+    # Generate with: python -c 'import secrets,base64; print(base64.b64encode(secrets.token_bytes(32)).decode())'
+    cookieSecret: "REPLACE_WITH_32_CHARACTER_COOKIE_SECRET"
+
+# OAuth2 Proxy configuration for Okta
+oauth2Proxy:
+  enabled: true
+  config:
+    provider: "oidc"
+    # Replace with your Okta domain
+    oidc_issuer_url: "https://your-company.okta.com/oauth2/default"
+    # Your Okta application client ID
+    client_id: "REPLACE_WITH_OKTA_CLIENT_ID"
+    # Update with your actual domain
+    redirect_url: "https://sourcebot.your-company.com/oauth2/callback"
+    # Restrict to your company domain(s)
+    email_domains:
+      - "your-company.com"
+    upstream: "http://sourcebot:3000"
+    
+  # OAuth2 Proxy will be the main entry point
+  ingress:
+    enabled: true
+    className: "nginx"
+    annotations:
+      cert-manager.io/cluster-issuer: "letsencrypt-prod"
+      nginx.ingress.kubernetes.io/proxy-buffer-size: "16k"
+      nginx.ingress.kubernetes.io/proxy-buffers-number: "8"
+    hosts:
+      - host: sourcebot.your-company.com
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: sourcebot-tls
+        hosts:
+          - sourcebot.your-company.com
+
+# Sourcebot application configuration
+sourcebot:
+  # Override default environment variables
+  env:
+    # Trust headers from OAuth2 Proxy
+    SOURCEBOT_TRUST_PROXY_HEADERS: "true"
+    # Disable local authentication methods
+    AUTH_CREDENTIALS_LOGIN_ENABLED: "false"
+    AUTH_EMAIL_CODE_LOGIN_ENABLED: "false"
+    # Optional: Disable telemetry
+    SOURCEBOT_TELEMETRY_DISABLED: "true"
+  
+  # Configure your source code repositories
+  config:
+    connections:
+      github-main:
+        type: "github"
+        # Use token from environment variable or Kubernetes secret
+        token:
+          env: "GITHUB_TOKEN"
+        # Add your repositories
+        repos:
+          - "your-org/repo1"
+          - "your-org/repo2"
+        
+      # Example: GitLab connection
+      # gitlab-main:
+      #   type: "gitlab"
+      #   token:
+      #     env: "GITLAB_TOKEN"
+      #   groups:
+      #     - "your-group"
+
+# Resource configuration
+resources:
+  requests:
+    memory: "512Mi"
+    cpu: "250m"
+  limits:
+    memory: "2Gi"
+    cpu: "1"
+
+# Persistent storage for indexed repositories
+persistence:
+  enabled: true
+  size: 20Gi
+  # Update with your storage class
+  storageClass: "gp3"
+  accessMode: ReadWriteOnce
+
+# Disable direct Sourcebot ingress (OAuth2 Proxy handles this)
+ingress:
+  enabled: false

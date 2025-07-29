@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sourcebot.fullname" . }}-config
+  labels:
+    {{- include "sourcebot.labels" . | nindent 4 }}
+data:
+  config.json: |
+    {{- .Values.sourcebot.config | toJson | nindent 4 }}
+---
+{{- if .Values.oauth2Proxy.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sourcebot.oauth2ProxyFullname" . }}-config
+  labels:
+    {{- include "sourcebot.oauth2ProxyLabels" . | nindent 4 }}
+data:
+  oauth2_proxy.cfg: |
+    provider = "{{ .Values.oauth2Proxy.config.provider }}"
+    oidc_issuer_url = "{{ .Values.oauth2Proxy.config.oidc_issuer_url }}"
+    client_id = "{{ .Values.oauth2Proxy.config.client_id }}"
+    redirect_url = "{{ .Values.oauth2Proxy.config.redirect_url }}"
+    
+    {{- range .Values.oauth2Proxy.config.email_domains }}
+    email_domain = "{{ . }}"
+    {{- end }}
+    
+    upstream = "{{ .Values.oauth2Proxy.config.upstream }}"
+    
+    http_address = "0.0.0.0:4180"
+    
+    cookie_secure = {{ .Values.oauth2Proxy.config.cookie_secure }}
+    cookie_httponly = {{ .Values.oauth2Proxy.config.cookie_httponly }}
+    cookie_samesite = "{{ .Values.oauth2Proxy.config.cookie_samesite }}"
+    cookie_expire = "{{ .Values.oauth2Proxy.config.cookie_expire }}"
+    
+    pass_user_headers = {{ .Values.oauth2Proxy.config.pass_user_headers }}
+    pass_access_token = {{ .Values.oauth2Proxy.config.pass_access_token }}
+    pass_authorization_header = {{ .Values.oauth2Proxy.config.pass_authorization_header }}
+    
+    skip_provider_button = {{ .Values.oauth2Proxy.config.skip_provider_button }}
+    insecure_oidc_allow_unverified_email = {{ .Values.oauth2Proxy.config.insecure_oidc_allow_unverified_email }}
+    
+    standard_logging = {{ .Values.oauth2Proxy.config.standard_logging }}
+    auth_logging = {{ .Values.oauth2Proxy.config.auth_logging }}
+    request_logging = {{ .Values.oauth2Proxy.config.request_logging }}
+    
+    # Pass user information via headers
+    set_xauthrequest = true
+    set_authorization_header = false
+    pass_host_header = true
+    
+    # Custom headers mapping
+    set_user = true
+    set_groups = true
+{{- end }}

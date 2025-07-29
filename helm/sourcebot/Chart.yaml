@@ -1,0 +1,16 @@
+apiVersion: v2
+name: sourcebot
+description: A Helm chart for Sourcebot with OAuth2 Proxy authentication
+type: application
+version: 0.1.0
+appVersion: "latest"
+
+keywords:
+  - sourcebot
+  - code-search
+  - oauth2-proxy
+  - authentication
+
+maintainers:
+  - name: Sourcebot Team
+    url: https://github.com/nkbud/sourcebot

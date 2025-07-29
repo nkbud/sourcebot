@@ -1,0 +1,169 @@
+# Default values for sourcebot Helm chart
+# This is a YAML-formatted file.
+
+replicaCount: 1
+
+image:
+  repository: ghcr.io/nkbud/sourcebot
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+
+securityContext: {}
+
+service:
+  type: ClusterIP
+  port: 3000
+  targetPort: 3000
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: sourcebot.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# Sourcebot specific configuration
+sourcebot:
+  # Environment variables for the Sourcebot application
+  env:
+    # Basic configuration
+    NODE_ENV: production
+    PORT: "3000"
+    
+    # Authentication configuration
+    # When OAuth2 Proxy is enabled, these headers will be trusted
+    SOURCEBOT_TRUST_PROXY_HEADERS: "true"
+    
+    # Database configuration (required)
+    DATABASE_URL: ""
+    
+    # Auth secret (required - should be set via secret)
+    AUTH_SECRET: ""
+    
+    # Disable default auth methods when using OAuth2 Proxy
+    AUTH_CREDENTIALS_LOGIN_ENABLED: "false"
+    AUTH_EMAIL_CODE_LOGIN_ENABLED: "false"
+    
+    # Configuration path
+    CONFIG_PATH: "/data/config.json"
+    
+    # Telemetry
+    SOURCEBOT_TELEMETRY_DISABLED: "false"
+  
+  # Configuration for sourcebot config.json
+  config:
+    connections:
+      starter-connection:
+        type: "github"
+        repos:
+          - "nkbud/sourcebot"
+
+# OAuth2 Proxy configuration
+oauth2Proxy:
+  enabled: true
+  
+  # OAuth2 Proxy specific configuration
+  config:
+    # Okta configuration
+    provider: "oidc"
+    oidc_issuer_url: ""  # e.g., https://your-domain.okta.com/oauth2/default
+    client_id: ""
+    client_secret: ""
+    
+    # Callback and redirect configuration
+    redirect_url: "https://your-domain.com/oauth2/callback"
+    
+    # Email domains and access control
+    email_domains:
+      - "*"  # Allow all domains, configure as needed
+    
+    # Upstream configuration - points to Sourcebot service
+    upstream: "http://sourcebot:3000"
+    
+    # Cookie and session configuration
+    cookie_secure: true
+    cookie_httponly: true
+    cookie_samesite: "lax"
+    cookie_expire: "168h"  # 7 days
+    
+    # Header configuration
+    pass_user_headers: true
+    pass_access_token: false
+    pass_authorization_header: false
+    
+    # Security settings
+    skip_provider_button: false
+    insecure_oidc_allow_unverified_email: false
+    
+    # Logging
+    standard_logging: true
+    auth_logging: true
+    request_logging: true
+  
+  # Service configuration for OAuth2 Proxy
+  service:
+    type: ClusterIP
+    port: 4180
+    
+  # OAuth2 Proxy ingress (this will be the main entry point)
+  ingress:
+    enabled: true
+    className: ""
+    annotations:
+      nginx.ingress.kubernetes.io/proxy-buffer-size: "16k"
+      nginx.ingress.kubernetes.io/proxy-buffers-number: "8"
+    hosts:
+      - host: sourcebot.local
+        paths:
+          - path: /
+            pathType: Prefix
+    tls: []
+
+# Secrets configuration
+secrets:
+  # OAuth2 Proxy secrets
+  oauth2Proxy:
+    # These should be set via --set-string or external secret management
+    clientSecret: ""
+    cookieSecret: ""  # Generate with: python -c 'import secrets,base64; print(base64.b64encode(secrets.token_bytes(32)).decode())'
+  
+  # Sourcebot secrets
+  sourcebot:
+    authSecret: ""  # Generate with: openssl rand -base64 32
+    databaseUrl: ""
+
+# Persistent storage for Sourcebot data
+persistence:
+  enabled: true
+  size: 10Gi
+  storageClass: ""
+  accessMode: ReadWriteOnce
