@@ -216,6 +216,36 @@ helm upgrade sourcebot ./helm/sourcebot \
   -f values.yaml
 ```
 
+## Chart Repository
+
+The Helm chart is automatically published to GitHub Container Registry (GHCR) on every push to main and version tags.
+
+### Using the Published Chart
+
+Add the Sourcebot Helm repository:
+
+```bash
+# Using OCI registry (Helm 3.8+)
+helm upgrade --install sourcebot oci://ghcr.io/nkbud/sourcebot \
+  --namespace sourcebot \
+  --create-namespace \
+  -f values.yaml
+```
+
+### Available Versions
+
+- **Latest**: Built from the main branch
+- **Versioned**: Built from git tags (e.g., `v1.0.0`)
+
+```bash
+# Install specific version
+helm upgrade --install sourcebot oci://ghcr.io/nkbud/sourcebot \
+  --version 1.0.0 \
+  --namespace sourcebot \
+  --create-namespace \
+  -f values.yaml
+```
+
 ## Uninstalling
 
 ```bash
