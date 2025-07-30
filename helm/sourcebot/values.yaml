@@ -147,6 +147,16 @@ oauth2Proxy:
           - path: /
             pathType: Prefix
     tls: []
+  
+  # Network policy for OAuth2 Proxy
+  networkPolicy:
+    enabled: true
+    # Allow all ingress controllers by default (set to false for more restrictive)
+    allowIngressControllers: true
+    # If allowIngressControllers is false, specify ingress controller namespaces
+    ingressNamespaces:
+      - ingress-nginx
+      - istio-system
 
 # Secrets configuration
 secrets:
@@ -167,3 +177,16 @@ persistence:
   size: 10Gi
   storageClass: ""
   accessMode: ReadWriteOnce
+
+# Network security policies
+networkPolicy:
+  enabled: true
+  # Allow traffic from same namespace (for health checks, monitoring)
+  allowSameNamespace: false
+  # Monitoring configuration
+  monitoring:
+    enabled: false
+    namespaceLabels: []
+    # Example:
+    # - name: monitoring
+    # - prometheus: enabled
