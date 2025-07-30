@@ -2,7 +2,7 @@ import { SourcebotConfig } from "@sourcebot/schemas/v3/index.type";
 import { indexSchema } from "@sourcebot/schemas/v3/index.schema";
 import { readFile } from 'fs/promises';
 import stripJsonComments from 'strip-json-comments';
-import { Ajv } from "ajv";
+import Ajv from "ajv/dist/2019.js";
 
 const ajv = new Ajv({
     validateFormats: false,

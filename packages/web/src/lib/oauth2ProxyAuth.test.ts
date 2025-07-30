@@ -9,20 +9,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { getOAuth2ProxyProvider, validateOAuth2ProxyConfig, validateOAuth2ProxyHeaders } from './oauth2ProxyAuth';
 
-// Mock dependencies
-const mockPrismaUser = {
-    findUnique: vi.fn(),
-    create: vi.fn(),
-    update: vi.fn(),
-};
-
-const mockOnCreateUser = vi.fn();
-const mockLogger = {
-    info: vi.fn(),
-    warn: vi.fn(),
-    error: vi.fn(),
-};
-
+// Mock modules
 vi.mock('@/env.mjs', () => ({
     env: {
         SOURCEBOT_TRUST_PROXY_HEADERS: 'true',
@@ -35,16 +22,24 @@ vi.mock('@/env.mjs', () => ({
 
 vi.mock('@/prisma', () => ({
     prisma: {
-        user: mockPrismaUser,
+        user: {
+            findUnique: vi.fn(),
+            create: vi.fn(),
+            update: vi.fn(),
+        },
     }
 }));
 
 vi.mock('@/lib/authUtils', () => ({
-    onCreateUser: mockOnCreateUser,
+    onCreateUser: vi.fn(),
 }));
 
 vi.mock('@sourcebot/logger', () => ({
-    createLogger: () => mockLogger,
+    createLogger: () => ({
+        info: vi.fn(),
+        warn: vi.fn(),
+        error: vi.fn(),
+    }),
 }));
 
 describe('OAuth2 Proxy Authentication', () => {
@@ -97,7 +92,9 @@ describe('OAuth2 Proxy Authentication', () => {
                 image: null,
             };
 
-            mockPrismaUser.findUnique.mockResolvedValue(existingUser);
+            // Get the mocked prisma instance
+            const { prisma } = await import('@/prisma');
+            vi.mocked(prisma.user.findUnique).mockResolvedValue(existingUser);
 
             // @ts-ignore - Testing the authorize function
             const result = await provider.authorize({}, mockRequest);
@@ -109,7 +106,7 @@ describe('OAuth2 Proxy Authentication', () => {
                 image: null,
             });
 
-            expect(mockPrismaUser.findUnique).toHaveBeenCalledWith({
+            expect(prisma.user.findUnique).toHaveBeenCalledWith({
                 where: { email: 'test@company.com' }
             });
         });
@@ -135,21 +132,25 @@ describe('OAuth2 Proxy Authentication', () => {
                 image: null,
             };
 
-            mockPrismaUser.findUnique.mockResolvedValue(null);
-            mockPrismaUser.create.mockResolvedValue(newUser);
+            // Get the mocked instances
+            const { prisma } = await import('@/prisma');
+            const { onCreateUser } = await import('@/lib/authUtils');
+            
+            vi.mocked(prisma.user.findUnique).mockResolvedValue(null);
+            vi.mocked(prisma.user.create).mockResolvedValue(newUser);
 
             // @ts-ignore - Testing the authorize function
             const result = await provider.authorize({}, mockRequest);
 
             expect(result).toEqual(newUser);
-            expect(mockPrismaUser.create).toHaveBeenCalledWith({
+            expect(prisma.user.create).toHaveBeenCalledWith({
                 data: {
                     email: 'new@company.com',
                     name: 'New User',
                     image: null,
                 }
             });
-            expect(mockOnCreateUser).toHaveBeenCalledWith({ user: newUser });
+            expect(onCreateUser).toHaveBeenCalledWith({ user: newUser });
         });
 
         it('should reject authentication with missing email header', async () => {
