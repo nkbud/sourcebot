@@ -1,16 +1,16 @@
 import { SourcebotLogo } from "@/app/components/sourcebotLogo";
 import { Footer } from "@/app/components/footer";
 import { OrgSelector } from "../components/orgSelector";
-import { EnterpriseUpgradeCard } from "@/ee/features/billing/components/enterpriseUpgradeCard";
-import { TeamUpgradeCard } from "@/ee/features/billing/components/teamUpgradeCard";
+import { EnterpriseUpgradeCard } from "@/stubs/components";
+import { TeamUpgradeCard } from "@/stubs/components";
 import { redirect } from "next/navigation";
 import { isServiceError } from "@/lib/utils";
 import Link from "next/link";
 import { ArrowLeftIcon } from "@radix-ui/react-icons";
 import { LogoutEscapeHatch } from "@/app/components/logoutEscapeHatch";
 import { env } from "@/env.mjs";
-import { IS_BILLING_ENABLED } from "@/ee/features/billing/stripe";
-import { getSubscriptionInfo } from "@/ee/features/billing/actions";
+import { IS_BILLING_ENABLED } from "@/stubs/billing";
+import { getSubscriptionInfo } from "@/stubs/actions";
 
 export default async function Upgrade({ params: { domain } }: { params: { domain: string } }) {
     if (!IS_BILLING_ENABLED) {

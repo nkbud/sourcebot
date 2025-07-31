@@ -6,11 +6,11 @@ import { getPlan, getSeats, hasEntitlement, SOURCEBOT_UNLIMITED_SEATS } from "@s
 import { isServiceError } from "@/lib/utils";
 import { orgNotFound, ServiceError, userNotFound } from "@/lib/serviceError";
 import { createLogger } from "@sourcebot/logger";
-import { getAuditService } from "@/ee/features/audit/factory";
+import { getAuditService } from "@/stubs/audit";
 import { StatusCodes } from "http-status-codes";
 import { ErrorCode } from "./errorCodes";
-import { IS_BILLING_ENABLED } from "@/ee/features/billing/stripe";
-import { incrementOrgSeatCount } from "@/ee/features/billing/serverUtils";
+import { IS_BILLING_ENABLED } from "@/stubs/billing";
+import { incrementOrgSeatCount } from "@/stubs/billing";
 import { getOrgFromDomain } from "@/data/org";
 
 const logger = createLogger('web-auth-utils');

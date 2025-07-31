@@ -1,7 +1,7 @@
 "use client"
 
-import { AnalyticsContent } from "@/ee/features/analytics/analyticsContent";
-import { AnalyticsEntitlementMessage } from "@/ee/features/analytics/analyticsEntitlementMessage";
+import { AnalyticsContent } from "@/stubs/components";
+import { AnalyticsEntitlementMessage } from "@/stubs/components";
 import { useHasEntitlement } from "@/features/entitlements/useHasEntitlement";
 
 export default function AnalyticsPage() {
