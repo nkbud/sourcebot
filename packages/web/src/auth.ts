@@ -13,10 +13,10 @@ import { createTransport } from 'nodemailer';
 import { render } from '@react-email/render';
 import MagicLinkEmail from './emails/magicLinkEmail';
 import bcrypt from 'bcryptjs';
-import { getSSOProviders } from '@/ee/features/sso/sso';
+import { getSSOProviders } from "@/stubs/components";
 import { hasEntitlement } from '@sourcebot/shared';
 import { onCreateUser } from '@/lib/authUtils';
-import { getAuditService } from '@/ee/features/audit/factory';
+import { getAuditService } from "@/stubs/audit";
 import { SINGLE_TENANT_ORG_ID } from './lib/constants';
 
 const auditService = getAuditService();

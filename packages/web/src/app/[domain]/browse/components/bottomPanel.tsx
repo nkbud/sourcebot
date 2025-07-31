@@ -11,7 +11,7 @@ import { FaChevronDown } from "react-icons/fa";
 import { VscReferences, VscSymbolMisc } from "react-icons/vsc";
 import { ImperativePanelHandle } from "react-resizable-panels";
 import { useBrowseState } from "../hooks/useBrowseState";
-import { ExploreMenu } from "@/ee/features/codeNav/components/exploreMenu";
+import { ExploreMenu } from "@/stubs/components";
 import Link from "next/link";
 import { useDomain } from "@/hooks/useDomain";
 import { useRouter } from "next/navigation";

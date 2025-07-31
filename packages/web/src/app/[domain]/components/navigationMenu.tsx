@@ -11,9 +11,9 @@ import { WarningNavIndicator } from "./warningNavIndicator";
 import { ProgressNavIndicator } from "./progressNavIndicator";
 import { SourcebotLogo } from "@/app/components/sourcebotLogo";
 import { TrialNavIndicator } from "./trialNavIndicator";
-import { IS_BILLING_ENABLED } from "@/ee/features/billing/stripe";
+import { IS_BILLING_ENABLED } from "@/stubs/billing";
 import { env } from "@/env.mjs";
-import { getSubscriptionInfo } from "@/ee/features/billing/actions";
+import { getSubscriptionInfo } from "@/stubs/actions";
 import { auth } from "@/auth";
 import WhatsNewIndicator from "./whatsNewIndicator";
 

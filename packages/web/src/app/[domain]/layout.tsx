@@ -10,9 +10,9 @@ import { MobileUnsupportedSplashScreen } from "./components/mobileUnsupportedSpl
 import { MOBILE_UNSUPPORTED_SPLASH_SCREEN_DISMISSED_COOKIE_NAME } from "@/lib/constants";
 import { SyntaxReferenceGuide } from "./components/syntaxReferenceGuide";
 import { SyntaxGuideProvider } from "./components/syntaxGuideProvider";
-import { IS_BILLING_ENABLED } from "@/ee/features/billing/stripe";
+import { IS_BILLING_ENABLED } from "@/stubs/billing";
 import { notFound, redirect } from "next/navigation";
-import { getSubscriptionInfo } from "@/ee/features/billing/actions";
+import { getSubscriptionInfo } from "@/stubs/actions";
 import { PendingApprovalCard } from "./components/pendingApproval";
 import { SubmitJoinRequest } from "./components/submitJoinRequest";
 import { hasEntitlement } from "@sourcebot/shared";

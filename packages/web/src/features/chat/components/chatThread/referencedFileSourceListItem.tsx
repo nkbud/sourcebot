@@ -2,9 +2,9 @@
 
 import { useBrowseNavigation } from "@/app/[domain]/browse/hooks/useBrowseNavigation";
 import { PathHeader } from "@/app/[domain]/components/pathHeader";
-import { SymbolHoverPopup } from '@/ee/features/codeNav/components/symbolHoverPopup';
-import { symbolHoverTargetsExtension } from "@/ee/features/codeNav/components/symbolHoverPopup/symbolHoverTargetsExtension";
-import { SymbolDefinition } from '@/ee/features/codeNav/components/symbolHoverPopup/useHoveredOverSymbolInfo';
+import { SymbolHoverPopup } from "@/stubs/components";
+import { symbolHoverTargetsExtension } from "@/stubs/components";
+import { SymbolDefinition } from "@/stubs/components";
 import { useHasEntitlement } from "@/features/entitlements/useHasEntitlement";
 import { useCodeMirrorLanguageExtension } from "@/hooks/useCodeMirrorLanguageExtension";
 import { useCodeMirrorTheme } from "@/hooks/useCodeMirrorTheme";
@@ -18,7 +18,7 @@ import { forwardRef, Ref, useCallback, useImperativeHandle, useMemo, useState } 
 import { FileReference } from "../../types";
 import { createCodeFoldingExtension } from "./codeFoldingExtension";
 import useCaptureEvent from "@/hooks/useCaptureEvent";
-import { createAuditAction } from "@/ee/features/audit/actions";
+import { createAuditAction } from "@/stubs/actions";
 import { useDomain } from "@/hooks/useDomain";
 
 const lineDecoration = Decoration.line({

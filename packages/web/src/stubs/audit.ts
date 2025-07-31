@@ -1,5 +1,5 @@
+// Stub implementation for audit functionality (EE feature removed)
 import { z } from "zod";
-import { Audit } from "@prisma/client";
 
 export const auditActorSchema = z.object({
   id: z.string(),
@@ -31,5 +31,17 @@ export const auditEventSchema = z.object({
 export type AuditEvent = z.infer<typeof auditEventSchema>;
 
 export interface IAuditService {
-  createAudit(event: Omit<AuditEvent, 'sourcebotVersion'>): Promise<Audit | null>;
-} 
+  createAudit(event: Omit<AuditEvent, 'sourcebotVersion'>): Promise<null>;
+}
+
+// Stub audit service that does nothing (EE feature removed)
+class StubAuditService implements IAuditService {
+  async createAudit(_event: Omit<AuditEvent, 'sourcebotVersion'>): Promise<null> {
+    // No-op: audit functionality has been removed
+    return null;
+  }
+}
+
+export function getAuditService(): IAuditService {
+  return new StubAuditService();
+}
