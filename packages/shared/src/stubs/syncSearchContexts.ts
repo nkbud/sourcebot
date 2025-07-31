@@ -1,11 +1,9 @@
 // Stub implementation for search contexts sync (EE feature removed)
-import { PrismaClient } from "@sourcebot/db";
-import { SearchContext } from "@sourcebot/schemas/v3/index.type";
 
 interface SyncSearchContextsParams {
-    contexts?: { [key: string]: SearchContext } | undefined;
+    contexts?: { [key: string]: any } | undefined;
     orgId: number;
-    db: PrismaClient;
+    db: any;
 }
 
 export const syncSearchContexts = async (_params: SyncSearchContextsParams): Promise<boolean> => {
