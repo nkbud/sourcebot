@@ -2,14 +2,11 @@ import { SourcebotConfig } from "@sourcebot/schemas/v3/index.type";
 import { indexSchema } from "@sourcebot/schemas/v3/index.schema";
 import { readFile } from 'fs/promises';
 import stripJsonComments from 'strip-json-comments';
+import { Ajv } from "ajv";
 
-// Lazy load AJV to avoid Edge Runtime issues
-const getAjv = async () => {
-    const { default: Ajv } = await import('ajv');
-    return new Ajv({
-        validateFormats: false,
-    });
-};
+const ajv = new Ajv({
+    validateFormats: false,
+});
 
 // From https://developer.mozilla.org/en-US/docs/Glossary/Base64#the_unicode_problem
 export const base64Decode = (base64: string): string => {
@@ -67,8 +64,7 @@ export const loadConfig = async (configPath: string): Promise<SourcebotConfig> =
 
     const config = JSON.parse(stripJsonComments(configContent)) as SourcebotConfig;
     
-    // Get AJV instance and validate
-    const ajv = await getAjv();
+    // Validate config
     const isValidConfig = ajv.validate(indexSchema, config);
     if (!isValidConfig) {
         throw new Error(`Config file '${configPath}' is invalid: ${ajv.errorsText(ajv.errors)}`);
