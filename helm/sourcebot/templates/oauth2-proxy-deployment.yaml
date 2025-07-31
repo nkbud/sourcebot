@@ -1,0 +1,66 @@
+{{- if .Values.oauth2Proxy.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "sourcebot.oauth2ProxyFullname" . }}
+  labels:
+    {{- include "sourcebot.oauth2ProxyLabels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "sourcebot.oauth2ProxySelectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "sourcebot.oauth2ProxySelectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: oauth2-proxy
+          image: "quay.io/oauth2-proxy/oauth2-proxy:v7.6.0"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: oauth2-proxy
+              containerPort: 4180
+              protocol: TCP
+          env:
+            - name: OAUTH2_PROXY_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "sourcebot.oauth2ProxyFullname" . }}-secrets
+                  key: OAUTH2_PROXY_CLIENT_SECRET
+            - name: OAUTH2_PROXY_COOKIE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "sourcebot.oauth2ProxyFullname" . }}-secrets
+                  key: OAUTH2_PROXY_COOKIE_SECRET
+          args:
+            - --config=/etc/oauth2-proxy/oauth2_proxy.cfg
+          volumeMounts:
+            - name: config
+              mountPath: /etc/oauth2-proxy
+              readOnly: true
+          livenessProbe:
+            httpGet:
+              path: /ping
+              port: oauth2-proxy
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: oauth2-proxy
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "10m"
+            limits:
+              memory: "128Mi"
+              cpu: "50m"
+      volumes:
+        - name: config
+          configMap:
+            name: {{ include "sourcebot.oauth2ProxyFullname" . }}-config
+{{- end }}

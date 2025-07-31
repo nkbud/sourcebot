@@ -14,12 +14,16 @@ import { render } from '@react-email/render';
 import MagicLinkEmail from './emails/magicLinkEmail';
 import bcrypt from 'bcryptjs';
 import { getSSOProviders } from '@/ee/features/sso/sso';
+import { getOAuth2ProxyProvider, validateOAuth2ProxyConfig } from '@/lib/oauth2ProxyAuth';
 import { hasEntitlement } from '@sourcebot/shared';
 import { onCreateUser } from '@/lib/authUtils';
 import { getAuditService } from '@/ee/features/audit/factory';
 import { SINGLE_TENANT_ORG_ID } from './lib/constants';
 
 const auditService = getAuditService();
+
+// Validate OAuth2 Proxy configuration on startup
+validateOAuth2ProxyConfig();
 
 export const runtime = 'nodejs';
 
@@ -39,6 +43,14 @@ declare module 'next-auth/jwt' {
 
 export const getProviders = () => {
     const providers: Provider[] = [];
+
+    // OAuth2 Proxy authentication (header-based)
+    // This should be checked first as it may be the only authentication method
+    // when used in production environments with OAuth2 Proxy sidecar
+    const oauth2ProxyProvider = getOAuth2ProxyProvider();
+    if (oauth2ProxyProvider) {
+        providers.push(oauth2ProxyProvider);
+    }
 
     if (hasEntitlement("sso")) {
         providers.push(...getSSOProviders());

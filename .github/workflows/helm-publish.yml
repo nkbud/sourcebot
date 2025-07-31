@@ -1,0 +1,86 @@
+name: Publish Helm Chart
+
+on:
+  push:
+    branches: ["main"]
+    tags: ["v*.*.*"]
+  pull_request:
+    paths:
+      - "helm/**"
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: "3.14.0"
+
+      - name: Lint Helm chart
+        run: |
+          helm lint helm/sourcebot
+
+      - name: Validate Helm chart
+        run: |
+          helm template test helm/sourcebot > /dev/null
+          echo "Helm chart validation passed"
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: lint-and-test
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: "3.14.0"
+
+      - name: Login to GitHub Container Registry
+        run: |
+          echo ${{ secrets.GITHUB_TOKEN }} | helm registry login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Extract version
+        id: version
+        run: |
+          if [[ $GITHUB_REF == refs/tags/v* ]]; then
+            VERSION=${GITHUB_REF#refs/tags/v}
+          else
+            VERSION=$(date +%Y%m%d)-$(echo $GITHUB_SHA | cut -c1-7)
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "chart_version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Update Chart version
+        run: |
+          sed -i "s/^version:.*/version: ${{ steps.version.outputs.chart_version }}/" helm/sourcebot/Chart.yaml
+          if [[ $GITHUB_REF == refs/tags/v* ]]; then
+            sed -i "s/^appVersion:.*/appVersion: \"${{ steps.version.outputs.version }}\"/" helm/sourcebot/Chart.yaml
+          fi
+
+      - name: Package Helm chart
+        run: |
+          helm package helm/sourcebot
+
+      - name: Push Helm chart to GHCR
+        run: |
+          helm push sourcebot-${{ steps.version.outputs.chart_version }}.tgz oci://ghcr.io/nkbud
+
+      - name: Generate chart index (for main branch)
+        if: github.ref == 'refs/heads/main'
+        run: |
+          mkdir -p /tmp/helm-repo
+          cp sourcebot-${{ steps.version.outputs.chart_version }}.tgz /tmp/helm-repo/
+          helm repo index /tmp/helm-repo --url https://ghcr.io/nkbud/sourcebot-helm
+          
+          # Upload index.yaml as an artifact for potential use
+          echo "Chart index generated at /tmp/helm-repo/index.yaml"

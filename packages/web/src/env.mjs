@@ -54,6 +54,13 @@ export const env = createEnv({
         AUTH_EE_GCP_IAP_ENABLED: booleanSchema.default('false'),
         AUTH_EE_GCP_IAP_AUDIENCE: z.string().optional(),
 
+        // OAuth2 Proxy header-based authentication
+        SOURCEBOT_TRUST_PROXY_HEADERS: booleanSchema.default('false'),
+        SOURCEBOT_PROXY_USER_HEADER: z.string().default('X-Forwarded-User'),
+        SOURCEBOT_PROXY_EMAIL_HEADER: z.string().default('X-Forwarded-Email'),
+        SOURCEBOT_PROXY_NAME_HEADER: z.string().default('X-Forwarded-Preferred-Username').optional(),
+        SOURCEBOT_PROXY_GROUPS_HEADER: z.string().default('X-Forwarded-Groups').optional(),
+
         DATA_CACHE_DIR: z.string(),
 
         SOURCEBOT_PUBLIC_KEY_PATH: z.string(),

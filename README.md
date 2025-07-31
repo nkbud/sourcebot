@@ -64,7 +64,11 @@ You can try out our public hosted demo [here](https://demo.sourcebot.dev)!
 
 # Deploy Sourcebot
 
-Sourcebot can be deployed in seconds using our official docker image. Visit our [docs](https://docs.sourcebot.dev/self-hosting/overview) for more information.
+Sourcebot can be deployed in seconds using our official docker image, or for enterprise deployments, using our Helm chart with OAuth2 Proxy authentication.
+
+## Docker Deployment (Quick Start)
+
+Visit our [docs](https://docs.sourcebot.dev/self-hosting/overview) for more information.
 
 1. Create a config
 ```sh
@@ -108,6 +112,32 @@ docker run \
 
 3. Start searching at `http://localhost:3000`
 </br>
+
+## Kubernetes Deployment with OAuth2 Proxy (Enterprise)
+
+For enterprise deployments with Okta SSO authentication, use our Helm chart:
+
+```sh
+# Install with interactive setup
+./helm/install.sh
+
+# Or install manually
+helm install sourcebot ./helm/sourcebot \
+  --namespace sourcebot \
+  --create-namespace \
+  -f your-values.yaml
+```
+
+The Helm chart includes:
+- **OAuth2 Proxy** for Okta authentication
+- **Persistent storage** for repository indexes
+- **Ingress configuration** with TLS support
+- **Resource limits** and health checks
+- **Security best practices**
+
+See [helm/README.md](helm/README.md) for detailed installation instructions and [helm/sourcebot/examples/](helm/sourcebot/examples/) for example configurations.
+
+---
 
 To learn how to configure Sourcebot to index your own repos, please refer to our [docs](https://docs.sourcebot.dev/self-hosting/overview).
 

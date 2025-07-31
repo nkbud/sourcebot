@@ -63,6 +63,8 @@ export const loadConfig = async (configPath: string): Promise<SourcebotConfig> =
     })();
 
     const config = JSON.parse(stripJsonComments(configContent)) as SourcebotConfig;
+    
+    // Validate config
     const isValidConfig = ajv.validate(indexSchema, config);
     if (!isValidConfig) {
         throw new Error(`Config file '${configPath}' is invalid: ${ajv.errorsText(ajv.errors)}`);
