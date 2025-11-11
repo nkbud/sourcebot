@@ -5,6 +5,7 @@ import { DEFAULT_SETTINGS } from './constants.js';
 import { Redis } from 'ioredis';
 import { ConnectionManager } from './connectionManager.js';
 import { RepoManager } from './repoManager.js';
+import { BlameScanner } from './blameScanner.js';
 import { env } from './env.js';
 import { PromClient } from './promClient.js';
 import { loadConfig } from '@sourcebot/shared';
@@ -45,5 +46,12 @@ export const main = async (db: PrismaClient, context: AppContext) => {
 
     const repoManager = new RepoManager(db, settings, redis, promClient, context);
     await repoManager.validateIndexedReposHaveShards();
-    await repoManager.blockingPollLoop();
+
+    const blameScanner = new BlameScanner(db, settings, redis, context);
+
+    // Run both polling loops in parallel
+    await Promise.race([
+        repoManager.blockingPollLoop(),
+        blameScanner.blockingPollLoop(),
+    ]);
 }

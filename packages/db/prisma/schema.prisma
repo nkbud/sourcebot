@@ -340,3 +340,31 @@ model Chat {
 
   messages Json // This is a JSON array of `Message` types from @ai-sdk/ui-utils.
 }
+
+/// Index 1: Author --> Filepaths
+/// Answers: "What files did 'user@example.com' touch?"
+model AuthorToFilepath {
+  authorEmail    String @map("author_email")
+  globalFilepath String @map("global_filepath")
+
+  @@id([authorEmail, globalFilepath])
+  @@map("author_to_filepaths")
+}
+
+/// Index 2: Filepath --> Authors
+/// Answers: "Who touched 'my-repo/src/main.py'?"
+model FilepathToAuthor {
+  globalFilepath String @map("global_filepath")
+  authorEmail    String @map("author_email")
+
+  @@id([globalFilepath, authorEmail])
+  @@map("filepath_to_authors")
+}
+
+/// Tracks the sync state of the repo scanner.
+model RepoSyncState {
+  repoPath       String  @id @map("repo_path")
+  lastSyncedHash String? @map("last_synced_hash")
+
+  @@map("_repo_sync_state")
+}
