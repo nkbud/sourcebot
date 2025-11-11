@@ -1,3 +1,38 @@
+/**
+ * Git Blame Bi-Directional Index Scanner
+ * 
+ * This service continuously scans Git repositories and maintains a "who-touched-what" index
+ * that allows instant lookups in both directions:
+ * - Author → Filepaths: "What files has this author contributed to?"
+ * - Filepath → Authors: "What authors have contributed to this file?"
+ * 
+ * Architecture:
+ * 
+ * 1. RepoScanner (Producer):
+ *    - Polls the database every 5 minutes for all repos
+ *    - For each repo, compares current HEAD with last synced hash
+ *    - Enqueues changed files to 'file-blame-update' queue
+ *    - Enqueues completion signal to 'repo-sync-complete' queue
+ * 
+ * 2. IndexWorker (Consumer):
+ *    - Consumes 'file-blame-update' jobs (5 concurrent workers)
+ *    - Runs git blame to extract author emails
+ *    - Calculates diff between new and old authors
+ *    - Atomically updates both author_to_filepaths and filepath_to_authors tables
+ * 
+ * 3. StatusUpdater (Consumer):
+ *    - Consumes 'repo-sync-complete' jobs (1 worker)
+ *    - Updates the last_synced_hash in _repo_sync_state table
+ * 
+ * Database Schema:
+ * - author_to_filepaths: Composite key (author_email, global_filepath)
+ * - filepath_to_authors: Composite key (global_filepath, author_email)
+ * - _repo_sync_state: Primary key (repo_path)
+ * 
+ * The global_filepath format is: {repoName}/{path/to/file}
+ * Example: "nkbud/sourcebot/src/main.ts"
+ */
+
 import { Job, Queue, Worker } from 'bullmq';
 import { Redis } from 'ioredis';
 import { createLogger } from "@sourcebot/logger";
