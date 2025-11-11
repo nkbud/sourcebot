@@ -105,21 +105,29 @@ describe('Blame Diff Calculation', () => {
     });
 });
 
-describe('Repo Name Extraction', () => {
-    test('should extract repo name from standard path', () => {
-        const repoPath = '/data/.sourcebot/cache/myorg/myrepo';
-        const parts = repoPath.split('/');
-        const repoName = `${parts[parts.length - 2]}/${parts[parts.length - 1]}`;
+describe('Global Filepath Parsing', () => {
+    test('should extract file path from global filepath', () => {
+        const globalFilepath = 'nkbud/sourcebot/src/main.ts';
+        const firstSlashIndex = globalFilepath.indexOf('/');
+        const filepath = firstSlashIndex >= 0 ? globalFilepath.substring(firstSlashIndex + 1) : globalFilepath;
         
-        expect(repoName).toBe('myorg/myrepo');
+        expect(filepath).toBe('sourcebot/src/main.ts');
     });
 
-    test('should handle path with different separators', () => {
-        const repoPath = '/home/user/repos/github/nkbud/sourcebot';
-        const parts = repoPath.split('/');
-        const repoName = `${parts[parts.length - 2]}/${parts[parts.length - 1]}`;
+    test('should handle filepath with multiple slashes', () => {
+        const globalFilepath = 'org/repo/path/to/file.ts';
+        const firstSlashIndex = globalFilepath.indexOf('/');
+        const filepath = firstSlashIndex >= 0 ? globalFilepath.substring(firstSlashIndex + 1) : globalFilepath;
         
-        expect(repoName).toBe('nkbud/sourcebot');
+        expect(filepath).toBe('repo/path/to/file.ts');
+    });
+
+    test('should handle filepath with no slashes', () => {
+        const globalFilepath = 'file.ts';
+        const firstSlashIndex = globalFilepath.indexOf('/');
+        const filepath = firstSlashIndex >= 0 ? globalFilepath.substring(firstSlashIndex + 1) : globalFilepath;
+        
+        expect(filepath).toBe('file.ts');
     });
 });
 

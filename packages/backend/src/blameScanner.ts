@@ -3,7 +3,7 @@ import { Redis } from 'ioredis';
 import { createLogger } from "@sourcebot/logger";
 import { PrismaClient } from "@sourcebot/db";
 import { AppContext, Settings } from "./types.js";
-import { existsSync, readdirSync } from 'fs';
+import { existsSync } from 'fs';
 import { join } from 'path';
 import { simpleGit } from 'simple-git';
 import * as Sentry from "@sentry/node";
@@ -82,30 +82,34 @@ export class BlameScanner implements IBlameScanner {
     ///////////////////////////
 
     private async scanRepositories() {
-        const cacheDir = this.ctx.reposPath;
+        const reposPath = this.ctx.reposPath;
         
-        if (!existsSync(cacheDir)) {
-            logger.warn(`Cache directory does not exist: ${cacheDir}`);
+        if (!existsSync(reposPath)) {
+            logger.warn(`Repos directory does not exist: ${reposPath}`);
             return;
         }
 
-        logger.info(`Scanning repositories in ${cacheDir}`);
+        logger.info(`Scanning repositories in ${reposPath}`);
 
         try {
-            const entries = readdirSync(cacheDir, { withFileTypes: true });
-            
-            for (const orgEntry of entries) {
-                if (!orgEntry.isDirectory()) continue;
+            // Get all repos from database
+            const repos = await this.db.repo.findMany({
+                select: {
+                    id: true,
+                    name: true,
+                    external_codeHostType: true,
+                },
+            });
+
+            for (const repo of repos) {
+                const repoPath = join(reposPath, repo.id.toString());
                 
-                const orgPath = join(cacheDir, orgEntry.name);
-                const repos = readdirSync(orgPath, { withFileTypes: true });
-                
-                for (const repoEntry of repos) {
-                    if (!repoEntry.isDirectory()) continue;
-                    
-                    const repoPath = join(orgPath, repoEntry.name);
-                    await this.processRepo(repoPath);
+                // Skip if the repo directory doesn't exist yet (might not be cloned)
+                if (!existsSync(repoPath)) {
+                    continue;
                 }
+
+                await this.processRepo(repoPath, repo.name);
             }
 
             logger.info('Completed repository scan');
@@ -115,7 +119,7 @@ export class BlameScanner implements IBlameScanner {
         }
     }
 
-    private async processRepo(repoPath: string) {
+    private async processRepo(repoPath: string, repoName: string) {
         try {
             const git = simpleGit(repoPath);
 
@@ -142,7 +146,7 @@ export class BlameScanner implements IBlameScanner {
                 return;
             }
 
-            logger.info(`Processing repo ${repoPath} (old: ${oldHash || 'NULL'}, new: ${newHash})`);
+            logger.info(`Processing repo ${repoPath} (${repoName}) (old: ${oldHash || 'NULL'}, new: ${newHash})`);
 
             // Get changed files
             let changedFiles: string[];
@@ -156,10 +160,9 @@ export class BlameScanner implements IBlameScanner {
                 changedFiles = lsTree.split('\n').filter(f => f.trim() !== '');
             }
 
-            logger.info(`Found ${changedFiles.length} changed files in ${repoPath}`);
+            logger.info(`Found ${changedFiles.length} changed files in ${repoName}`);
 
             // Queue each changed file for blame processing
-            const repoName = this.getRepoName(repoPath);
             const jobs = changedFiles.map(filepath => ({
                 name: 'file-blame-update',
                 data: {
@@ -175,7 +178,7 @@ export class BlameScanner implements IBlameScanner {
 
             if (jobs.length > 0) {
                 await this.fileBlameQueue.addBulk(jobs);
-                logger.info(`Queued ${jobs.length} file blame jobs for ${repoPath}`);
+                logger.info(`Queued ${jobs.length} file blame jobs for ${repoName}`);
             }
 
             // Queue the completion signal
@@ -188,19 +191,9 @@ export class BlameScanner implements IBlameScanner {
             });
 
         } catch (error) {
-            logger.error(`Failed to process repo ${repoPath}: ${error}`);
+            logger.error(`Failed to process repo ${repoPath} (${repoName}): ${error}`);
             Sentry.captureException(error);
         }
-    }
-
-    private getRepoName(repoPath: string): string {
-        // Extract repo name from path like /data/.sourcebot/cache/org/repo
-        const parts = repoPath.split('/');
-        if (parts.length < 2) {
-            return repoPath;
-        }
-        // Return org/repo
-        return `${parts[parts.length - 2]}/${parts[parts.length - 1]}`;
     }
 
     ///////////////////////////
@@ -214,8 +207,10 @@ export class BlameScanner implements IBlameScanner {
 
         try {
             // Extract the file path relative to repo
-            const repoName = this.getRepoName(repoPath);
-            const filepath = globalFilepath.replace(`${repoName}/`, '');
+            // globalFilepath is in format "repoName/path/to/file.txt"
+            // We need to extract "path/to/file.txt" for git blame
+            const firstSlashIndex = globalFilepath.indexOf('/');
+            const filepath = firstSlashIndex >= 0 ? globalFilepath.substring(firstSlashIndex + 1) : globalFilepath;
 
             // Get new authors from git blame
             const newAuthors = await this.getAuthorsFromGitBlame(repoPath, filepath);
