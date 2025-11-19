@@ -19,9 +19,9 @@
 
    <div>
       <a href="https://docs.sourcebot.dev/"><strong>Docs</strong></a> ·
-      <a href="https://github.com/sourcebot-dev/sourcebot/issues/459"><strong>Roadmap</strong></a> ·
-      <a href="https://github.com/sourcebot-dev/sourcebot/issues/new?template=bug_report.yml"><strong>Report Bug</strong></a> ·
-      <a href="https://github.com/sourcebot-dev/sourcebot/issues/new?template=feature_request.md"><strong>Feature Request</strong></a> ·
+      <a href="https://github.com/nkbud/sourcebot/issues/459"><strong>Roadmap</strong></a> ·
+      <a href="https://github.com/nkbud/sourcebot/issues/new?template=bug_report.yml"><strong>Report Bug</strong></a> ·
+      <a href="https://github.com/nkbud/sourcebot/issues/new?template=feature_request.md"><strong>Feature Request</strong></a> ·
       <a href="https://www.sourcebot.dev/changelog"><strong>Changelog</strong></a>
    </div>
    <br/>
@@ -30,8 +30,8 @@
 </div>
 <p align="center">
   <a href="mailto:team@sourcebot.dev"><img src="https://img.shields.io/badge/Email%20Us-brightgreen" /></a>
-  <a href="https://github.com/sourcebot-dev/sourcebot/actions/workflows/ghcr-publish.yml"><img src="https://img.shields.io/github/actions/workflow/status/sourcebot-dev/sourcebot/ghcr-publish.yml"/><a>
-  <a href="https://github.com/sourcebot-dev/sourcebot/stargazers"><img src="https://img.shields.io/github/stars/sourcebot-dev/sourcebot" /></a>
+  <a href="https://github.com/nkbud/sourcebot/actions/workflows/ghcr-publish.yml"><img src="https://img.shields.io/github/actions/workflow/status/nkbud/sourcebot/ghcr-publish.yml"/><a>
+  <a href="https://github.com/nkbud/sourcebot/stargazers"><img src="https://img.shields.io/github/stars/nkbud/sourcebot" /></a>
 </p>
 <p align="center">
 </p>
@@ -76,14 +76,14 @@ Sourcebot can be deployed in seconds using Docker Compose. Visit our [docs](http
 
 1. Download the docker-compose.yml file
 ```sh
-curl -o docker-compose.yml https://raw.githubusercontent.com/sourcebot-dev/sourcebot/main/docker-compose.yml
+curl -o docker-compose.yml https://raw.githubusercontent.com/nkbud/sourcebot/main/docker-compose.yml
 ```
 
 2. In the same directory as the `docker-compose.yml` file, create a [configuration file](https://docs.sourcebot.dev/docs/configuration/config-file). The configuration file is a JSON file that configures Sourcebot's behaviour, including what repositories to index, language model providers, auth providers, and more.
 ```sh
 touch config.json
 echo '{
-    "$schema": "https://raw.githubusercontent.com/sourcebot-dev/sourcebot/main/schemas/v3/index.json",
+    "$schema": "https://raw.githubusercontent.com/nkbud/sourcebot/main/schemas/v3/index.json",
     // Comments are supported.
     // This config creates a single connection to GitHub.com that
     // indexes the Sourcebot repository
@@ -91,7 +91,7 @@ echo '{
         "starter-connection": {
             "type": "github",
             "repos": [
-                "sourcebot-dev/sourcebot"
+                "nkbud/sourcebot"
             ]
         }
     }
