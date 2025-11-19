@@ -8,6 +8,7 @@ import { existsSync } from 'fs';
 import { mkdir } from 'fs/promises';
 import { Redis } from 'ioredis';
 import { Api } from "./api.js";
+import { BlameIndexManager } from "./blameIndexManager.js";
 import { ConfigManager } from "./configManager.js";
 import { ConnectionManager } from './connectionManager.js';
 import { INDEX_CACHE_DIR, REPOS_CACHE_DIR, SHUTDOWN_SIGNALS } from './constants.js';
@@ -63,10 +64,15 @@ const connectionManager = new ConnectionManager(prisma, settings, redis, promCli
 const repoPermissionSyncer = new RepoPermissionSyncer(prisma, settings, redis);
 const accountPermissionSyncer = new AccountPermissionSyncer(prisma, settings, redis);
 const repoIndexManager = new RepoIndexManager(prisma, settings, redis, promClient);
+const blameIndexManager = new BlameIndexManager(prisma, settings, redis);
 const configManager = new ConfigManager(prisma, connectionManager, env.CONFIG_PATH);
+
+// Wire up blame indexing to trigger after repo indexing
+repoIndexManager.setBlameIndexManager(blameIndexManager);
 
 connectionManager.startScheduler();
 repoIndexManager.startScheduler();
+blameIndexManager.start();
 
 if (env.EXPERIMENT_EE_PERMISSION_SYNC_ENABLED === 'true' && !hasEntitlement('permission-syncing')) {
     logger.error('Permission syncing is not supported in current plan. Please contact team@sourcebot.dev for assistance.');
@@ -102,6 +108,7 @@ const listenToShutdownSignals = () => {
             logger.info(`Received ${signal}, cleaning up...`);
 
             await repoIndexManager.dispose()
+            await blameIndexManager.stop()
             await connectionManager.dispose()
             await repoPermissionSyncer.dispose()
             await accountPermissionSyncer.dispose()

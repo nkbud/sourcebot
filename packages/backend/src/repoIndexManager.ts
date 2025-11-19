@@ -41,6 +41,7 @@ export class RepoIndexManager {
     private interval?: NodeJS.Timeout;
     private queue: Queue<JobPayload>;
     private worker: Worker<JobPayload>;
+    private blameIndexManager?: { queueBlameScan: (repo: Repo) => Promise<void> };
 
     constructor(
         private db: PrismaClient,
@@ -74,6 +75,10 @@ export class RepoIndexManager {
         // worker.close() is called and the timeout period has elapsed. In this case,
         // we fail the job with no retry.
         this.worker.on('graceful-timeout', this.onJobGracefulTimeout.bind(this));
+    }
+
+    public setBlameIndexManager(blameIndexManager: { queueBlameScan: (repo: Repo) => Promise<void> }) {
+        this.blameIndexManager = blameIndexManager;
     }
 
     public startScheduler() {
@@ -492,6 +497,11 @@ export class RepoIndexManager {
                 });
 
                 logger.info(`Completed index job ${job.data.jobId} for repo ${repo.name} (id: ${repo.id})`);
+
+                // Queue blame scan after successful indexing
+                if (this.blameIndexManager) {
+                    await this.blameIndexManager.queueBlameScan(repo);
+                }
             }
             else if (jobData.type === RepoIndexingJobType.CLEANUP) {
                 const repo = await this.db.repo.delete({
