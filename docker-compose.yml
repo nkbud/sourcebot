@@ -1,6 +1,6 @@
 services:
   sourcebot:
-    image: ghcr.io/sourcebot-dev/sourcebot:latest
+    image: ghcr.io/nkbud/sourcebot:latest
     user: sourcebot
     restart: always
     container_name: sourcebot
