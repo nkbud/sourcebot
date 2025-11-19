@@ -451,3 +451,48 @@ model Chat {
 
   messages Json // This is a JSON array of `Message` types from @ai-sdk/ui-utils.
 }
+
+// Git Blame Indexing Models
+
+/// Stores the mapping from author email to file paths they have touched
+model AuthorToFilepath {
+  id Int @id @default(autoincrement())
+  
+  authorEmail   String
+  globalFilepath String /// Full file path including repo name (e.g., github.com/user/repo/path/to/file.ts)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@unique([authorEmail, globalFilepath])
+  @@index([authorEmail])
+  @@index([globalFilepath])
+}
+
+/// Stores the mapping from file path to authors who have touched it
+model FilepathToAuthor {
+  id Int @id @default(autoincrement())
+  
+  globalFilepath String /// Full file path including repo name (e.g., github.com/user/repo/path/to/file.ts)
+  authorEmail   String
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@unique([globalFilepath, authorEmail])
+  @@index([globalFilepath])
+  @@index([authorEmail])
+}
+
+/// Tracks the last synced commit hash for each repository's blame index
+model RepoBlameState {
+  id Int @id @default(autoincrement())
+  
+  repoPath        String   @unique /// Repository path (e.g., github.com/user/repo)
+  lastSyncedHash  String?  /// The commit hash that was last synced
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@index([repoPath])
+}
